@@ -65,6 +65,23 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
     <div className="relative">
       <canvas ref={canvasRef} className="hidden" />
       
+      {/* Secret message on hover - at the top */}
+      {isHovered && (
+        <motion.div
+          className="absolute -top-12 left-1/2 transform -translate-x-1/2 whitespace-nowrap z-20"
+          initial={{ opacity: 0, scale: 0.8, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.8, y: 10 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        >
+          <div className="px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-accent backdrop-blur-sm border-2 border-primary shadow-xl">
+            <code className="text-primary-foreground font-mono font-bold text-lg tracking-wide">
+              [ HIRE_ME.exe ] ✓ COMPILED SUCCESSFULLY
+            </code>
+          </div>
+        </motion.div>
+      )}
+      
       <motion.pre
         className="font-mono text-primary/80 leading-none select-none overflow-hidden"
         style={{ fontSize: `${fontSize}px` }}
@@ -124,23 +141,6 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
             textShadow: '2px 0 hsl(187 85% 53%), -2px 0 hsl(217 91% 60%)',
           }}
         />
-      )}
-
-      {/* Secret message on hover */}
-      {isHovered && (
-        <motion.div
-          className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ delay: 0.3 }}
-        >
-          <div className="px-4 py-2 rounded-md bg-secondary/90 backdrop-blur-sm border border-primary/30 shadow-lg">
-            <code className="text-accent font-mono text-xs">
-              sudo make me_a_sandwich 🥪 // access granted
-            </code>
-          </div>
-        </motion.div>
       )}
     </div>
   );
