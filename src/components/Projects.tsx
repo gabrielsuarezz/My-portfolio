@@ -32,6 +32,7 @@ const projects = [
     tags: ["Arduino", "Flask", "Gemini API", "Agent SDK", "OpenWeather API", "IoT"],
     award: "🔧 Best Use of ARM - KnightHacks VIII 2025",
     links: {
+      demo: "http://www.helios.study/",
       github: "https://github.com/pablomoli/helios",
       devpost: "https://devpost.com/software/heliosai"
     }
