@@ -11,8 +11,8 @@ export const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [funMode, setFunMode] = useState(false);
   const { scrollY } = useScroll();
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const scale = useTransform(scrollY, [0, 300], [1, 0.8]);
+  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
+  const scale = useTransform(scrollY, [0, 500], [1, 0.8]);
 
   // Headshot click counter (7 clicks)
   const { handleClick: handleHeadshotClick } = useClickCounter(7, () => {
@@ -152,7 +152,7 @@ export const Hero = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mb-8 flex flex-col items-center justify-center gap-4"
+            className="mb-4 flex flex-col items-center justify-center gap-2"
           >
             <div className="flex items-center gap-2 text-accent font-mono text-sm">
               <Terminal className="h-4 w-4 animate-pulse" />
@@ -164,7 +164,7 @@ export const Hero = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.5 }}
-              className="relative p-8 rounded-lg bg-secondary/30 backdrop-blur-sm border border-primary/20 shadow-lg max-w-4xl w-full"
+              className="relative p-4 rounded-lg bg-secondary/30 backdrop-blur-sm border border-primary/20 shadow-lg max-w-3xl w-full"
               style={{ boxShadow: 'var(--shadow-glow)' }}
             >
               <div className="absolute top-3 left-3 flex gap-2">
@@ -203,7 +203,7 @@ export const Hero = () => {
 
           {/* Main title with staggered animation */}
           <motion.h1
-            className="text-6xl md:text-8xl lg:text-9xl font-bold mb-8 leading-tight"
+            className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -250,7 +250,7 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="text-lg md:text-xl text-muted-foreground/80 mb-12 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-muted-foreground/80 mb-8 max-w-3xl mx-auto leading-relaxed"
           >
             Exploring the edge between AI, creativity, and code.
           </motion.p>
