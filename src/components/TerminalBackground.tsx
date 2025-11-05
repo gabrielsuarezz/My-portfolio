@@ -67,7 +67,7 @@ export const TerminalBackground = ({
   }, [lineCount]);
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.03]">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.15]">
       {lines.map((line, i) => (
         <motion.div
           key={i}
