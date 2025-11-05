@@ -65,13 +65,13 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
     <div className="relative">
       <canvas ref={canvasRef} className="hidden" />
       
-      {/* Secret message on hover - at the top */}
+      {/* Secret message on hover - inside terminal */}
       {isHovered && (
         <motion.div
-          className="absolute -top-12 left-1/2 transform -translate-x-1/2 whitespace-nowrap z-20"
-          initial={{ opacity: 0, scale: 0.8, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: 10 }}
+          className="absolute top-4 left-1/2 transform -translate-x-1/2 whitespace-nowrap z-20"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
         >
           <div className="px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-accent backdrop-blur-sm border-2 border-primary shadow-xl">
