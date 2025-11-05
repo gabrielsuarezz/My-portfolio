@@ -70,61 +70,89 @@ export const Projects = () => {
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ delay: index * 0.15, duration: 0.8, type: "spring" }}
+              whileHover={{ y: -10 }}
             >
-              <Card className="p-6 h-full hover-lift border-border/50 backdrop-blur-sm bg-card/50">
-                <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-2xl font-bold">{project.title}</h3>
+              <Card className="p-8 h-full border-border/50 backdrop-blur-sm bg-card/30 relative overflow-hidden group">
+                {/* Animated background gradient on hover */}
+                <motion.div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: 'radial-gradient(circle at center, hsl(217 91% 60% / 0.1) 0%, transparent 70%)',
+                  }}
+                />
+                
+                <div className="relative z-10">
+                  <div className="flex items-start justify-between mb-4">
+                    <motion.h3 
+                      className="text-2xl font-bold group-hover:text-primary transition-colors"
+                      whileHover={{ x: 5 }}
+                    >
+                      {project.title}
+                    </motion.h3>
+                    {project.award && (
+                      <motion.div
+                        animate={{ rotate: [0, 10, -10, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                      >
+                        <Award className="h-6 w-6 text-accent flex-shrink-0 ml-2" />
+                      </motion.div>
+                    )}
+                  </div>
+
                   {project.award && (
-                    <Award className="h-5 w-5 text-accent flex-shrink-0 ml-2" />
-                  )}
-                </div>
-
-                {project.award && (
-                  <Badge variant="secondary" className="mb-4">
-                    {project.award}
-                  </Badge>
-                )}
-
-                <p className="text-muted-foreground mb-6 leading-relaxed">
-                  {project.description}
-                </p>
-
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tags.map((tag) => (
-                    <Badge key={tag} variant="outline" className="text-xs">
-                      {tag}
+                    <Badge variant="secondary" className="mb-4 bg-accent/20 text-accent border-accent/30">
+                      {project.award}
                     </Badge>
-                  ))}
-                </div>
+                  )}
 
-                <div className="flex gap-3">
-                  {project.links.demo && (
-                    <Button variant="default" size="sm" asChild>
-                      <a href={project.links.demo} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="mr-2 h-4 w-4" />
-                        Live Demo
-                      </a>
-                    </Button>
-                  )}
-                  {project.links.github && (
-                    <Button variant="outline" size="sm" asChild>
-                      <a href={project.links.github} target="_blank" rel="noopener noreferrer">
-                        <Github className="mr-2 h-4 w-4" />
-                        Code
-                      </a>
-                    </Button>
-                  )}
-                  {project.links.devpost && (
-                    <Button variant="ghost" size="sm" asChild>
-                      <a href={project.links.devpost} target="_blank" rel="noopener noreferrer">
-                        Devpost
-                      </a>
-                    </Button>
-                  )}
+                  <p className="text-muted-foreground mb-6 leading-relaxed">
+                    {project.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {project.tags.map((tag, tagIndex) => (
+                      <motion.div
+                        key={tag}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: index * 0.15 + tagIndex * 0.05 }}
+                      >
+                        <Badge variant="outline" className="text-xs border-primary/30 hover:border-primary hover:bg-primary/10 transition-all">
+                          {tag}
+                        </Badge>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <div className="flex gap-3">
+                    {project.links.demo && (
+                      <Button variant="default" size="sm" asChild className="group/btn">
+                        <a href={project.links.demo} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-2 h-4 w-4 group-hover/btn:rotate-45 transition-transform" />
+                          Live Demo
+                        </a>
+                      </Button>
+                    )}
+                    {project.links.github && (
+                      <Button variant="outline" size="sm" asChild className="group/btn">
+                        <a href={project.links.github} target="_blank" rel="noopener noreferrer">
+                          <Github className="mr-2 h-4 w-4 group-hover/btn:scale-110 transition-transform" />
+                          Code
+                        </a>
+                      </Button>
+                    )}
+                    {project.links.devpost && (
+                      <Button variant="ghost" size="sm" asChild className="group/btn hover:text-accent">
+                        <a href={project.links.devpost} target="_blank" rel="noopener noreferrer">
+                          Devpost
+                        </a>
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </Card>
             </motion.div>
