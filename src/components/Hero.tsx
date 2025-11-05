@@ -201,20 +201,11 @@ export const Hero = () => {
             <div className="flex items-center justify-center gap-2 text-accent">
               <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
               <p className="text-lg md:text-xl">
-                CS @ FIU • AI Systems Builder • Hackathon Champion
+                CS @ FIU • Building Cool Stuff • Hackathon Connoisseur
               </p>
             </div>
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1 }}
-            className="text-lg md:text-xl text-muted-foreground/80 mb-12 max-w-3xl mx-auto leading-relaxed"
-          >
-            Transforming ideas into intelligent systems. From award-winning hackathon projects 
-            to production-grade applications, I build at the intersection of AI, hardware, and human experience.
-          </motion.p>
 
           {/* CTA Buttons */}
           <motion.div
