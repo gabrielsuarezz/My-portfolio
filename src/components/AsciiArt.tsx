@@ -65,23 +65,6 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
     <div className="relative">
       <canvas ref={canvasRef} className="hidden" />
       
-      {/* Secret message on hover - inside terminal */}
-      {isHovered && (
-        <motion.div
-          className="absolute top-4 left-1/2 transform -translate-x-1/2 whitespace-nowrap z-20"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
-        >
-          <div className="px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-accent backdrop-blur-sm border-2 border-primary shadow-xl">
-            <code className="text-primary-foreground font-mono font-bold text-lg tracking-wide">
-              [ HIRE_ME.exe ] ✓ COMPILED SUCCESSFULLY
-            </code>
-          </div>
-        </motion.div>
-      )}
-      
       <motion.pre
         className="font-mono text-primary/80 leading-none select-none overflow-hidden"
         style={{ fontSize: `${fontSize}px` }}
@@ -94,6 +77,23 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
         }}
         transition={{ duration: 0.3 }}
       >
+        {/* Secret message integrated into ASCII */}
+        <motion.div
+          className="text-center mb-1 font-bold tracking-wider"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ 
+            opacity: isHovered ? 1 : 0,
+            height: isHovered ? 'auto' : 0,
+            marginBottom: isHovered ? '0.25rem' : 0
+          }}
+          transition={{ duration: 0.3 }}
+          style={{ fontSize: `${fontSize * 1.5}px` }}
+        >
+          <span className="text-gradient">
+            {'>'} [ HIRE_ME.exe ] ✓ COMPILED_SUCCESSFULLY {'<'}
+          </span>
+        </motion.div>
+
         {asciiText.split('\n').map((line, i) => (
           <motion.div
             key={i}
