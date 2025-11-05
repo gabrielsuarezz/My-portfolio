@@ -190,7 +190,7 @@ export const Projects = () => {
                       </Button>
                     )}
                     {project.links.devpost && (
-                      <Button variant="ghost" size="sm" asChild className="group/btn hover:text-accent">
+                      <Button variant="outline" size="sm" asChild className="group/btn">
                         <a href={project.links.devpost} target="_blank" rel="noopener noreferrer">
                           Devpost
                         </a>
