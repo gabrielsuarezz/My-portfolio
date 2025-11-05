@@ -139,21 +139,21 @@ export const Hero = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.5 }}
-              className="relative p-6 rounded-lg bg-secondary/30 backdrop-blur-sm border border-primary/20 shadow-lg"
+              className="relative p-8 rounded-lg bg-secondary/30 backdrop-blur-sm border border-primary/20 shadow-lg max-w-4xl w-full"
               style={{ boxShadow: 'var(--shadow-glow)' }}
             >
-              <div className="absolute top-2 left-2 flex gap-1.5">
+              <div className="absolute top-3 left-3 flex gap-2">
                 <div className="w-3 h-3 rounded-full bg-red-500/60" />
                 <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
                 <div className="w-3 h-3 rounded-full bg-green-500/60" />
               </div>
               
-              <div className="mt-4 overflow-hidden">
-                <AsciiArt imageSrc={headshot} width={80} fontSize={6} />
+              <div className="mt-6 overflow-hidden flex justify-center">
+                <AsciiArt imageSrc={headshot} width={100} fontSize={7} />
               </div>
               
               <motion.div
-                className="mt-2 text-xs font-mono text-accent/60 text-center"
+                className="mt-3 text-sm font-mono text-accent/70 text-center"
                 animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >

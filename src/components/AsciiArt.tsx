@@ -13,7 +13,7 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
   const [isHovered, setIsHovered] = useState(false);
 
   // ASCII characters from darkest to lightest
-  const ASCII_CHARS = " .:-=+*#%@";
+  const ASCII_CHARS = " .'`^\",:;Il!i~+_-?][}{1)(|/tfjrxnuvcz*#%@";
   const ASCII_CHARS_DETAILED = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
 
   useEffect(() => {
@@ -71,16 +71,20 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        animate={{ 
+          opacity: 1,
+          filter: isHovered ? 'brightness(1.2) contrast(1.1)' : 'brightness(1) contrast(1)'
+        }}
+        transition={{ duration: 0.3 }}
       >
         {asciiText.split('\n').map((line, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.01, duration: 0.3 }}
-            className="hover:text-accent transition-colors"
+            transition={{ delay: i * 0.005, duration: 0.2 }}
+            className={isHovered ? "text-accent" : ""}
+            style={{ transition: 'color 0.3s ease' }}
           >
             {line}
           </motion.div>
