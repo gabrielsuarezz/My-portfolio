@@ -40,9 +40,9 @@ export const TerminalBackground = ({
   const [lines, setLines] = useState<TerminalLine[]>([]);
 
   const densityMap = {
-    light: 8,
-    medium: 12,
-    heavy: 18,
+    light: 12,
+    medium: 18,
+    heavy: 26,
   };
 
   const speedMap = {
@@ -67,7 +67,7 @@ export const TerminalBackground = ({
   }, [lineCount]);
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.15]">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.25]">
       {lines.map((line, i) => (
         <motion.div
           key={i}
@@ -85,7 +85,7 @@ export const TerminalBackground = ({
           className="absolute whitespace-nowrap font-mono text-xs md:text-sm text-primary"
           style={{
             left: `${line.x}%`,
-            filter: "blur(0.5px)",
+            filter: "blur(0.3px)",
           }}
         >
           {line.text}
