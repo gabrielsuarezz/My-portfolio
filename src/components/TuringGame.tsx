@@ -180,33 +180,66 @@ export const TuringGame = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
               The Turing Test
             </h2>
-            <p className="text-xl text-muted-foreground mb-8">
+            <p className="text-xl text-muted-foreground mb-2">
               Can you tell which AI is the real Gabriel?
+            </p>
+            <p className="text-lg text-foreground/80 max-w-2xl mx-auto">
+              This isn't just a game - it's the best way to get to know me beyond the resume. 
+              Ask about my projects, passions, hot takes, or that time I got stranded in the Everglades with a gator. 
+              One AI has my personality, experiences, and sense of humor. The other doesn't.
             </p>
           </div>
 
           <Card className="p-8 bg-card/50 backdrop-blur-sm border-primary/20">
             <div className="space-y-6">
-              <div className="flex items-center gap-3 text-lg">
-                <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                <p className="text-foreground">
-                  Chat with two AIs. One has been trained on Gabriel's personality, experiences, and thoughts.
-                  The other is a standard AI assistant.
+              <div className="text-center mb-4">
+                <p className="text-lg font-semibold text-accent mb-2">
+                  💡 Want to really get to know me? Ask about:
                 </p>
               </div>
               
-              <div className="flex items-center gap-3 text-lg">
-                <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                <p className="text-foreground">
-                  Ask them questions about anything - tech, hobbies, opinions, experiences.
-                </p>
+              <div className="grid md:grid-cols-2 gap-3 text-sm mb-6">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <span className="text-accent">›</span> My AI/ML projects (Shadow Vision, Helios AI)
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <span className="text-accent">›</span> Fishing and motorcycles in the Everglades
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <span className="text-accent">›</span> Hot takes on tech, AI regulation, or legacy code
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <span className="text-accent">›</span> My Daft Punk helmet or custom lightsaber
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <span className="text-accent">›</span> Why I love computer vision
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <span className="text-accent">›</span> That ShellHacks police story
+                </div>
               </div>
               
-              <div className="flex items-center gap-3 text-lg">
-                <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                <p className="text-foreground">
-                  Try to figure out which one is the real Gabriel based on their responses.
-                </p>
+              <div className="space-y-4 pt-4 border-t border-primary/20">
+                <div className="flex items-center gap-3 text-base">
+                  <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                  <p className="text-foreground">
+                    Chat with two AIs simultaneously
+                  </p>
+                </div>
+                
+                <div className="flex items-center gap-3 text-base">
+                  <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                  <p className="text-foreground">
+                    Ask them anything - tech, hobbies, opinions, experiences
+                  </p>
+                </div>
+                
+                <div className="flex items-center gap-3 text-base">
+                  <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                  <p className="text-foreground">
+                    Figure out which one truly knows Gabriel
+                  </p>
+                </div>
               </div>
 
               <Button
