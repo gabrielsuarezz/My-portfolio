@@ -149,7 +149,7 @@ export const Hero = () => {
               </div>
               
               <div className="mt-6 overflow-hidden flex justify-center">
-                <AsciiArt imageSrc={headshot} width={100} fontSize={7} />
+                <AsciiArt imageSrc={headshot} width={120} fontSize={6.5} />
               </div>
               
               <motion.div

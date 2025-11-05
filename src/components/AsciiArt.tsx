@@ -27,13 +27,21 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
     img.crossOrigin = "anonymous";
     
     img.onload = () => {
-      const aspectRatio = img.height / img.width;
-      const height = Math.floor(width * aspectRatio * 0.5); // 0.5 to account for character aspect ratio
+      // Crop to focus on upper 65% of image (face area)
+      const cropHeight = img.height * 0.65;
+      const aspectRatio = cropHeight / img.width;
+      const height = Math.floor(width * aspectRatio * 0.5);
 
       canvas.width = width;
       canvas.height = height;
 
-      ctx.drawImage(img, 0, 0, width, height);
+      // Draw only the upper portion of the image
+      ctx.drawImage(
+        img,
+        0, 0, img.width, cropHeight,  // Source: full width, upper 65% height
+        0, 0, width, height            // Destination: full canvas
+      );
+      
       const imageData = ctx.getImageData(0, 0, width, height);
 
       let ascii = "";
