@@ -62,49 +62,61 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
   }, [imageSrc, width, isHovered]);
 
   const generateAsciiBlockText = () => {
-    // ASCII block letter definitions for "HIRE ME"
+    // Carefully designed ASCII block letters
     const letters: { [key: string]: string[] } = {
       'H': [
-        '█ █ █',
-        '█ █ █',
-        '█████',
-        '█ █ █',
-        '█ █ █'
+        '██   ██',
+        '██   ██',
+        '███████',
+        '██   ██',
+        '██   ██',
+        '██   ██',
+        '██   ██'
       ],
       'I': [
-        '█████',
-        '  █  ',
-        '  █  ',
-        '  █  ',
-        '█████'
+        '███████',
+        '   ██  ',
+        '   ██  ',
+        '   ██  ',
+        '   ██  ',
+        '   ██  ',
+        '███████'
       ],
       'R': [
-        '████ ',
-        '█   █',
-        '████ ',
-        '█  █ ',
-        '█   █'
+        '██████ ',
+        '██   ██',
+        '██   ██',
+        '██████ ',
+        '██  ██ ',
+        '██   ██',
+        '██   ██'
       ],
       'E': [
-        '█████',
-        '█    ',
-        '████ ',
-        '█    ',
-        '█████'
+        '███████',
+        '██     ',
+        '██     ',
+        '█████  ',
+        '██     ',
+        '██     ',
+        '███████'
       ],
       'M': [
-        '█   █',
-        '██ ██',
-        '█ █ █',
-        '█   █',
-        '█   █'
+        '██   ██',
+        '███ ███',
+        '███████',
+        '██ █ ██',
+        '██   ██',
+        '██   ██',
+        '██   ██'
       ],
       ' ': [
-        '     ',
-        '     ',
-        '     ',
-        '     ',
-        '     '
+        '   ',
+        '   ',
+        '   ',
+        '   ',
+        '   ',
+        '   ',
+        '   '
       ]
     };
 
@@ -113,8 +125,8 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
     
     // Combine all letters horizontally
     const combinedLines: string[] = [];
-    for (let row = 0; row < 5; row++) {
-      const line = letterArrays.map(letter => letter[row]).join('  ');
+    for (let row = 0; row < 7; row++) {
+      const line = letterArrays.map(letter => letter[row]).join(' ');
       combinedLines.push(line);
     }
     
@@ -124,7 +136,9 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
   const insertTextIntoAscii = (ascii: string) => {
     const lines = ascii.split('\n');
     const blockText = generateAsciiBlockText();
-    const startLine = Math.floor((lines.length - blockText.length) / 2);
+    
+    // Position at the top (starting from line 2 to leave a small margin)
+    const startLine = 2;
     
     // Replace lines with the block text
     blockText.forEach((textLine, i) => {
@@ -163,8 +177,8 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
         transition={{ duration: 0.3 }}
       >
         {lines.map((line, i) => {
-          const middleLine = Math.floor(lines.length / 2);
-          const isMessageLine = isHovered && i >= middleLine - 2 && i <= middleLine + 2;
+          // Message lines are now at the top (lines 2-8)
+          const isMessageLine = isHovered && i >= 2 && i <= 8;
           
           return (
             <motion.div
@@ -172,11 +186,11 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.005, duration: 0.2 }}
-              className={isMessageLine ? "text-accent font-extrabold" : isHovered ? "text-accent/80" : ""}
+              className={isMessageLine ? "text-accent font-extrabold" : isHovered ? "text-accent/70" : ""}
               style={{ 
                 transition: 'all 0.3s ease',
-                fontSize: isMessageLine ? `${fontSize * 1.2}px` : `${fontSize}px`,
-                letterSpacing: isMessageLine ? '0.1em' : 'normal'
+                fontSize: isMessageLine ? `${fontSize * 1.1}px` : `${fontSize}px`,
+                letterSpacing: isMessageLine ? '0.05em' : 'normal'
               }}
             >
               {line}
