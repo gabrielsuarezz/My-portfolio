@@ -4,6 +4,7 @@ import { Skills } from "@/components/Skills";
 import { Experience } from "@/components/Experience";
 import { Contact } from "@/components/Contact";
 import { TuringGame } from "@/components/TuringGame";
+import { EasterEggHint } from "@/components/EasterEggHint";
 
 const Index = () => {
   return (
@@ -14,6 +15,7 @@ const Index = () => {
       <Experience />
       <TuringGame />
       <Contact />
+      <EasterEggHint />
       
       {/* Footer */}
       <footer className="py-8 border-t border-border/50">
