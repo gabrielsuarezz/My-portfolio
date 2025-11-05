@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useKonamiCode } from '@/hooks/useKonamiCode';
 import { useKeyboardSequence } from '@/hooks/useKeyboardSequence';
-import { useMouseShake } from '@/hooks/useMouseShake';
 import { MatrixRain } from './MatrixRain';
 import { CommandPalette } from './CommandPalette';
 import { toast } from 'sonner';
@@ -21,13 +20,6 @@ export const EasterEggs = () => {
     toast.info('📄 Resume download would trigger here!');
     // In a real implementation, trigger actual download
     console.log('Resume download triggered!');
-  });
-
-  // Mouse shake effect
-  useMouseShake(() => {
-    toast('🎨 Whoa there! Steady hand!', {
-      description: 'You shook your mouse pretty hard!',
-    });
   });
 
   // Command Palette (Cmd/Ctrl + K)
@@ -87,7 +79,6 @@ export const EasterEggs = () => {
     console.log('%c• Type "resume" anywhere to download my CV', styles.message);
     console.log('%c• Press Cmd/Ctrl + K for command palette', styles.message);
     console.log('%c• Try the Konami Code (↑↑↓↓←→←→BA)', styles.message);
-    console.log('%c• Shake your mouse rapidly', styles.message);
     console.log('%c• Triple-click my name in the hero', styles.message);
     console.log('%c• Click my photo 7 times', styles.message);
     console.log('%c\nHappy hunting! 🎮', styles.highlight);
