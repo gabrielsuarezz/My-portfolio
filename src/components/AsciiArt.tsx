@@ -27,38 +27,76 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
     img.crossOrigin = "anonymous";
     
     img.onload = () => {
-      // Crop to focus on upper 65% of image (face area)
-      const cropHeight = img.height * 0.65;
+      // Focus on upper region for facial clarity
+      const focusRatio = 0.65; // top 65%
+      const cropHeight = img.height * focusRatio;
+
+      // Increase character density using Braille (2x4 dots per cell)
+      const cellsAcross = isHovered ? Math.floor(width * 1.6) : width;
+      const pxWidth = cellsAcross * 2;
       const aspectRatio = cropHeight / img.width;
-      const height = Math.floor(width * aspectRatio * 0.5);
+      let pxHeight = Math.max(4, Math.floor(pxWidth * aspectRatio));
+      // Ensure multiple of 4 for Braille rows
+      pxHeight = pxHeight - (pxHeight % 4);
 
-      canvas.width = width;
-      canvas.height = height;
+      canvas.width = pxWidth;
+      canvas.height = pxHeight;
 
-      // Draw only the upper portion of the image
+      // Draw only the upper portion to the canvas at target resolution
       ctx.drawImage(
         img,
-        0, 0, img.width, cropHeight,  // Source: full width, upper 65% height
-        0, 0, width, height            // Destination: full canvas
+        0, 0, img.width, cropHeight,
+        0, 0, pxWidth, pxHeight
       );
-      
-      const imageData = ctx.getImageData(0, 0, width, height);
 
+      const imageData = ctx.getImageData(0, 0, pxWidth, pxHeight);
+      const data = imageData.data;
+
+      // Compute luminance histogram for contrast normalization
+      let minL = 1, maxL = 0;
+      const luminances: number[] = new Array((pxWidth * pxHeight));
+      for (let i = 0; i < pxWidth * pxHeight; i++) {
+        const r = data[i * 4] / 255;
+        const g = data[i * 4 + 1] / 255;
+        const b = data[i * 4 + 2] / 255;
+        // ITU-R BT.601 luma
+        let y = 0.299 * r + 0.587 * g + 0.114 * b;
+        // Slight gamma to boost midtones
+        y = Math.pow(y, 0.9);
+        luminances[i] = y;
+        if (y < minL) minL = y;
+        if (y > maxL) maxL = y;
+      }
+      const range = Math.max(1e-6, maxL - minL);
+
+      const heightCells = Math.floor(pxHeight / 4);
       let ascii = "";
-      const chars = isHovered ? ASCII_CHARS_DETAILED : ASCII_CHARS;
+      const threshold = 0.58; // lower -> more dots (darker)
 
-      for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-          const offset = (y * width + x) * 4;
-          const r = imageData.data[offset];
-          const g = imageData.data[offset + 1];
-          const b = imageData.data[offset + 2];
+      // Braille dot bit positions
+      const dotBits = [
+        [1, 8],     // row 0: dots 1,4
+        [2, 16],    // row 1: dots 2,5
+        [4, 32],    // row 2: dots 3,6
+        [64, 128],  // row 3: dots 7,8
+      ];
 
-          // Convert to grayscale using luminosity method
-          const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
-          const charIndex = Math.floor((brightness / 255) * (chars.length - 1));
-          
-          ascii += chars[charIndex];
+      for (let cy = 0; cy < heightCells; cy++) {
+        for (let cx = 0; cx < cellsAcross; cx++) {
+          let code = 0;
+          for (let dy = 0; dy < 4; dy++) {
+            for (let dx = 0; dx < 2; dx++) {
+              const px = cx * 2 + dx;
+              const py = cy * 4 + dy;
+              const idx = py * pxWidth + px;
+              const yNorm = (luminances[idx] - minL) / range; // 0..1
+              // Dark pixels -> set dot
+              if (yNorm < threshold) {
+                code |= dotBits[dy][dx];
+              }
+            }
+          }
+          ascii += String.fromCharCode(0x2800 + code);
         }
         ascii += "\n";
       }
@@ -75,7 +113,7 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
       
       <motion.pre
         className="font-mono text-primary/80 leading-none select-none overflow-hidden"
-        style={{ fontSize: `${fontSize}px` }}
+        style={{ fontSize: `${isHovered ? fontSize * 0.85 : fontSize}px`, lineHeight: 0.8, letterSpacing: '-0.5px' }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         initial={{ opacity: 0 }}
