@@ -61,30 +61,90 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
     img.src = imageSrc;
   }, [imageSrc, width, isHovered]);
 
-  const insertTextIntoAscii = (ascii: string, text: string) => {
-    const lines = ascii.split('\n');
-    const middleLine = Math.floor(lines.length / 2);
-    const textToInsert = `  ${text}  `;
+  const generateAsciiBlockText = () => {
+    // ASCII block letter definitions for "HIRE ME"
+    const letters: { [key: string]: string[] } = {
+      'H': [
+        '█ █ █',
+        '█ █ █',
+        '█████',
+        '█ █ █',
+        '█ █ █'
+      ],
+      'I': [
+        '█████',
+        '  █  ',
+        '  █  ',
+        '  █  ',
+        '█████'
+      ],
+      'R': [
+        '████ ',
+        '█   █',
+        '████ ',
+        '█  █ ',
+        '█   █'
+      ],
+      'E': [
+        '█████',
+        '█    ',
+        '████ ',
+        '█    ',
+        '█████'
+      ],
+      'M': [
+        '█   █',
+        '██ ██',
+        '█ █ █',
+        '█   █',
+        '█   █'
+      ],
+      ' ': [
+        '     ',
+        '     ',
+        '     ',
+        '     ',
+        '     '
+      ]
+    };
+
+    const text = 'HIRE ME';
+    const letterArrays = text.split('').map(char => letters[char] || letters[' ']);
     
-    // Insert text in the middle of the ASCII art
-    for (let i = 0; i < textToInsert.length; i++) {
-      const lineIndex = middleLine + Math.floor(i / textToInsert.length * 3) - 1;
-      if (lineIndex >= 0 && lineIndex < lines.length && lines[lineIndex]) {
-        const line = lines[lineIndex];
-        const startPos = Math.floor((line.length - textToInsert.length) / 2);
-        if (startPos >= 0 && startPos + textToInsert.length <= line.length) {
+    // Combine all letters horizontally
+    const combinedLines: string[] = [];
+    for (let row = 0; row < 5; row++) {
+      const line = letterArrays.map(letter => letter[row]).join('  ');
+      combinedLines.push(line);
+    }
+    
+    return combinedLines;
+  };
+
+  const insertTextIntoAscii = (ascii: string) => {
+    const lines = ascii.split('\n');
+    const blockText = generateAsciiBlockText();
+    const startLine = Math.floor((lines.length - blockText.length) / 2);
+    
+    // Replace lines with the block text
+    blockText.forEach((textLine, i) => {
+      const lineIndex = startLine + i;
+      if (lineIndex >= 0 && lineIndex < lines.length) {
+        const originalLine = lines[lineIndex];
+        const startPos = Math.floor((originalLine.length - textLine.length) / 2);
+        if (startPos >= 0 && startPos + textLine.length <= originalLine.length) {
           lines[lineIndex] = 
-            line.substring(0, startPos) + 
-            textToInsert + 
-            line.substring(startPos + textToInsert.length);
+            originalLine.substring(0, startPos) + 
+            textLine + 
+            originalLine.substring(startPos + textLine.length);
         }
       }
-    }
+    });
     
     return lines;
   };
 
-  const lines = isHovered ? insertTextIntoAscii(asciiText, "HIRE ME") : asciiText.split('\n');
+  const lines = isHovered ? insertTextIntoAscii(asciiText) : asciiText.split('\n');
 
   return (
     <div className="relative">
@@ -104,7 +164,7 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
       >
         {lines.map((line, i) => {
           const middleLine = Math.floor(lines.length / 2);
-          const isMessageLine = isHovered && i >= middleLine - 1 && i <= middleLine + 1;
+          const isMessageLine = isHovered && i >= middleLine - 2 && i <= middleLine + 2;
           
           return (
             <motion.div
@@ -112,10 +172,11 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.005, duration: 0.2 }}
-              className={isMessageLine ? "text-accent font-bold" : isHovered ? "text-accent" : ""}
+              className={isMessageLine ? "text-accent font-extrabold" : isHovered ? "text-accent/80" : ""}
               style={{ 
-                transition: 'color 0.3s ease',
-                fontSize: isMessageLine ? `${fontSize * 1.3}px` : `${fontSize}px`,
+                transition: 'all 0.3s ease',
+                fontSize: isMessageLine ? `${fontSize * 1.2}px` : `${fontSize}px`,
+                letterSpacing: isMessageLine ? '0.1em' : 'normal'
               }}
             >
               {line}
