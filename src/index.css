@@ -104,7 +104,48 @@ All colors MUST be HSL.
     --sidebar-border: 217 33% 17%;
     --sidebar-ring: 189 94% 43%;
   }
+
+  /* Matrix Theme - Green terminal vibes */
+  body[data-theme="matrix"] {
+    --background: 0 0% 5%;
+    --foreground: 120 100% 75%;
+    --card: 0 0% 8%;
+    --primary: 120 100% 50%;
+    --accent: 120 100% 50%;
+    --muted-foreground: 120 30% 45%;
+    --gradient-primary: linear-gradient(135deg, hsl(120 100% 40%), hsl(140 100% 50%));
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 5%) 0%, hsl(120 30% 10%) 100%);
+    --shadow-glow: 0 0 80px hsl(120 100% 50% / 0.4);
+  }
+
+  /* Retro Theme - Amber/Orange terminal */
+  body[data-theme="retro"] {
+    --background: 30 20% 8%;
+    --foreground: 35 100% 80%;
+    --card: 30 20% 12%;
+    --primary: 35 100% 55%;
+    --accent: 35 100% 55%;
+    --muted-foreground: 35 40% 50%;
+    --gradient-primary: linear-gradient(135deg, hsl(25 100% 50%), hsl(35 100% 55%));
+    --gradient-hero: linear-gradient(180deg, hsl(30 20% 8%) 0%, hsl(30 30% 15%) 100%);
+    --shadow-glow: 0 0 80px hsl(35 100% 55% / 0.4);
+  }
+
+  /* Minimal Theme - Clean grayscale */
+  body[data-theme="minimal"] {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 10%;
+    --card: 0 0% 100%;
+    --primary: 0 0% 20%;
+    --accent: 0 0% 30%;
+    --muted-foreground: 0 0% 50%;
+    --border: 0 0% 90%;
+    --gradient-primary: linear-gradient(135deg, hsl(0 0% 20%), hsl(0 0% 40%));
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 98%) 0%, hsl(0 0% 95%) 100%);
+    --shadow-glow: 0 0 40px hsl(0 0% 0% / 0.1);
+  }
 }
+
 
 @layer base {
   * {
@@ -114,6 +155,7 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    transition: background-color 0.5s ease, color 0.5s ease;
   }
 
   html {
