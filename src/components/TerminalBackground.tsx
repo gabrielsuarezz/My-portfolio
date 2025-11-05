@@ -86,6 +86,7 @@ export const TerminalBackground = ({
           style={{
             left: `${line.x}%`,
             filter: "blur(0.3px)",
+            textShadow: "0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--primary) / 0.3)",
           }}
         >
           {line.text}
