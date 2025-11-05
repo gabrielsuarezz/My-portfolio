@@ -46,6 +46,7 @@ const projects = [
     tags: ["TensorFlow", "Flask", "Python", "OpenCV", "Computer Vision"],
     award: "🦋 INIT Build Program - Advanced Track",
     links: {
+      demo: "https://butterfly-web-app.vercel.app/",
       github: "https://github.com/gabrielsuarezz"
     }
   }
