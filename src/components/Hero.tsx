@@ -2,6 +2,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Github, Linkedin, Mail, Terminal, Code2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { AsciiArt } from "./AsciiArt";
+import headshot from "@/assets/headshot.jpg";
 
 export const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -125,10 +127,39 @@ export const Hero = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mb-8 flex items-center justify-center gap-2 text-accent font-mono text-sm"
+            className="mb-8 flex flex-col items-center justify-center gap-4"
           >
-            <Terminal className="h-4 w-4 animate-pulse" />
-            <span className="typing-animation">gabriel@portfolio:~$ ./introduce.sh</span>
+            <div className="flex items-center gap-2 text-accent font-mono text-sm">
+              <Terminal className="h-4 w-4 animate-pulse" />
+              <span className="typing-animation">gabriel@portfolio:~$ ./introduce.sh</span>
+            </div>
+            
+            {/* ASCII Art Terminal Visual */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="relative p-6 rounded-lg bg-secondary/30 backdrop-blur-sm border border-primary/20 shadow-lg"
+              style={{ boxShadow: 'var(--shadow-glow)' }}
+            >
+              <div className="absolute top-2 left-2 flex gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+                <div className="w-3 h-3 rounded-full bg-green-500/60" />
+              </div>
+              
+              <div className="mt-4 overflow-hidden">
+                <AsciiArt imageSrc={headshot} width={80} fontSize={6} />
+              </div>
+              
+              <motion.div
+                className="mt-2 text-xs font-mono text-accent/60 text-center"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                &gt; Hover to enhance resolution_
+              </motion.div>
+            </motion.div>
           </motion.div>
 
           {/* Main title with staggered animation */}
