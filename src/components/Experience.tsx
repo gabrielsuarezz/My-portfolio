@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Briefcase, GraduationCap, Users } from "lucide-react";
+import { TerminalBackground } from "./TerminalBackground";
 
 const experiences = [
   {
@@ -28,7 +29,8 @@ const experiences = [
 
 export const Experience = () => {
   return (
-    <section className="py-24">
+    <section className="py-24 relative overflow-hidden">
+      <TerminalBackground density="light" speed="medium" />
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

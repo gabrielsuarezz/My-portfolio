@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Code2, Brain, Cpu, Database } from "lucide-react";
+import { TerminalBackground } from "./TerminalBackground";
 
 const skillCategories = [
   {
@@ -27,7 +28,8 @@ const skillCategories = [
 
 export const Skills = () => {
   return (
-    <section className="py-24 bg-muted/30">
+    <section className="py-24 bg-muted/30 relative overflow-hidden">
+      <TerminalBackground density="medium" speed="slow" />
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

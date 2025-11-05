@@ -5,6 +5,7 @@ import { Input } from "./ui/input";
 import { Card } from "./ui/card";
 import { Loader2, Send, Trophy, X } from "lucide-react";
 import { useToast } from "./ui/use-toast";
+import { TerminalBackground } from "./TerminalBackground";
 
 interface Message {
   role: "user" | "assistant";
@@ -158,6 +159,7 @@ export const TuringGame = () => {
   if (!gameStarted) {
     return (
       <section id="turing-game" className="py-20 px-6 relative overflow-hidden">
+        <TerminalBackground density="heavy" speed="fast" />
         {/* Terminal background effect */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-background to-background" />
         
@@ -257,6 +259,7 @@ export const TuringGame = () => {
 
   return (
     <section id="turing-game" className="py-20 px-6 relative overflow-hidden">
+      <TerminalBackground density="medium" speed="medium" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-background to-background" />
       
       <div className="container mx-auto max-w-7xl relative z-10">
