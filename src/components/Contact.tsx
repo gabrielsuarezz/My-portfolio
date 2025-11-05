@@ -16,10 +16,10 @@ export const Contact = () => {
           transition={{ duration: 0.6 }}
           className="max-w-4xl mx-auto text-center"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
             Let's Build <span className="text-gradient">Together</span>
           </h2>
-          <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground mb-8 sm:mb-12 max-w-2xl mx-auto">
             Always excited to discuss new opportunities, collaborate on projects, or just talk tech. 
             Based in South Florida and ready to make an impact.
           </p>
@@ -34,12 +34,12 @@ export const Contact = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full h-auto py-4 flex flex-col items-center gap-2 hover-lift"
+                className="w-full h-auto py-3 sm:py-4 flex flex-col items-center gap-2 hover-lift min-h-[80px]"
                 asChild
               >
                 <a href="mailto:gsuarez@fiu.edu">
-                  <Mail className="h-6 w-6" />
-                  <span className="text-sm">Email</span>
+                  <Mail className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <span className="text-xs sm:text-sm">Email</span>
                 </a>
               </Button>
             </motion.div>
@@ -53,12 +53,12 @@ export const Contact = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full h-auto py-4 flex flex-col items-center gap-2 hover-lift"
+                className="w-full h-auto py-3 sm:py-4 flex flex-col items-center gap-2 hover-lift min-h-[80px]"
                 asChild
               >
                 <a href="https://linkedin.com/in/gabrielsuarezz" target="_blank" rel="noopener noreferrer">
-                  <Linkedin className="h-6 w-6" />
-                  <span className="text-sm">LinkedIn</span>
+                  <Linkedin className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <span className="text-xs sm:text-sm">LinkedIn</span>
                 </a>
               </Button>
             </motion.div>
@@ -72,12 +72,12 @@ export const Contact = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full h-auto py-4 flex flex-col items-center gap-2 hover-lift"
+                className="w-full h-auto py-3 sm:py-4 flex flex-col items-center gap-2 hover-lift min-h-[80px]"
                 asChild
               >
                 <a href="https://github.com/gabrielsuarezz" target="_blank" rel="noopener noreferrer">
-                  <Github className="h-6 w-6" />
-                  <span className="text-sm">GitHub</span>
+                  <Github className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <span className="text-xs sm:text-sm">GitHub</span>
                 </a>
               </Button>
             </motion.div>
@@ -91,11 +91,11 @@ export const Contact = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full h-auto py-4 flex flex-col items-center gap-2 hover-lift"
+                className="w-full h-auto py-3 sm:py-4 flex flex-col items-center gap-2 hover-lift min-h-[80px]"
                 disabled
               >
-                <MapPin className="h-6 w-6" />
-                <span className="text-sm">Miami, FL</span>
+                <MapPin className="h-5 w-5 sm:h-6 sm:w-6" />
+                <span className="text-xs sm:text-sm">Miami, FL</span>
               </Button>
             </motion.div>
           </div>
@@ -106,7 +106,7 @@ export const Contact = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.5, duration: 0.6 }}
           >
-            <Button size="lg" asChild>
+            <Button size="lg" asChild className="min-h-[48px] text-base">
               <a href="mailto:gsuarez@fiu.edu">
                 Get In Touch
               </a>
