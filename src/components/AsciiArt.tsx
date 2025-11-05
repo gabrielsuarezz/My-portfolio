@@ -125,6 +125,23 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
           }}
         />
       )}
+
+      {/* Secret message on hover */}
+      {isHovered && (
+        <motion.div
+          className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ delay: 0.3 }}
+        >
+          <div className="px-4 py-2 rounded-md bg-secondary/90 backdrop-blur-sm border border-primary/30 shadow-lg">
+            <code className="text-accent font-mono text-xs">
+              sudo make me_a_sandwich 🥪 // access granted
+            </code>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 };
