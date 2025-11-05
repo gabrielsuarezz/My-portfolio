@@ -61,6 +61,31 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
     img.src = imageSrc;
   }, [imageSrc, width, isHovered]);
 
+  const insertTextIntoAscii = (ascii: string, text: string) => {
+    const lines = ascii.split('\n');
+    const middleLine = Math.floor(lines.length / 2);
+    const textToInsert = `  ${text}  `;
+    
+    // Insert text in the middle of the ASCII art
+    for (let i = 0; i < textToInsert.length; i++) {
+      const lineIndex = middleLine + Math.floor(i / textToInsert.length * 3) - 1;
+      if (lineIndex >= 0 && lineIndex < lines.length && lines[lineIndex]) {
+        const line = lines[lineIndex];
+        const startPos = Math.floor((line.length - textToInsert.length) / 2);
+        if (startPos >= 0 && startPos + textToInsert.length <= line.length) {
+          lines[lineIndex] = 
+            line.substring(0, startPos) + 
+            textToInsert + 
+            line.substring(startPos + textToInsert.length);
+        }
+      }
+    }
+    
+    return lines;
+  };
+
+  const lines = isHovered ? insertTextIntoAscii(asciiText, "HIRE ME") : asciiText.split('\n');
+
   return (
     <div className="relative">
       <canvas ref={canvasRef} className="hidden" />
@@ -77,35 +102,26 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
         }}
         transition={{ duration: 0.3 }}
       >
-        {/* Secret message integrated into ASCII */}
-        <motion.div
-          className="text-center mb-1 font-bold tracking-wider"
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ 
-            opacity: isHovered ? 1 : 0,
-            height: isHovered ? 'auto' : 0,
-            marginBottom: isHovered ? '0.25rem' : 0
-          }}
-          transition={{ duration: 0.3 }}
-          style={{ fontSize: `${fontSize * 1.5}px` }}
-        >
-          <span className="text-gradient">
-            {'>'} [ HIRE_ME.exe ] ✓ COMPILED_SUCCESSFULLY {'<'}
-          </span>
-        </motion.div>
-
-        {asciiText.split('\n').map((line, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.005, duration: 0.2 }}
-            className={isHovered ? "text-accent" : ""}
-            style={{ transition: 'color 0.3s ease' }}
-          >
-            {line}
-          </motion.div>
-        ))}
+        {lines.map((line, i) => {
+          const middleLine = Math.floor(lines.length / 2);
+          const isMessageLine = isHovered && i >= middleLine - 1 && i <= middleLine + 1;
+          
+          return (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.005, duration: 0.2 }}
+              className={isMessageLine ? "text-accent font-bold" : isHovered ? "text-accent" : ""}
+              style={{ 
+                transition: 'color 0.3s ease',
+                fontSize: isMessageLine ? `${fontSize * 1.3}px` : `${fontSize}px`,
+              }}
+            >
+              {line}
+            </motion.div>
+          );
+        })}
       </motion.pre>
 
       {/* Scanline effect */}
