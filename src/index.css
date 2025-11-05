@@ -105,44 +105,73 @@ All colors MUST be HSL.
     --sidebar-ring: 189 94% 43%;
   }
 
-  /* Matrix Theme - Green terminal vibes */
+  /* Matrix Theme - Green terminal vibes with proper contrast */
   body[data-theme="matrix"] {
     --background: 0 0% 5%;
     --foreground: 120 100% 75%;
     --card: 0 0% 8%;
+    --card-foreground: 120 100% 75%;
     --primary: 120 100% 50%;
+    --primary-foreground: 0 0% 5%;
+    --secondary: 120 30% 15%;
+    --secondary-foreground: 120 100% 75%;
     --accent: 120 100% 50%;
+    --accent-foreground: 0 0% 5%;
+    --muted: 120 20% 12%;
     --muted-foreground: 120 30% 45%;
+    --border: 120 30% 20%;
+    --input: 120 30% 20%;
+    --ring: 120 100% 50%;
     --gradient-primary: linear-gradient(135deg, hsl(120 100% 40%), hsl(140 100% 50%));
     --gradient-hero: linear-gradient(180deg, hsl(0 0% 5%) 0%, hsl(120 30% 10%) 100%);
     --shadow-glow: 0 0 80px hsl(120 100% 50% / 0.4);
+    --shadow-elegant: 0 20px 60px -15px hsl(120 100% 50% / 0.3);
   }
 
-  /* Retro Theme - Amber/Orange terminal */
+  /* Retro Theme - Amber/Orange terminal with proper contrast */
   body[data-theme="retro"] {
     --background: 30 20% 8%;
     --foreground: 35 100% 80%;
     --card: 30 20% 12%;
+    --card-foreground: 35 100% 80%;
     --primary: 35 100% 55%;
+    --primary-foreground: 30 20% 8%;
+    --secondary: 30 30% 18%;
+    --secondary-foreground: 35 100% 80%;
     --accent: 35 100% 55%;
+    --accent-foreground: 30 20% 8%;
+    --muted: 30 25% 15%;
     --muted-foreground: 35 40% 50%;
+    --border: 30 30% 25%;
+    --input: 30 30% 25%;
+    --ring: 35 100% 55%;
     --gradient-primary: linear-gradient(135deg, hsl(25 100% 50%), hsl(35 100% 55%));
     --gradient-hero: linear-gradient(180deg, hsl(30 20% 8%) 0%, hsl(30 30% 15%) 100%);
     --shadow-glow: 0 0 80px hsl(35 100% 55% / 0.4);
+    --shadow-elegant: 0 20px 60px -15px hsl(35 100% 55% / 0.3);
   }
 
-  /* Minimal Theme - Clean grayscale */
+  /* Minimal Theme - Clean grayscale with proper contrast */
   body[data-theme="minimal"] {
     --background: 0 0% 98%;
     --foreground: 0 0% 10%;
     --card: 0 0% 100%;
-    --primary: 0 0% 20%;
-    --accent: 0 0% 30%;
-    --muted-foreground: 0 0% 50%;
-    --border: 0 0% 90%;
-    --gradient-primary: linear-gradient(135deg, hsl(0 0% 20%), hsl(0 0% 40%));
+    --card-foreground: 0 0% 10%;
+    --primary: 0 0% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 90%;
+    --secondary-foreground: 0 0% 10%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 40%;
+    --border: 0 0% 85%;
+    --input: 0 0% 85%;
+    --ring: 0 0% 20%;
+    --gradient-primary: linear-gradient(135deg, hsl(0 0% 10%), hsl(0 0% 30%));
     --gradient-hero: linear-gradient(180deg, hsl(0 0% 98%) 0%, hsl(0 0% 95%) 100%);
     --shadow-glow: 0 0 40px hsl(0 0% 0% / 0.1);
+    --shadow-elegant: 0 20px 60px -15px hsl(0 0% 0% / 0.2);
   }
 }
 
