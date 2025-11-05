@@ -3,6 +3,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, Award } from "lucide-react";
+import { useLongPress } from "@/hooks/useLongPress";
+import { toast } from "sonner";
+import { useState } from "react";
 
 const projects = [
   {
@@ -49,6 +52,17 @@ const projects = [
 ];
 
 export const Projects = () => {
+  const [revealedNotes, setRevealedNotes] = useState<Set<string>>(new Set());
+
+  const handleLongPress = (projectTitle: string) => {
+    if (!revealedNotes.has(projectTitle)) {
+      setRevealedNotes(new Set([...revealedNotes, projectTitle]));
+      toast.success('🔓 Dev Notes Unlocked!', {
+        description: `Secret development notes revealed for ${projectTitle}`,
+      });
+    }
+  };
+
   return (
     <section id="projects" className="py-24 relative">
       <div className="container mx-auto px-6">
@@ -68,16 +82,21 @@ export const Projects = () => {
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: index * 0.15, duration: 0.8, type: "spring" }}
-              whileHover={{ y: -10 }}
-            >
-              <Card className="p-8 h-full border-border/50 backdrop-blur-sm bg-card/30 relative overflow-hidden group">
+          {projects.map((project, index) => {
+            const longPressHandlers = useLongPress(() => handleLongPress(project.title));
+            const isRevealed = revealedNotes.has(project.title);
+            
+            return (
+              <motion.div
+                key={project.title}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ delay: index * 0.15, duration: 0.8, type: "spring" }}
+                whileHover={{ y: -10 }}
+                {...longPressHandlers}
+              >
+                <Card className="p-8 h-full border-border/50 backdrop-blur-sm bg-card/30 relative overflow-hidden group select-none">
                 {/* Animated background gradient on hover */}
                 <motion.div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -113,6 +132,21 @@ export const Projects = () => {
                   <p className="text-muted-foreground mb-6 leading-relaxed">
                     {project.description}
                   </p>
+
+                  {isRevealed && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="mb-4 p-3 bg-accent/10 border border-accent/30 rounded text-sm text-accent"
+                    >
+                      <strong>Dev Note:</strong> {
+                        project.title === "Voxtant" ? "Built the entire backend in 8 hours with zero sleep. The LLM integration was a nightmare but so worth it." :
+                        project.title === "Shadow Vision" ? "Creating the dataset was tedious - I spent 6 hours making hand gestures in front of a camera. My hand was sore for days!" :
+                        project.title === "HeliosAI" ? "The servo motor kept breaking. We went through 3 different motors before finding one that could handle the solar panel weight." :
+                        "Leading a team remotely while building ML models was challenging but incredibly rewarding. We had late-night debugging sessions that turned into great learning moments."
+                      }
+                    </motion.div>
+                  )}
 
                   <div className="flex flex-wrap gap-2 mb-6">
                     {project.tags.map((tag, tagIndex) => (
@@ -157,7 +191,8 @@ export const Projects = () => {
                 </div>
               </Card>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

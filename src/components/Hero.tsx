@@ -4,12 +4,23 @@ import { ArrowDown, Github, Linkedin, Mail, Terminal, Code2 } from "lucide-react
 import { useEffect, useState } from "react";
 import { AsciiArt } from "./AsciiArt";
 import headshot from "@/assets/headshot.jpg";
+import { useClickCounter } from "@/hooks/useClickCounter";
+import { toast } from "sonner";
 
 export const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [funMode, setFunMode] = useState(false);
   const { scrollY } = useScroll();
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
   const scale = useTransform(scrollY, [0, 300], [1, 0.8]);
+
+  // Headshot click counter (7 clicks)
+  const { handleClick: handleHeadshotClick } = useClickCounter(7, () => {
+    setFunMode(true);
+    toast.success('🎉 Fun Mode Activated!', {
+      description: 'Watch the magic happen! ✨',
+    });
+  });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -21,6 +32,20 @@ export const Hero = () => {
 
   const scrollToProjects = () => {
     document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Triple-click name handler
+  const handleNameClick = (e: React.MouseEvent) => {
+    if (e.detail === 3) {
+      const themes = ['matrix', 'retro', 'minimal', 'default'];
+      const currentTheme = document.body.dataset.theme || 'default';
+      const currentIndex = themes.indexOf(currentTheme);
+      const nextTheme = themes[(currentIndex + 1) % themes.length];
+      document.body.dataset.theme = nextTheme;
+      toast.success(`🎨 Theme switched to: ${nextTheme}`, {
+        description: 'Triple-click again to cycle themes!',
+      });
+    }
   };
 
   const codeSnippets = [
@@ -148,8 +173,22 @@ export const Hero = () => {
                 <div className="w-3 h-3 rounded-full bg-green-500/60" />
               </div>
               
-              <div className="mt-6 overflow-hidden flex justify-center">
-                <AsciiArt imageSrc={headshot} width={100} fontSize={7} />
+              <div 
+                className="mt-6 overflow-hidden flex justify-center cursor-pointer"
+                onClick={handleHeadshotClick}
+              >
+                <motion.div
+                  animate={funMode ? {
+                    rotate: [0, 360],
+                    scale: [1, 1.1, 1],
+                  } : {}}
+                  transition={{
+                    duration: 2,
+                    repeat: funMode ? Infinity : 0,
+                  }}
+                >
+                  <AsciiArt imageSrc={headshot} width={100} fontSize={7} />
+                </motion.div>
               </div>
               
               <motion.div
@@ -170,9 +209,10 @@ export const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <motion.span
-              className="inline-block"
+              className="inline-block cursor-pointer select-none"
               whileHover={{ scale: 1.05, color: "hsl(217 91% 60%)" }}
               transition={{ type: "spring", stiffness: 300 }}
+              onClick={handleNameClick}
             >
               Gabriel
             </motion.span>
