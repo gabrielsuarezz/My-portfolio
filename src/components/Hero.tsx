@@ -201,10 +201,19 @@ export const Hero = () => {
             <div className="flex items-center justify-center gap-2 text-accent">
               <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
               <p className="text-lg md:text-xl">
-                CS @ FIU • Building Cool Stuff • Hackathon Connoisseur
+                CS @ FIU • AI & Software Engineer • 3x Hackathon Winner
               </p>
             </div>
           </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1 }}
+            className="text-lg md:text-xl text-muted-foreground/80 mb-12 max-w-3xl mx-auto leading-relaxed"
+          >
+            Exploring the edge between AI, creativity, and code.
+          </motion.p>
 
 
           {/* CTA Buttons */}
