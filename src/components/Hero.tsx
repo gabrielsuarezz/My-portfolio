@@ -16,9 +16,9 @@ export const Hero = () => {
 
   // Headshot click counter (7 clicks)
   const { handleClick: handleHeadshotClick } = useClickCounter(7, () => {
-    setFunMode(true);
-    toast.success('🎉 Fun Mode Activated!', {
-      description: 'Watch the magic happen! ✨',
+    setFunMode((prev) => !prev);
+    toast.success(funMode ? '✨ Fun Mode Deactivated' : '🎉 Fun Mode Activated!', {
+      description: funMode ? 'Back to normal!' : 'Watch the magic happen! ✨',
     });
   });
 

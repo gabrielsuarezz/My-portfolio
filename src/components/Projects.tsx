@@ -55,12 +55,21 @@ export const Projects = () => {
   const [revealedNotes, setRevealedNotes] = useState<Set<string>>(new Set());
 
   const handleLongPress = (projectTitle: string) => {
-    if (!revealedNotes.has(projectTitle)) {
-      setRevealedNotes(new Set([...revealedNotes, projectTitle]));
-      toast.success('🔓 Dev Notes Unlocked!', {
-        description: `Secret development notes revealed for ${projectTitle}`,
-      });
-    }
+    setRevealedNotes((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(projectTitle)) {
+        newSet.delete(projectTitle);
+        toast.info('🔒 Dev Notes Hidden', {
+          description: 'Long-press again to reveal',
+        });
+      } else {
+        newSet.add(projectTitle);
+        toast.success('🔓 Dev Notes Unlocked!', {
+          description: `Secret development notes revealed for ${projectTitle}`,
+        });
+      }
+      return newSet;
+    });
   };
 
   return (
