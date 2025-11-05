@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useTransform as useMotionTransform, animate } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Github, Linkedin, Mail, Terminal, Code2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -6,6 +6,44 @@ import { AsciiArt } from "./AsciiArt";
 import headshot from "@/assets/headshot.jpg";
 import { useClickCounter } from "@/hooks/useClickCounter";
 import { toast } from "sonner";
+
+const TypewriterText = ({ text, delay = 0 }: { text: string; delay?: number }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      let currentIndex = 0;
+      const interval = setInterval(() => {
+        if (currentIndex <= text.length) {
+          setDisplayedText(text.slice(0, currentIndex));
+          currentIndex++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 50); // Speed of typing (50ms per character)
+
+      return () => clearInterval(interval);
+    }, delay);
+
+    return () => clearTimeout(timeout);
+  }, [text, delay]);
+
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 500);
+
+    return () => clearInterval(cursorInterval);
+  }, []);
+
+  return (
+    <span>
+      {displayedText}
+      <span className={showCursor ? "opacity-100" : "opacity-0"}>_</span>
+    </span>
+  );
+};
 
 export const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -156,7 +194,7 @@ export const Hero = () => {
           >
             <div className="flex items-center gap-2 text-accent font-mono text-sm">
               <Terminal className="h-4 w-4 animate-pulse" />
-              <span className="typing-animation">gabriel@portfolio:~$ ./introduce.sh</span>
+              <TypewriterText text="gabriel@portfolio:~$ ./introduce.sh" delay={200} />
             </div>
             
             {/* ASCII Art Terminal Visual */}
