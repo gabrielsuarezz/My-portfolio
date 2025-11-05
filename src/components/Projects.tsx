@@ -1,0 +1,136 @@
+import { motion } from "framer-motion";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ExternalLink, Github, Award } from "lucide-react";
+
+const projects = [
+  {
+    title: "Voxtant",
+    description: "AI-powered interview preparation platform that won 1st Place at PlutoHacks 2025. Fetches live job listings and generates custom, realistic mock interviews using LLMs and speech recognition.",
+    tags: ["LLMs", "Whisper", "FastAPI", "NLP", "Next.js", "Agent SDK"],
+    award: "🏆 1st Place - PlutoHacks 2025",
+    links: {
+      demo: "https://voxtant-web-gabrielsuarezzs-projects.vercel.app/",
+      github: "https://github.com/gabrielsuarezz/Voxtant",
+      devpost: "https://devpost.com/software/voxtant"
+    }
+  },
+  {
+    title: "Shadow Vision",
+    description: "Real-time AI system that translates hand gestures into animated shadow puppets for ShellHacks 2025. Built custom dataset from scratch, improving model accuracy from 14% to 93% using point cloud modeling.",
+    tags: ["Python", "TouchDesigner", "OpenCV", "MediaPipe", "TensorFlow", "Flask"],
+    award: "🎨 Best Creative Hack - ShellHacks 2025",
+    links: {
+      github: "https://github.com/gabrielsuarezz/Shadow-Vision",
+      devpost: "https://devpost.com/software/shadow-vision"
+    }
+  },
+  {
+    title: "HeliosAI",
+    description: "Intelligent solar-tracking system using sensors and AI to track and learn from sunlight in real time. Won Best Use of ARM at KnightHacks VIII 2025 for seamlessly blending hardware control and AI reasoning.",
+    tags: ["Arduino", "Flask", "Gemini API", "Agent SDK", "OpenWeather API", "IoT"],
+    award: "🔧 Best Use of ARM - KnightHacks VIII 2025",
+    links: {
+      github: "https://github.com/pablomoli/helios",
+      devpost: "https://devpost.com/software/heliosai"
+    }
+  },
+  {
+    title: "Butterfly Detector",
+    description: "Led AI/ML Advanced Team in INIT Build Program to develop computer vision model identifying butterfly species from webcam input. Created robust detection system for citizen science and biodiversity monitoring.",
+    tags: ["TensorFlow", "Flask", "Python", "OpenCV", "Computer Vision"],
+    award: "🦋 INIT Build Program - Advanced Track",
+    links: {
+      github: "https://github.com/gabrielsuarezz"
+    }
+  }
+];
+
+export const Projects = () => {
+  return (
+    <section id="projects" className="py-24 relative">
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            Featured <span className="text-gradient">Projects</span>
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Award-winning projects spanning AI, computer vision, and IoT — built at Florida's top hackathons
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.6 }}
+            >
+              <Card className="p-6 h-full hover-lift border-border/50 backdrop-blur-sm bg-card/50">
+                <div className="flex items-start justify-between mb-4">
+                  <h3 className="text-2xl font-bold">{project.title}</h3>
+                  {project.award && (
+                    <Award className="h-5 w-5 text-accent flex-shrink-0 ml-2" />
+                  )}
+                </div>
+
+                {project.award && (
+                  <Badge variant="secondary" className="mb-4">
+                    {project.award}
+                  </Badge>
+                )}
+
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  {project.description}
+                </p>
+
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {project.tags.map((tag) => (
+                    <Badge key={tag} variant="outline" className="text-xs">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+
+                <div className="flex gap-3">
+                  {project.links.demo && (
+                    <Button variant="default" size="sm" asChild>
+                      <a href={project.links.demo} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="mr-2 h-4 w-4" />
+                        Live Demo
+                      </a>
+                    </Button>
+                  )}
+                  {project.links.github && (
+                    <Button variant="outline" size="sm" asChild>
+                      <a href={project.links.github} target="_blank" rel="noopener noreferrer">
+                        <Github className="mr-2 h-4 w-4" />
+                        Code
+                      </a>
+                    </Button>
+                  )}
+                  {project.links.devpost && (
+                    <Button variant="ghost" size="sm" asChild>
+                      <a href={project.links.devpost} target="_blank" rel="noopener noreferrer">
+                        Devpost
+                      </a>
+                    </Button>
+                  )}
+                </div>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
