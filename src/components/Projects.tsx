@@ -2,31 +2,18 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, Trophy, Shield, Palette, Cpu, Sparkles, LucideIcon } from "lucide-react";
 import { useLongPress } from "@/hooks/useLongPress";
 import { toast } from "sonner";
 import { useState } from "react";
-import trophyIcon from "@/assets/awards/trophy.png";
-import shieldIcon from "@/assets/awards/shield.png";
-import creativeIcon from "@/assets/awards/creative.png";
-import hardwareIcon from "@/assets/awards/hardware.png";
-import butterflyIcon from "@/assets/awards/butterfly.png";
 
-const awardIcons: Record<string, string> = {
-  trophy: trophyIcon,
-  shield: shieldIcon,
-  creative: creativeIcon,
-  hardware: hardwareIcon,
-  butterfly: butterflyIcon,
-};
-
-const getAwardIcon = (award: string): string => {
-  if (award.includes("1st Place")) return awardIcons.trophy;
-  if (award.includes("SharkByte")) return awardIcons.shield;
-  if (award.includes("Creative")) return awardIcons.creative;
-  if (award.includes("ARM")) return awardIcons.hardware;
-  if (award.includes("INIT")) return awardIcons.butterfly;
-  return awardIcons.trophy;
+const getAwardIcon = (award: string): LucideIcon => {
+  if (award.includes("1st Place")) return Trophy;
+  if (award.includes("SharkByte")) return Shield;
+  if (award.includes("Creative")) return Palette;
+  if (award.includes("ARM")) return Cpu;
+  if (award.includes("INIT")) return Sparkles;
+  return Trophy;
 };
 
 const stripEmoji = (text: string): string => {
@@ -164,11 +151,10 @@ export const Projects = () => {
                         animate={{ rotate: [0, 10, -10, 0] }}
                         transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                       >
-                        <img 
-                          src={getAwardIcon(project.award)} 
-                          alt="Award badge"
-                          className="h-8 w-8 flex-shrink-0 ml-2 object-contain"
-                        />
+                        {(() => {
+                          const AwardIcon = getAwardIcon(project.award);
+                          return <AwardIcon className="h-5 w-5 text-accent flex-shrink-0 ml-2" />;
+                        })()}
                       </motion.div>
                     )}
                   </div>
