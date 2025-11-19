@@ -20,6 +20,16 @@ const projects = [
     }
   },
   {
+    title: "ViewGuard",
+    description: "End-to-end intelligent surveillance platform built for SharkByte 2025. Integrates YOLOv8, Gemini VLM, and ElevenLabs into a real-time command center with conversational voice AI and instant threat detection.",
+    tags: ["YOLOv8", "Gemini VLM", "ElevenLabs", "Next.js", "TensorFlow.js", "Supabase"],
+    award: "🔒 SharkByte 2025",
+    links: {
+      github: "https://github.com/gabrielsuarezz/ViewGuard",
+      devpost: "https://devpost.com/software/viewguard"
+    }
+  },
+  {
     title: "Shadow Vision",
     description: "Real-time AI system that translates hand gestures into animated shadow puppets for ShellHacks 2025. Built custom dataset from scratch, improving model accuracy from 14% to 93% using point cloud modeling.",
     tags: ["Python", "TouchDesigner", "OpenCV", "MediaPipe", "TensorFlow", "Flask"],
