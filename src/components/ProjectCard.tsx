@@ -9,10 +9,11 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const getAwardIcon = (award: string): LucideIcon => {
   if (award.includes("1st Place")) return Trophy;
+  if (award.includes("Knight Hacks") || award.includes("MLH")) return Trophy;
   if (award.includes("SharkByte")) return Shield;
   if (award.includes("Creative")) return Palette;
   if (award.includes("ARM")) return Cpu;
-  if (award.includes("INIT")) return Sparkles;
+  if (award.includes("INIT") || award.includes("Mobile")) return Sparkles;
   if (award.includes("University")) return GraduationCap;
   return Trophy;
 };

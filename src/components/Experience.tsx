@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { Briefcase, GraduationCap, Users } from "lucide-react";
+import { Briefcase, GraduationCap, Users, Shield } from "lucide-react";
 import { TerminalBackground } from "./TerminalBackground";
 
 const experiences = [
@@ -17,6 +17,13 @@ const experiences = [
     company: "INIT FIU",
     period: "2024 - Present",
     description: "Lead and mentor student teams through Advanced AI/ML Build Track. Guide peers on architecture decisions, debugging, and model optimization while fostering collaborative learning."
+  },
+  {
+    icon: Shield,
+    title: "2nd Place - FlagOps CTF",
+    company: "INIT FIU Cybersecurity",
+    period: "2024",
+    description: "Placed 2nd in competitive cybersecurity CTF, improving from previous 3rd place. Earned Microsoft Azure Security Engineer course access and hands-on training with Microsoft engineers."
   },
   {
     icon: GraduationCap,
