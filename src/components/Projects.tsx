@@ -6,7 +6,7 @@ import { ProjectCard } from "./ProjectCard";
 const projects = [
   {
     title: "Voxtant",
-    description: "AI-powered interview preparation platform that won 1st Place at PlutoHacks 2025. Fetches live job listings and generates custom, realistic mock interviews using LLMs and speech recognition.",
+    description: "AI interview prep platform that pulls live job postings, generates role-specific mock interviews, and provides real-time AI scoring with structured feedback. Features agent-based orchestration for seamless interview flow.",
     tags: ["LLMs", "Whisper", "FastAPI", "NLP", "Next.js", "Agent SDK"],
     award: "🏆 1st Place - PlutoHacks 2025",
     links: {
@@ -17,7 +17,7 @@ const projects = [
   },
   {
     title: "ViewGuard",
-    description: "End-to-end intelligent surveillance platform built for SharkByte 2025. Integrates YOLOv8, Gemini VLM, and ElevenLabs into a real-time command center with conversational voice AI and instant threat detection.",
+    description: "AI security command center that transforms CCTV into proactive monitoring. Detects theft, vandalism, fights, and medical emergencies in real-time with parallel vision models and conversational AI alerts.",
     tags: ["YOLOv8", "Gemini VLM", "ElevenLabs", "Next.js", "TensorFlow.js", "Supabase"],
     award: "🔒 SharkByte 2025",
     links: {
@@ -27,7 +27,7 @@ const projects = [
   },
   {
     title: "Shadow Vision",
-    description: "Real-time AI system that translates hand gestures into animated shadow puppets for ShellHacks 2025. Built custom dataset from scratch, improving model accuracy from 14% to 93% using point cloud modeling.",
+    description: "Real-time computer vision system that detects hand gestures and projects them as interactive digital shadow puppets. Built custom dataset from scratch, achieving 90%+ gesture detection accuracy.",
     tags: ["Python", "TouchDesigner", "OpenCV", "MediaPipe", "TensorFlow", "Flask"],
     award: "🎨 Best Creative Hack - ShellHacks 2025",
     links: {
@@ -37,9 +37,9 @@ const projects = [
   },
   {
     title: "HeliosAI",
-    description: "Intelligent solar-tracking system using sensors and AI to track and learn from sunlight in real time. Won Best Use of ARM at KnightHacks VIII 2025 for seamlessly blending hardware control and AI reasoning.",
+    description: "AI-powered educational platform that analyzes learning behavior and adapts feedback in real-time. Combines intelligent backend processing with context-aware responses for personalized study support.",
     tags: ["Arduino", "Flask", "Gemini API", "Agent SDK", "OpenWeather API", "IoT"],
-    award: "🔧 Best Use of ARM - KnightHacks VIII 2025",
+    award: "🏆 Knight Hacks + MLH Winner",
     links: {
       demo: "http://www.helios.study/",
       github: "https://github.com/pablomoli/helios",
@@ -48,9 +48,9 @@ const projects = [
   },
   {
     title: "Butterfly Detector",
-    description: "Led AI/ML Advanced Team in INIT Build Program to develop computer vision model identifying butterfly species from webcam input. Created robust detection system for citizen science and biodiversity monitoring.",
-    tags: ["TensorFlow", "Flask", "Python", "OpenCV", "Computer Vision"],
-    award: "🦋 INIT Build Program - Advanced Track",
+    description: "Computer vision system for ecological monitoring using Raspberry Pi. Led hardware team to achieve 92% species identification accuracy with real-time camera feed processing for biodiversity research.",
+    tags: ["TensorFlow", "Flask", "Python", "OpenCV", "Raspberry Pi", "Edge ML"],
+    award: "🦋 INIT Build - Hardware Lead",
     links: {
       demo: "https://butterfly-web-app.vercel.app/",
       github: "https://github.com/gabrielsuarezz"
@@ -58,9 +58,9 @@ const projects = [
   },
   {
     title: "FrontalFriend",
-    description: "Mobile app designed to improve mental health through AI chat, calming videos, medication reminders, daily steps/sleep tracking, easy access to helplines, and secure document cloud storage.",
+    description: "Mobile-first AI wellness app featuring chatbot therapy, guided relaxation, medication reminders, health tracking, emergency resources, and secure cloud storage. First foray into mobile development.",
     tags: ["React Native", "AI Chat", "Mobile", "Health Tracking", "Cloud Storage"],
-    award: "🎓 University Project",
+    award: "📱 INIT Build - Mobile",
     links: {
       github: "https://github.com/flamemik/FrontalFriend"
     }
