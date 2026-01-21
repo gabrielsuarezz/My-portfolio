@@ -52,12 +52,17 @@ export const Navigation = memo(() => {
       >
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
+            {/* Terminal-style Logo */}
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" })}
-              className="text-xl font-bold text-gradient hover:opacity-80 transition-opacity"
+              className="group flex items-center gap-0.5 font-mono text-lg hover:scale-105 transition-all duration-300"
             >
-              GS
+              <span className="text-muted-foreground opacity-70 group-hover:opacity-100 transition-opacity">[</span>
+              <span className="text-primary font-bold tracking-tight drop-shadow-[0_0_8px_hsl(var(--primary)/0.6)] group-hover:drop-shadow-[0_0_12px_hsl(var(--primary)/0.8)] transition-all">
+                GS
+              </span>
+              <span className="text-muted-foreground opacity-70 group-hover:opacity-100 transition-opacity">]</span>
+              <span className="w-2 h-4 bg-primary/80 ml-0.5 animate-pulse" />
             </button>
 
             {/* Desktop Navigation */}
