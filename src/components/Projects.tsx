@@ -64,6 +64,16 @@ const projects = [
     links: {
       github: "https://github.com/flamemik/FrontalFriend"
     }
+  },
+  {
+    title: "SHE<Codes/>",
+    description: "Interactive educational game teaching Python through historical quests featuring pioneering women and LGBTQ+ figures in computing. Uses block-based coding that generates real Python, with 8 levels covering variables, loops, and functions.",
+    tags: ["React 19", "Vite", "Blockly", "Skulpt", "Python", "Education"],
+    award: "🎓 FIU Senior Design Showcase",
+    links: {
+      demo: "https://gabrielsuarezz.github.io/SHE-Code/",
+      github: "https://github.com/gabrielsuarezz/SHE-Code"
+    }
   }
 ];
 
