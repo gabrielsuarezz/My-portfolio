@@ -8,18 +8,35 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <!-- Performance optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://github.com" />
+    <link rel="dns-prefetch" href="https://linkedin.com" />
+    
     <title>Gabriel Suarez - AI/ML Engineer & Developer</title>
     <meta name="description" content="Portfolio of Gabriel Suarez - AI/ML enthusiast, software engineer, and builder of interactive systems. Explore projects in computer vision, AI agents, and more." />
     <meta name="author" content="Gabriel Suarez" />
 
-    <meta property="og:title" content="gabriels-digital-showcase" />
-    <meta property="og:description" content="Lovable Generated Project" />
+    <meta property="og:title" content="Gabriel Suarez - AI/ML Engineer Portfolio" />
+    <meta property="og:description" content="Portfolio of Gabriel Suarez - AI/ML enthusiast, software engineer, and builder of interactive systems." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
+    <meta name="twitter:site" content="@gabrielsuarezz" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    
+    <!-- Critical CSS for initial render -->
+    <style>
+      /* Prevent layout shift during load */
+      #root { min-height: 100vh; }
+      /* Smooth scrolling respecting user preferences */
+      @media (prefers-reduced-motion: no-preference) {
+        html { scroll-behavior: smooth; }
+      }
+    </style>
   </head>
 
   <body>

@@ -1,17 +1,26 @@
-import { motion, useScroll, useTransform, useMotionValue, useTransform as useMotionTransform, animate } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Github, Linkedin, Mail, Terminal, Code2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo, useMemo } from "react";
 import { AsciiArt } from "./AsciiArt";
 import headshot from "@/assets/headshot.jpg";
 import { useClickCounter } from "@/hooks/useClickCounter";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useDebouncedMousePosition } from "@/hooks/useDebouncedMousePosition";
 import { toast } from "sonner";
 
-const TypewriterText = ({ text, delay = 0 }: { text: string; delay?: number }) => {
+const TypewriterText = memo(({ text, delay = 0 }: { text: string; delay?: number }) => {
   const [displayedText, setDisplayedText] = useState("");
   const [showCursor, setShowCursor] = useState(true);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
+    // Skip animation if reduced motion preferred
+    if (prefersReducedMotion) {
+      setDisplayedText(text);
+      return;
+    }
+
     const timeout = setTimeout(() => {
       let currentIndex = 0;
       const interval = setInterval(() => {
@@ -21,21 +30,23 @@ const TypewriterText = ({ text, delay = 0 }: { text: string; delay?: number }) =
         } else {
           clearInterval(interval);
         }
-      }, 50); // Speed of typing (50ms per character)
+      }, 50);
 
       return () => clearInterval(interval);
     }, delay);
 
     return () => clearTimeout(timeout);
-  }, [text, delay]);
+  }, [text, delay, prefersReducedMotion]);
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
+    
     const cursorInterval = setInterval(() => {
       setShowCursor((prev) => !prev);
     }, 500);
 
     return () => clearInterval(cursorInterval);
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <span>
@@ -43,14 +54,108 @@ const TypewriterText = ({ text, delay = 0 }: { text: string; delay?: number }) =
       <span className={showCursor ? "opacity-100" : "opacity-0"}>_</span>
     </span>
   );
-};
+});
 
-export const Hero = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+TypewriterText.displayName = 'TypewriterText';
+
+// Memoized floating orb to prevent unnecessary re-renders
+const FloatingOrb = memo(({ 
+  position, 
+  color, 
+  scrollY, 
+  scrollOffset,
+  animationConfig,
+  prefersReducedMotion 
+}: {
+  position: 'left' | 'right';
+  color: string;
+  scrollY: any;
+  scrollOffset: { x: number; y: number };
+  animationConfig: { duration: number; x: number[]; y: number[]; scale: number[] };
+  prefersReducedMotion: boolean;
+}) => {
+  const x = useTransform(scrollY, [0, 1000], [0, scrollOffset.x]);
+  const y = useTransform(scrollY, [0, 1000], [0, scrollOffset.y]);
+
+  return (
+    <motion.div
+      className={`absolute w-96 h-96 rounded-full blur-3xl opacity-20 ${position === 'right' ? 'right-0' : ''}`}
+      style={{
+        background: `radial-gradient(circle, ${color} 0%, transparent 70%)`,
+        x,
+        y,
+        willChange: prefersReducedMotion ? 'auto' : 'transform',
+      }}
+      animate={prefersReducedMotion ? {} : {
+        x: animationConfig.x,
+        y: animationConfig.y,
+        scale: animationConfig.scale,
+      }}
+      transition={{
+        duration: animationConfig.duration,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+    />
+  );
+});
+
+FloatingOrb.displayName = 'FloatingOrb';
+
+// Memoized code snippets - only show on desktop
+const FloatingCodeSnippets = memo(({ prefersReducedMotion }: { prefersReducedMotion: boolean }) => {
+  const codeSnippets = useMemo(() => [
+    "const buildAI = () => intelligence;",
+    "while(learning) { innovate(); }",
+    "if (problem) solve();",
+    "return impact++;",
+  ], []);
+
+  // Don't render on reduced motion or mobile
+  if (prefersReducedMotion) return null;
+
+  return (
+    <>
+      {codeSnippets.map((snippet, i) => (
+        <motion.div
+          key={i}
+          className="absolute text-primary/20 font-mono text-sm hidden lg:block"
+          initial={{ opacity: 0, y: 100 }}
+          animate={{
+            opacity: [0.1, 0.3, 0.1],
+            y: [100, -100],
+            x: [0, (i % 2 === 0 ? 50 : -50)],
+          }}
+          transition={{
+            duration: 15 + i * 3,
+            repeat: Infinity,
+            delay: i * 2,
+          }}
+          style={{
+            left: `${20 + i * 20}%`,
+            top: `${30 + i * 10}%`,
+            willChange: 'transform, opacity',
+          }}
+        >
+          <Code2 className="inline mr-2 h-4 w-4" />
+          {snippet}
+        </motion.div>
+      ))}
+    </>
+  );
+});
+
+FloatingCodeSnippets.displayName = 'FloatingCodeSnippets';
+
+export const Hero = memo(() => {
   const [funMode, setFunMode] = useState(false);
   const { scrollY } = useScroll();
   const opacity = useTransform(scrollY, [0, 500], [1, 0]);
   const scale = useTransform(scrollY, [0, 500], [1, 0.8]);
+  const prefersReducedMotion = useReducedMotion();
+  
+  // Debounced mouse position - disabled on mobile/reduced motion
+  const mousePosition = useDebouncedMousePosition(!prefersReducedMotion);
 
   // Headshot click counter (7 clicks)
   const { handleClick: handleHeadshotClick } = useClickCounter(7, () => {
@@ -60,16 +165,8 @@ export const Hero = () => {
     });
   });
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
   const scrollToProjects = () => {
-    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("projects")?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
   };
 
   // Triple-click name handler
@@ -86,12 +183,10 @@ export const Hero = () => {
     }
   };
 
-  const codeSnippets = [
-    "const buildAI = () => intelligence;",
-    "while(learning) { innovate(); }",
-    "if (problem) solve();",
-    "return impact++;",
-  ];
+  // Animation variants for reduced motion
+  const fadeInVariants = prefersReducedMotion 
+    ? { initial: { opacity: 1 }, animate: { opacity: 1 } }
+    : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 } };
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -99,86 +194,41 @@ export const Hero = () => {
       <div className="absolute inset-0 bg-gradient-hero" />
       <div className="absolute inset-0" style={{ background: 'var(--gradient-mesh)' }} />
       
-      {/* Floating orbs with parallax */}
-      <motion.div
-        className="absolute w-96 h-96 rounded-full blur-3xl opacity-20"
-        style={{
-          background: 'radial-gradient(circle, hsl(217 91% 60%) 0%, transparent 70%)',
-          x: useTransform(scrollY, [0, 1000], [0, -100]),
-          y: useTransform(scrollY, [0, 1000], [0, 100]),
-        }}
-        animate={{
-          x: [0, 100, 0],
-          y: [0, -100, 0],
-          scale: [1, 1.2, 1],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+      {/* Floating orbs with parallax - GPU accelerated */}
+      <FloatingOrb
+        position="left"
+        color="hsl(217 91% 60%)"
+        scrollY={scrollY}
+        scrollOffset={{ x: -100, y: 100 }}
+        animationConfig={{ duration: 20, x: [0, 100, 0], y: [0, -100, 0], scale: [1, 1.2, 1] }}
+        prefersReducedMotion={prefersReducedMotion}
       />
-      <motion.div
-        className="absolute right-0 w-96 h-96 rounded-full blur-3xl opacity-20"
-        style={{
-          background: 'radial-gradient(circle, hsl(187 85% 53%) 0%, transparent 70%)',
-          x: useTransform(scrollY, [0, 1000], [0, 100]),
-          y: useTransform(scrollY, [0, 1000], [0, -100]),
-        }}
-        animate={{
-          x: [0, -100, 0],
-          y: [0, 100, 0],
-          scale: [1.2, 1, 1.2],
-        }}
-        transition={{
-          duration: 15,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+      <FloatingOrb
+        position="right"
+        color="hsl(187 85% 53%)"
+        scrollY={scrollY}
+        scrollOffset={{ x: 100, y: -100 }}
+        animationConfig={{ duration: 15, x: [0, -100, 0], y: [0, 100, 0], scale: [1.2, 1, 1.2] }}
+        prefersReducedMotion={prefersReducedMotion}
       />
 
-      {/* Interactive cursor glow */}
-      <motion.div
-        className="absolute w-64 h-64 rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, hsl(217 91% 60% / 0.15) 0%, transparent 70%)',
-          left: mousePosition.x - 128,
-          top: mousePosition.y - 128,
-        }}
-        animate={{
-          scale: [1, 1.2, 1],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-        }}
-      />
-
-      {/* Floating code snippets */}
-      {codeSnippets.map((snippet, i) => (
+      {/* Interactive cursor glow - only on desktop with full motion */}
+      {!prefersReducedMotion && (
         <motion.div
-          key={i}
-          className="absolute text-primary/20 font-mono text-sm hidden lg:block"
-          initial={{ opacity: 0, y: 100 }}
-          animate={{
-            opacity: [0.1, 0.3, 0.1],
-            y: [100, -100],
-            x: [0, Math.random() * 100 - 50],
-          }}
-          transition={{
-            duration: 15 + i * 3,
-            repeat: Infinity,
-            delay: i * 2,
-          }}
+          className="absolute w-64 h-64 rounded-full pointer-events-none hidden md:block"
           style={{
-            left: `${20 + i * 20}%`,
-            top: `${30 + i * 10}%`,
+            background: 'radial-gradient(circle, hsl(217 91% 60% / 0.15) 0%, transparent 70%)',
+            left: mousePosition.x - 128,
+            top: mousePosition.y - 128,
+            willChange: 'left, top',
           }}
-        >
-          <Code2 className="inline mr-2 h-4 w-4" />
-          {snippet}
-        </motion.div>
-      ))}
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        />
+      )}
+
+      {/* Floating code snippets - desktop only */}
+      <FloatingCodeSnippets prefersReducedMotion={prefersReducedMotion} />
 
       <motion.div 
         className="container mx-auto px-6 relative z-10"
@@ -187,8 +237,7 @@ export const Hero = () => {
         <div className="text-center max-w-5xl mx-auto">
           {/* Animated terminal-style header */}
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            {...fadeInVariants}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mb-4 flex flex-col items-center justify-center gap-2"
           >
@@ -199,7 +248,7 @@ export const Hero = () => {
             
             {/* ASCII Art Terminal Visual */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.5 }}
               className="relative p-3 md:p-4 rounded-lg bg-secondary/30 backdrop-blur-sm border border-primary/20 shadow-lg max-w-2xl md:max-w-3xl w-full"
@@ -216,7 +265,7 @@ export const Hero = () => {
                 onClick={handleHeadshotClick}
               >
                 <motion.div
-                  animate={funMode ? {
+                  animate={funMode && !prefersReducedMotion ? {
                     rotate: [0, 360],
                     scale: [1, 1.1, 1],
                   } : {}}
@@ -231,7 +280,7 @@ export const Hero = () => {
               
               <motion.div
                 className="mt-2 text-xs md:text-sm font-mono text-accent/70 text-center"
-                animate={{ opacity: [0.5, 1, 0.5] }}
+                animate={prefersReducedMotion ? {} : { opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
                 &gt; Hover to enhance resolution_
@@ -242,13 +291,12 @@ export const Hero = () => {
           {/* Main title with staggered animation */}
           <motion.h1
             className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-4 md:mb-6 leading-tight"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
+            {...fadeInVariants}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <motion.span
               className="inline-block cursor-pointer select-none"
-              whileHover={{ scale: 1.05, color: "hsl(217 91% 60%)" }}
+              whileHover={prefersReducedMotion ? {} : { scale: 1.05, color: "hsl(217 91% 60%)" }}
               transition={{ type: "spring", stiffness: 300 }}
               onClick={handleNameClick}
             >
@@ -258,7 +306,7 @@ export const Hero = () => {
             <motion.span
               className="text-gradient inline-block"
               initial={{ backgroundPosition: "0% 50%" }}
-              animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+              animate={prefersReducedMotion ? {} : { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
               transition={{ duration: 5, repeat: Infinity }}
               style={{ backgroundSize: "200% 200%" }}
             >
@@ -268,8 +316,7 @@ export const Hero = () => {
 
           {/* Subtitle with typewriter effect */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            {...fadeInVariants}
             transition={{ duration: 0.8, delay: 0.8 }}
             className="mb-4 md:mb-6"
           >
@@ -285,19 +332,16 @@ export const Hero = () => {
           </motion.div>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            {...fadeInVariants}
             transition={{ duration: 0.8, delay: 1 }}
             className="text-base md:text-lg lg:text-xl text-muted-foreground/80 mb-6 md:mb-8 max-w-3xl mx-auto leading-relaxed"
           >
             Exploring the edge between AI, creativity, and code.
           </motion.p>
 
-
           {/* CTA Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            {...fadeInVariants}
             transition={{ duration: 0.8, delay: 1.2 }}
             className="flex flex-wrap gap-3 md:gap-4 justify-center mb-8 md:mb-12"
           >
@@ -310,12 +354,14 @@ export const Hero = () => {
                 Explore My Work
                 <ArrowDown className="ml-2 h-5 w-5 group-hover:translate-y-1 transition-transform" />
               </span>
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-primary to-accent"
-                initial={{ x: "-100%" }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.3 }}
-              />
+              {!prefersReducedMotion && (
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-primary to-accent"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+              )}
             </Button>
             <Button variant="outline" size="lg" asChild className="text-lg px-8 py-6 border-2">
               <a href="mailto:gsuarez@fiu.edu">
@@ -327,8 +373,7 @@ export const Hero = () => {
 
           {/* Social Links */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            {...fadeInVariants}
             transition={{ duration: 0.8, delay: 1.4 }}
             className="flex gap-6 justify-center"
           >
@@ -341,8 +386,8 @@ export const Hero = () => {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.2, rotate: 5 }}
-                whileTap={{ scale: 0.9 }}
+                whileHover={prefersReducedMotion ? {} : { scale: 1.2, rotate: 5 }}
+                whileTap={prefersReducedMotion ? {} : { scale: 0.9 }}
                 className="p-4 rounded-full bg-secondary/50 backdrop-blur-sm border border-border hover:border-primary transition-colors"
               >
                 <Icon className="h-6 w-6" />
@@ -356,7 +401,7 @@ export const Hero = () => {
       <motion.div
         className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1, y: [0, 10, 0] }}
+        animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: [0, 10, 0] }}
         transition={{ 
           opacity: { delay: 2 },
           y: { duration: 2, repeat: Infinity }
@@ -367,4 +412,6 @@ export const Hero = () => {
       </motion.div>
     </section>
   );
-};
+});
+
+Hero.displayName = 'Hero';
