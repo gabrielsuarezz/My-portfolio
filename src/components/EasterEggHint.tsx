@@ -59,10 +59,10 @@ export const EasterEggHint = () => {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md z-50 mx-4"
+              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%-2rem)] max-w-md z-50 max-h-[90vh]"
             >
-              <div className="bg-background border border-border rounded-lg shadow-2xl overflow-hidden">
-                <div className="flex items-center justify-between p-6 border-b border-border">
+              <div className="bg-background border border-border rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+                <div className="flex items-center justify-between p-4 sm:p-6 border-b border-border flex-shrink-0">
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-5 w-5 text-accent" />
                     <h3 className="text-lg font-semibold">Hidden Features</h3>
@@ -77,22 +77,22 @@ export const EasterEggHint = () => {
                   </Button>
                 </div>
                 
-                <div className="p-6">
+                <div className="p-4 sm:p-6 overflow-y-auto flex-1">
                   <p className="text-sm text-muted-foreground mb-4">
                     This portfolio has some interactive surprises. Try these:
                   </p>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {hints.map((hint, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        className="flex items-start gap-3 p-3 rounded-lg bg-accent/5 hover:bg-accent/10 transition-colors"
+                        className="flex items-start gap-3 p-2 sm:p-3 rounded-lg bg-accent/5 hover:bg-accent/10 transition-colors"
                       >
-                        <span className="text-2xl flex-shrink-0">{hint.emoji}</span>
-                        <span className="text-sm pt-1">{hint.text}</span>
+                        <span className="text-xl sm:text-2xl flex-shrink-0">{hint.emoji}</span>
+                        <span className="text-sm pt-0.5 sm:pt-1">{hint.text}</span>
                       </motion.div>
                     ))}
                   </div>
