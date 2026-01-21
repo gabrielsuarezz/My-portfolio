@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, memo, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface AsciiArtProps {
   imageSrc: string;
@@ -7,20 +8,21 @@ interface AsciiArtProps {
   fontSize?: number;
 }
 
-export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps) => {
+export const AsciiArt = memo(({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [asciiText, setAsciiText] = useState<string>("");
   const [isHovered, setIsHovered] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
-  // ASCII characters from darkest to lightest
-  const ASCII_CHARS = " .'`^\",:;Il!i~+_-?][}{1)(|/tfjrxnuvcz*#%@";
-  const ASCII_CHARS_DETAILED = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+  // Memoize ASCII characters
+  const ASCII_CHARS = useMemo(() => " .'`^\",:;Il!i~+_-?][}{1)(|/tfjrxnuvcz*#%@", []);
+  const ASCII_CHARS_DETAILED = useMemo(() => " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$", []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
     if (!ctx) return;
 
     const img = new Image();
@@ -28,7 +30,7 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
     
     img.onload = () => {
       const aspectRatio = img.height / img.width;
-      const height = Math.floor(width * aspectRatio * 0.5); // 0.5 to account for character aspect ratio
+      const height = Math.floor(width * aspectRatio * 0.5);
 
       canvas.width = width;
       canvas.height = height;
@@ -46,7 +48,6 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
           const g = imageData.data[offset + 1];
           const b = imageData.data[offset + 2];
 
-          // Convert to grayscale using luminosity method
           const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
           const charIndex = Math.floor((brightness / 255) * (chars.length - 1));
           
@@ -59,71 +60,22 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
     };
 
     img.src = imageSrc;
-  }, [imageSrc, width, isHovered]);
+  }, [imageSrc, width, isHovered, ASCII_CHARS, ASCII_CHARS_DETAILED]);
 
-  const generateAsciiBlockText = () => {
-    // Carefully designed ASCII block letters
-    const letters: { [key: string]: string[] } = {
-      'H': [
-        '██   ██',
-        '██   ██',
-        '███████',
-        '██   ██',
-        '██   ██',
-        '██   ██',
-        '██   ██'
-      ],
-      'I': [
-        '███████',
-        '   ██  ',
-        '   ██  ',
-        '   ██  ',
-        '   ██  ',
-        '   ██  ',
-        '███████'
-      ],
-      'R': [
-        '██████ ',
-        '██   ██',
-        '██   ██',
-        '██████ ',
-        '██  ██ ',
-        '██   ██',
-        '██   ██'
-      ],
-      'E': [
-        '███████',
-        '██     ',
-        '██     ',
-        '█████  ',
-        '██     ',
-        '██     ',
-        '███████'
-      ],
-      'M': [
-        '██   ██',
-        '███ ███',
-        '███████',
-        '██ █ ██',
-        '██   ██',
-        '██   ██',
-        '██   ██'
-      ],
-      ' ': [
-        '   ',
-        '   ',
-        '   ',
-        '   ',
-        '   ',
-        '   ',
-        '   '
-      ]
-    };
+  // Memoize block letters
+  const letters = useMemo(() => ({
+    'H': ['██   ██', '██   ██', '███████', '██   ██', '██   ██', '██   ██', '██   ██'],
+    'I': ['███████', '   ██  ', '   ██  ', '   ██  ', '   ██  ', '   ██  ', '███████'],
+    'R': ['██████ ', '██   ██', '██   ██', '██████ ', '██  ██ ', '██   ██', '██   ██'],
+    'E': ['███████', '██     ', '██     ', '█████  ', '██     ', '██     ', '███████'],
+    'M': ['██   ██', '███ ███', '███████', '██ █ ██', '██   ██', '██   ██', '██   ██'],
+    ' ': ['   ', '   ', '   ', '   ', '   ', '   ', '   ']
+  }), []);
 
+  const generateAsciiBlockText = useCallback(() => {
     const text = 'HIRE ME';
-    const letterArrays = text.split('').map(char => letters[char] || letters[' ']);
+    const letterArrays = text.split('').map(char => letters[char as keyof typeof letters] || letters[' ']);
     
-    // Combine all letters horizontally
     const combinedLines: string[] = [];
     for (let row = 0; row < 7; row++) {
       const line = letterArrays.map(letter => letter[row]).join(' ');
@@ -131,16 +83,13 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
     }
     
     return combinedLines;
-  };
+  }, [letters]);
 
-  const insertTextIntoAscii = (ascii: string) => {
+  const insertTextIntoAscii = useCallback((ascii: string) => {
     const lines = ascii.split('\n');
     const blockText = generateAsciiBlockText();
-    
-    // Position at the top (starting from line 2 to leave a small margin)
     const startLine = 2;
     
-    // Replace lines with the block text
     blockText.forEach((textLine, i) => {
       const lineIndex = startLine + i;
       if (lineIndex >= 0 && lineIndex < lines.length) {
@@ -156,9 +105,15 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
     });
     
     return lines;
-  };
+  }, [generateAsciiBlockText]);
 
-  const lines = isHovered ? insertTextIntoAscii(asciiText) : asciiText.split('\n');
+  const lines = useMemo(() => 
+    isHovered ? insertTextIntoAscii(asciiText) : asciiText.split('\n'),
+    [isHovered, asciiText, insertTextIntoAscii]
+  );
+
+  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+  const handleMouseLeave = useCallback(() => setIsHovered(false), []);
 
   return (
     <div className="relative">
@@ -167,8 +122,8 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
       <motion.pre
         className="font-mono text-primary/80 leading-none select-none overflow-hidden"
         style={{ fontSize: `${fontSize}px` }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         initial={{ opacity: 0 }}
         animate={{ 
           opacity: 1,
@@ -177,8 +132,23 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
         transition={{ duration: 0.3 }}
       >
         {lines.map((line, i) => {
-          // Message lines are now at the top (lines 2-8)
           const isMessageLine = isHovered && i >= 2 && i <= 8;
+          
+          // Skip animation for reduced motion
+          if (prefersReducedMotion) {
+            return (
+              <div
+                key={i}
+                className={isMessageLine ? "text-accent font-extrabold" : isHovered ? "text-accent/70" : ""}
+                style={{ 
+                  fontSize: isMessageLine ? `${fontSize * 1.1}px` : `${fontSize}px`,
+                  letterSpacing: isMessageLine ? '0.05em' : 'normal'
+                }}
+              >
+                {line}
+              </div>
+            );
+          }
           
           return (
             <motion.div
@@ -188,9 +158,9 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
               transition={{ delay: i * 0.005, duration: 0.2 }}
               className={isMessageLine ? "text-accent font-extrabold" : isHovered ? "text-accent/70" : ""}
               style={{ 
-                transition: 'all 0.3s ease',
                 fontSize: isMessageLine ? `${fontSize * 1.1}px` : `${fontSize}px`,
-                letterSpacing: isMessageLine ? '0.05em' : 'normal'
+                letterSpacing: isMessageLine ? '0.05em' : 'normal',
+                willChange: 'transform, opacity',
               }}
             >
               {line}
@@ -199,24 +169,16 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
         })}
       </motion.pre>
 
-      {/* Scanline effect */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
+      {/* Scanline effect - simplified for performance */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-60"
         style={{
           background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, hsl(217 91% 60% / 0.03) 2px, hsl(217 91% 60% / 0.03) 4px)',
         }}
-        animate={{
-          opacity: [0.5, 0.8, 0.5],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
       />
 
-      {/* Glitch effect on hover */}
-      {isHovered && (
+      {/* Glitch effect on hover - only when not reduced motion */}
+      {isHovered && !prefersReducedMotion && (
         <motion.div
           className="absolute inset-0 pointer-events-none"
           animate={{
@@ -235,4 +197,6 @@ export const AsciiArt = ({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps)
       )}
     </div>
   );
-};
+});
+
+AsciiArt.displayName = 'AsciiArt';

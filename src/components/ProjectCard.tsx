@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, Trophy, Shield, Palette, Cpu, Sparkles, GraduationCap, LucideIcon } from "lucide-react";
 import { useLongPress } from "@/hooks/useLongPress";
+import { memo, useMemo } from "react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const getAwardIcon = (award: string): LucideIcon => {
   if (award.includes("1st Place")) return Trophy;
@@ -40,21 +42,48 @@ interface ProjectCardProps {
   onLongPress: (title: string) => void;
 }
 
-export const ProjectCard = ({ project, index, isRevealed, onLongPress }: ProjectCardProps) => {
+// Dev notes map - memoized outside component
+const DEV_NOTES: Record<string, string> = {
+  "Voxtant": "Built the entire backend in 8 hours with zero sleep. The LLM integration was a nightmare but so worth it.",
+  "Shadow Vision": "Creating the dataset was tedious - I spent 6 hours making hand gestures in front of a camera. My hand was sore for days!",
+  "HeliosAI": "The servo motor kept breaking. We went through 3 different motors before finding one that could handle the solar panel weight.",
+};
+
+const DEFAULT_DEV_NOTE = "Leading a team remotely while building ML models was challenging but incredibly rewarding. We had late-night debugging sessions that turned into great learning moments.";
+
+export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: ProjectCardProps) => {
   const longPressHandlers = useLongPress(() => onLongPress(project.title));
+  const prefersReducedMotion = useReducedMotion();
+  
+  const devNote = useMemo(() => 
+    DEV_NOTES[project.title] || DEFAULT_DEV_NOTE,
+    [project.title]
+  );
+
+  const AwardIcon = useMemo(() => 
+    project.award ? getAwardIcon(project.award) : null,
+    [project.award]
+  );
+
+  // Animation variants based on reduced motion preference
+  const cardVariants = prefersReducedMotion 
+    ? { initial: { opacity: 1 }, whileInView: { opacity: 1 } }
+    : { 
+        initial: { opacity: 0, y: 50 },
+        whileInView: { opacity: 1, y: 0 },
+        whileHover: { y: -10 }
+      };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      {...cardVariants}
       viewport={{ once: true, margin: "-100px" }}
-      transition={{ delay: index * 0.15, duration: 0.8, type: "spring" }}
-      whileHover={{ y: -10 }}
+      transition={{ delay: prefersReducedMotion ? 0 : index * 0.15, duration: 0.8, type: "spring" }}
       {...longPressHandlers}
     >
       <Card className="p-8 h-full border-border/50 backdrop-blur-sm bg-card/30 relative overflow-hidden group select-none">
-        {/* Animated background gradient on hover */}
-        <motion.div
+        {/* Animated background gradient on hover - simplified */}
+        <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           style={{
             background: 'radial-gradient(circle at center, hsl(217 91% 60% / 0.1) 0%, transparent 70%)',
@@ -65,19 +94,16 @@ export const ProjectCard = ({ project, index, isRevealed, onLongPress }: Project
           <div className="flex items-start justify-between mb-4">
             <motion.h3 
               className="text-2xl font-bold group-hover:text-primary transition-colors"
-              whileHover={{ x: 5 }}
+              whileHover={prefersReducedMotion ? {} : { x: 5 }}
             >
               {project.title}
             </motion.h3>
-            {project.award && (
+            {AwardIcon && (
               <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
+                animate={prefersReducedMotion ? {} : { rotate: [0, 10, -10, 0] }}
                 transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
               >
-                {(() => {
-                  const AwardIcon = getAwardIcon(project.award);
-                  return <AwardIcon className="h-5 w-5 text-accent flex-shrink-0 ml-2" />;
-                })()}
+                <AwardIcon className="h-5 w-5 text-accent flex-shrink-0 ml-2" />
               </motion.div>
             )}
           </div>
@@ -98,12 +124,7 @@ export const ProjectCard = ({ project, index, isRevealed, onLongPress }: Project
               animate={{ opacity: 1, height: 'auto' }}
               className="mb-4 p-3 bg-accent/10 border border-accent/30 rounded text-sm text-accent"
             >
-              <strong>Dev Note:</strong> {
-                project.title === "Voxtant" ? "Built the entire backend in 8 hours with zero sleep. The LLM integration was a nightmare but so worth it." :
-                project.title === "Shadow Vision" ? "Creating the dataset was tedious - I spent 6 hours making hand gestures in front of a camera. My hand was sore for days!" :
-                project.title === "HeliosAI" ? "The servo motor kept breaking. We went through 3 different motors before finding one that could handle the solar panel weight." :
-                "Leading a team remotely while building ML models was challenging but incredibly rewarding. We had late-night debugging sessions that turned into great learning moments."
-              }
+              <strong>Dev Note:</strong> {devNote}
             </motion.div>
           )}
 
@@ -111,9 +132,9 @@ export const ProjectCard = ({ project, index, isRevealed, onLongPress }: Project
             {project.tags.map((tag, tagIndex) => (
               <motion.div
                 key={tag}
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.15 + tagIndex * 0.05 }}
+                transition={{ delay: prefersReducedMotion ? 0 : index * 0.15 + tagIndex * 0.05 }}
               >
                 <Badge variant="outline" className="text-xs border-primary/30 hover:border-primary hover:bg-primary/10 transition-all">
                   {tag}
@@ -151,4 +172,6 @@ export const ProjectCard = ({ project, index, isRevealed, onLongPress }: Project
       </Card>
     </motion.div>
   );
-};
+});
+
+ProjectCard.displayName = 'ProjectCard';
