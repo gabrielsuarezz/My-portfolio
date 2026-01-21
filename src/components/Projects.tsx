@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Github, Trophy, Shield, Palette, Cpu, Sparkles, LucideIcon } from "lucide-react";
+import { ExternalLink, Github, Trophy, Shield, Palette, Cpu, Sparkles, GraduationCap, LucideIcon } from "lucide-react";
 import { useLongPress } from "@/hooks/useLongPress";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -13,6 +13,7 @@ const getAwardIcon = (award: string): LucideIcon => {
   if (award.includes("Creative")) return Palette;
   if (award.includes("ARM")) return Cpu;
   if (award.includes("INIT")) return Sparkles;
+  if (award.includes("University")) return GraduationCap;
   return Trophy;
 };
 
@@ -71,6 +72,15 @@ const projects = [
     links: {
       demo: "https://butterfly-web-app.vercel.app/",
       github: "https://github.com/gabrielsuarezz"
+    }
+  },
+  {
+    title: "FrontalFriend",
+    description: "Mobile app designed to improve mental health through AI chat, calming videos, medication reminders, daily steps/sleep tracking, easy access to helplines, and secure document cloud storage.",
+    tags: ["React Native", "AI Chat", "Mobile", "Health Tracking", "Cloud Storage"],
+    award: "🎓 University Project",
+    links: {
+      github: "https://github.com/flamemik/FrontalFriend"
     }
   }
 ];
