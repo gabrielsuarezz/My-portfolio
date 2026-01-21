@@ -82,7 +82,7 @@ export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: Pr
       transition={{ delay: prefersReducedMotion ? 0 : index * 0.15, duration: 0.8, type: "spring" }}
       {...longPressHandlers}
     >
-      <Card className="p-8 h-full border-border/50 backdrop-blur-sm bg-card/30 relative overflow-hidden group select-none scanlines">
+      <Card className="p-4 sm:p-6 md:p-8 h-full border-border/50 backdrop-blur-sm bg-card/30 relative overflow-hidden group select-none scanlines">
         {/* Animated background gradient on hover - simplified */}
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -93,12 +93,12 @@ export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: Pr
         
         <div className="relative z-10">
           <div className="flex items-start justify-between mb-4">
-            <motion.h3 
-              className="text-2xl font-bold font-mono group-hover:text-primary transition-colors terminal-glow-hover"
-              whileHover={prefersReducedMotion ? {} : { x: 5 }}
-            >
-              {project.title}
-            </motion.h3>
+              <motion.h3 
+                className="text-xl sm:text-2xl font-bold font-mono group-hover:text-primary transition-colors terminal-glow-hover"
+                whileHover={prefersReducedMotion ? {} : { x: 5 }}
+              >
+                {project.title}
+              </motion.h3>
             {AwardIcon && (
               <motion.div
                 animate={prefersReducedMotion ? {} : { rotate: [0, 10, -10, 0] }}
@@ -116,7 +116,7 @@ export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: Pr
             </Badge>
           )}
 
-          <p className="text-muted-foreground mb-6 leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6 leading-relaxed">
             {project.description}
           </p>
 
@@ -130,7 +130,7 @@ export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: Pr
             </motion.div>
           )}
 
-          <div className="flex flex-wrap gap-2 mb-6">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6">
             {project.tags.map((tag, tagIndex) => (
               <motion.div
                 key={tag}
@@ -145,7 +145,7 @@ export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: Pr
             ))}
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-2 sm:gap-3">
             {project.links.demo && (
               <Button variant="default" size="sm" asChild className="group/btn">
                 <a href={project.links.demo} target="_blank" rel="noopener noreferrer">
