@@ -28,7 +28,7 @@ const skillCategories = [
 
 export const Skills = () => {
   return (
-    <section className="py-24 bg-muted/30 relative overflow-hidden">
+    <section id="skills" className="py-24 bg-muted/30 relative overflow-hidden">
       <TerminalBackground density="medium" speed="slow" />
       <div className="container mx-auto px-6">
         <motion.div
