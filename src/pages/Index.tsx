@@ -1,6 +1,8 @@
 import { lazy, Suspense, memo } from "react";
 import { Hero } from "@/components/Hero";
 import { LazySection } from "@/components/LazySection";
+import { Navigation } from "@/components/Navigation";
+import { BackToTop } from "@/components/BackToTop";
 
 // Lazy load below-the-fold components
 const Projects = lazy(() => import("@/components/Projects").then(m => ({ default: m.Projects })));
@@ -13,6 +15,14 @@ const EasterEggHint = lazy(() => import("@/components/EasterEggHint").then(m => 
 const Index = memo(() => {
   return (
     <div className="min-h-screen">
+      {/* Skip to content for accessibility */}
+      <a href="#projects" className="skip-to-content">
+        Skip to main content
+      </a>
+      
+      {/* Navigation */}
+      <Navigation />
+      
       {/* Hero loads immediately - critical above-fold content */}
       <Hero />
       
@@ -40,6 +50,9 @@ const Index = memo(() => {
       <Suspense fallback={null}>
         <EasterEggHint />
       </Suspense>
+      
+      {/* Back to top button */}
+      <BackToTop />
       
       {/* Footer */}
       <footer className="py-8 border-t border-border/50">

@@ -29,7 +29,7 @@ const experiences = [
 
 export const Experience = () => {
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section id="experience" className="py-24 relative overflow-hidden">
       <TerminalBackground density="light" speed="medium" />
       <div className="container mx-auto px-6">
         <motion.div
