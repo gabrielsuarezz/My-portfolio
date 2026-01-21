@@ -98,10 +98,11 @@ export const Projects = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 font-mono">
+            <span className="text-muted-foreground opacity-60">// </span>
             Featured <span className="text-gradient">Projects</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-mono opacity-80">
             Award-winning projects spanning AI, computer vision, and IoT — built at Florida's top hackathons
           </p>
         </motion.div>

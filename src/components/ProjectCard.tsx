@@ -82,7 +82,7 @@ export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: Pr
       transition={{ delay: prefersReducedMotion ? 0 : index * 0.15, duration: 0.8, type: "spring" }}
       {...longPressHandlers}
     >
-      <Card className="p-8 h-full border-border/50 backdrop-blur-sm bg-card/30 relative overflow-hidden group select-none">
+      <Card className="p-8 h-full border-border/50 backdrop-blur-sm bg-card/30 relative overflow-hidden group select-none scanlines">
         {/* Animated background gradient on hover - simplified */}
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -94,7 +94,7 @@ export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: Pr
         <div className="relative z-10">
           <div className="flex items-start justify-between mb-4">
             <motion.h3 
-              className="text-2xl font-bold group-hover:text-primary transition-colors"
+              className="text-2xl font-bold font-mono group-hover:text-primary transition-colors terminal-glow-hover"
               whileHover={prefersReducedMotion ? {} : { x: 5 }}
             >
               {project.title}
@@ -103,8 +103,9 @@ export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: Pr
               <motion.div
                 animate={prefersReducedMotion ? {} : { rotate: [0, 10, -10, 0] }}
                 transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                className="terminal-icon !p-1.5"
               >
-                <AwardIcon className="h-5 w-5 text-accent flex-shrink-0 ml-2" />
+                <AwardIcon className="h-4 w-4" />
               </motion.div>
             )}
           </div>

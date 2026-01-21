@@ -16,7 +16,8 @@ export const Contact = () => {
           transition={{ duration: 0.6 }}
           className="max-w-4xl mx-auto text-center"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 font-mono">
+            <span className="text-muted-foreground opacity-60">$ </span>
             Let's Build <span className="text-gradient">Together</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground mb-8 sm:mb-12 max-w-2xl mx-auto">
@@ -34,11 +35,13 @@ export const Contact = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full h-auto py-3 sm:py-4 flex flex-col items-center gap-2 hover-lift min-h-[80px]"
+                className="w-full h-auto py-3 sm:py-4 flex flex-col items-center gap-2 hover-lift min-h-[80px] font-mono"
                 asChild
               >
                 <a href="mailto:gsuarez@fiu.edu">
-                  <Mail className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <div className="terminal-icon !p-2">
+                    <Mail className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </div>
                   <span className="text-xs sm:text-sm">Email</span>
                 </a>
               </Button>
@@ -53,11 +56,13 @@ export const Contact = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full h-auto py-3 sm:py-4 flex flex-col items-center gap-2 hover-lift min-h-[80px]"
+                className="w-full h-auto py-3 sm:py-4 flex flex-col items-center gap-2 hover-lift min-h-[80px] font-mono"
                 asChild
               >
                 <a href="https://linkedin.com/in/gabrielsuarezz" target="_blank" rel="noopener noreferrer">
-                  <Linkedin className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <div className="terminal-icon !p-2">
+                    <Linkedin className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </div>
                   <span className="text-xs sm:text-sm">LinkedIn</span>
                 </a>
               </Button>
@@ -72,11 +77,13 @@ export const Contact = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full h-auto py-3 sm:py-4 flex flex-col items-center gap-2 hover-lift min-h-[80px]"
+                className="w-full h-auto py-3 sm:py-4 flex flex-col items-center gap-2 hover-lift min-h-[80px] font-mono"
                 asChild
               >
                 <a href="https://github.com/gabrielsuarezz" target="_blank" rel="noopener noreferrer">
-                  <Github className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <div className="terminal-icon !p-2">
+                    <Github className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </div>
                   <span className="text-xs sm:text-sm">GitHub</span>
                 </a>
               </Button>
@@ -91,10 +98,12 @@ export const Contact = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full h-auto py-3 sm:py-4 flex flex-col items-center gap-2 hover-lift min-h-[80px]"
+                className="w-full h-auto py-3 sm:py-4 flex flex-col items-center gap-2 hover-lift min-h-[80px] font-mono"
                 disabled
               >
-                <MapPin className="h-5 w-5 sm:h-6 sm:w-6" />
+                <div className="terminal-icon !p-2 opacity-50">
+                  <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
+                </div>
                 <span className="text-xs sm:text-sm">Miami, FL</span>
               </Button>
             </motion.div>
@@ -106,8 +115,9 @@ export const Contact = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.5, duration: 0.6 }}
           >
-            <Button size="lg" asChild className="min-h-[48px] text-base">
+            <Button size="lg" asChild className="min-h-[48px] text-base font-mono uppercase tracking-wider">
               <a href="mailto:gsuarez@fiu.edu">
+                <span className="mr-2 opacity-60">&gt;</span>
                 Get In Touch
               </a>
             </Button>

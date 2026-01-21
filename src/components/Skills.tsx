@@ -38,10 +38,11 @@ export const Skills = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 font-mono">
+            <span className="text-muted-foreground opacity-60">// </span>
             Technical <span className="text-gradient">Expertise</span>
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto font-mono opacity-80">
             Full-stack capabilities with a focus on AI, machine learning, and systems that bridge hardware with intelligence
           </p>
         </motion.div>
@@ -57,18 +58,18 @@ export const Skills = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
               >
-                <Card className="p-4 sm:p-6 h-full hover-lift border-border/50 backdrop-blur-sm bg-card/50">
+                <Card className="p-4 sm:p-6 h-full hover-lift border-border/50 backdrop-blur-sm bg-card/50 scanlines">
                   <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                    <div className="p-1.5 sm:p-2 rounded-lg bg-primary/10 flex-shrink-0">
-                      <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                    <div className="terminal-icon flex-shrink-0">
+                      <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                     </div>
-                    <h3 className="font-semibold text-base sm:text-lg">{category.title}</h3>
+                    <h3 className="font-mono font-semibold text-base sm:text-lg text-foreground">{category.title}</h3>
                   </div>
                   <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {category.skills.map((skill) => (
                       <span
                         key={skill}
-                        className="text-xs sm:text-sm text-muted-foreground bg-secondary px-2 sm:px-3 py-1 rounded-full"
+                        className="text-xs sm:text-sm text-muted-foreground bg-secondary/50 border border-border/50 px-2 sm:px-3 py-1 rounded-sm font-mono hover:border-primary/40 hover:text-primary transition-all duration-300"
                       >
                         {skill}
                       </span>

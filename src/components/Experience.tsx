@@ -46,10 +46,11 @@ export const Experience = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 font-mono">
+            <span className="text-muted-foreground opacity-60">// </span>
             Experience & <span className="text-gradient">Education</span>
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto font-mono opacity-80">
             From internships to leadership roles, building impact through code and community
           </p>
         </motion.div>
@@ -65,19 +66,19 @@ export const Experience = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.6 }}
               >
-                <Card className="p-4 sm:p-6 hover-lift border-border/50 backdrop-blur-sm bg-card/50">
+                <Card className="p-4 sm:p-6 hover-lift border-border/50 backdrop-blur-sm bg-card/50 scanlines">
                   <div className="flex gap-3 sm:gap-4">
                     <div className="flex-shrink-0">
-                      <div className="p-2 sm:p-3 rounded-lg bg-primary/10">
-                        <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                      <div className="terminal-icon">
+                        <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                       </div>
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1 sm:mb-2 gap-1">
-                        <h3 className="text-lg sm:text-xl font-bold">{exp.title}</h3>
-                        <span className="text-xs sm:text-sm text-muted-foreground flex-shrink-0">{exp.period}</span>
+                        <h3 className="text-lg sm:text-xl font-bold font-mono">{exp.title}</h3>
+                        <span className="text-xs sm:text-sm text-primary font-mono flex-shrink-0 opacity-80">{exp.period}</span>
                       </div>
-                      <p className="text-primary font-medium mb-2 sm:mb-3 text-sm sm:text-base">{exp.company}</p>
+                      <p className="text-primary font-medium mb-2 sm:mb-3 text-sm sm:text-base font-mono">{exp.company}</p>
                       <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">{exp.description}</p>
                     </div>
                   </div>
