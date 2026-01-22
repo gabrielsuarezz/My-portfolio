@@ -16,6 +16,17 @@ const projects = [
     }
   },
   {
+    title: "HeliosAI",
+    description: "AI-powered educational platform that analyzes learning behavior and adapts feedback in real-time. Combines intelligent backend processing with context-aware responses for personalized study support.",
+    tags: ["Arduino", "Flask", "Gemini API", "Agent SDK", "OpenWeather API", "IoT"],
+    award: "🏆 Knight Hacks + MLH Winner",
+    links: {
+      demo: "http://www.helios.study/",
+      github: "https://github.com/pablomoli/helios",
+      devpost: "https://devpost.com/software/heliosai"
+    }
+  },
+  {
     title: "ViewGuard",
     description: "AI security command center that transforms CCTV into proactive monitoring. Detects theft, vandalism, fights, and medical emergencies in real-time with parallel vision models and conversational AI alerts.",
     tags: ["YOLOv8", "Gemini VLM", "ElevenLabs", "Next.js", "TensorFlow.js", "Supabase"],
@@ -33,17 +44,6 @@ const projects = [
     links: {
       github: "https://github.com/gabrielsuarezz/Shadow-Vision",
       devpost: "https://devpost.com/software/shadow-vision"
-    }
-  },
-  {
-    title: "HeliosAI",
-    description: "AI-powered educational platform that analyzes learning behavior and adapts feedback in real-time. Combines intelligent backend processing with context-aware responses for personalized study support.",
-    tags: ["Arduino", "Flask", "Gemini API", "Agent SDK", "OpenWeather API", "IoT"],
-    award: "🏆 Knight Hacks + MLH Winner",
-    links: {
-      demo: "http://www.helios.study/",
-      github: "https://github.com/pablomoli/helios",
-      devpost: "https://devpost.com/software/heliosai"
     }
   },
   {
