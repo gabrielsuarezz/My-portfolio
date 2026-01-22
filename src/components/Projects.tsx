@@ -48,9 +48,9 @@ const projects = [
   },
   {
     title: "Butterfly Detector",
-    description: "Computer vision system for ecological monitoring using Raspberry Pi. Led hardware team to achieve 92% species identification accuracy with real-time camera feed processing for biodiversity research.",
+    description: "Computer vision system for ecological monitoring using Raspberry Pi (Spring 2025). Led hardware team to achieve 92% species identification accuracy with real-time camera feed processing for biodiversity research.",
     tags: ["TensorFlow", "Flask", "Python", "OpenCV", "Raspberry Pi", "Edge ML"],
-    award: "🦋 INIT Build - Hardware Lead",
+    award: "🦋 INIT Build - Adv. AI/ML",
     links: {
       demo: "https://butterfly-web-app.vercel.app/",
       github: "https://github.com/gabrielsuarezz"
@@ -58,9 +58,9 @@ const projects = [
   },
   {
     title: "FrontalFriend",
-    description: "Cross-platform mental health companion with GPT-4 powered chat, curated relaxation media, push notification reminders, and cloud-synced wellness tracking. Built with React Native, Firebase Auth, and Supabase.",
+    description: "Cross-platform mental health companion with GPT-4 powered chat, curated relaxation media, push notification reminders, and cloud-synced wellness tracking (Fall 2025). Built with React Native, Firebase Auth, and Supabase.",
     tags: ["React Native", "Expo", "GPT-4", "Firebase", "Supabase", "TypeScript"],
-    award: "📱 INIT Build - Mobile Fall 2025",
+    award: "📱 INIT Build - Adv. Mobile Dev",
     links: {
       demo: "https://gabrielsuarezz.github.io/FrontalFriend/",
       github: "https://github.com/gabrielsuarezz/FrontalFriend"
