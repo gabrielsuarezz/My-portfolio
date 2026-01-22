@@ -58,11 +58,12 @@ const projects = [
   },
   {
     title: "FrontalFriend",
-    description: "Mobile-first AI wellness app featuring chatbot therapy, guided relaxation, medication reminders, health tracking, emergency resources, and secure cloud storage. First foray into mobile development.",
-    tags: ["React Native", "AI Chat", "Mobile", "Health Tracking", "Cloud Storage"],
-    award: "📱 INIT Build - Mobile",
+    description: "Cross-platform mental health companion with GPT-4 powered chat, curated relaxation media, push notification reminders, and cloud-synced wellness tracking. Built with React Native, Firebase Auth, and Supabase.",
+    tags: ["React Native", "Expo", "GPT-4", "Firebase", "Supabase", "TypeScript"],
+    award: "📱 INIT Build - Mobile Fall 2025",
     links: {
-      github: "https://github.com/flamemik/FrontalFriend"
+      demo: "https://gabrielsuarezz.github.io/FrontalFriend/",
+      github: "https://github.com/gabrielsuarezz/FrontalFriend"
     }
   },
   {
