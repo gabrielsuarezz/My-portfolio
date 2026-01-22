@@ -48,6 +48,8 @@ const DEV_NOTES: Record<string, string> = {
   "Voxtant": "Built the entire backend in 8 hours with zero sleep. The LLM integration was a nightmare but so worth it.",
   "Shadow Vision": "Creating the dataset was tedious - I spent 6 hours making hand gestures in front of a camera. My hand was sore for days!",
   "HeliosAI": "The servo motor kept breaking. We went through 3 different motors before finding one that could handle the solar panel weight.",
+  "FrontalFriend": "First mobile app! Learned React Native and Expo from scratch. The media playback cleanup patterns were tricky to get right.",
+  "SHE<Codes/>": "Senior design capstone - teaching Python through history. Blockly + Skulpt integration was surprisingly smooth once I figured out the bridge.",
 };
 
 const DEFAULT_DEV_NOTE = "Leading a team remotely while building ML models was challenging but incredibly rewarding. We had late-night debugging sessions that turned into great learning moments.";
