@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -6,6 +6,7 @@ import { Card } from "./ui/card";
 import { Loader2, Send, Trophy, X } from "lucide-react";
 import { useToast } from "./ui/use-toast";
 import { TerminalBackground } from "./TerminalBackground";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface Message {
   role: "user" | "assistant";
@@ -17,7 +18,7 @@ interface ChatState {
   isLoading: boolean;
 }
 
-export const TuringGame = () => {
+export const TuringGame = memo(() => {
   const [gameStarted, setGameStarted] = useState(false);
   const [input, setInput] = useState("");
   const [chat1, setChat1] = useState<ChatState>({ messages: [], isLoading: false });
@@ -25,6 +26,7 @@ export const TuringGame = () => {
   const [revealed, setRevealed] = useState(false);
   const [guessedCorrectly, setGuessedCorrectly] = useState<boolean | null>(null);
   const { toast } = useToast();
+  const prefersReducedMotion = useReducedMotion();
 
   // Randomly assign which chat is Gabriel
   const [gabrielIsChat1] = useState(() => Math.random() > 0.5);
@@ -423,4 +425,6 @@ export const TuringGame = () => {
       </div>
     </section>
   );
-};
+});
+
+TuringGame.displayName = 'TuringGame';

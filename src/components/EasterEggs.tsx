@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import { useKonamiCode } from '@/hooks/useKonamiCode';
 import { useKeyboardSequence } from '@/hooks/useKeyboardSequence';
 import { MatrixRain } from './MatrixRain';
 import { CommandPalette } from './CommandPalette';
 import { toast } from 'sonner';
 
-export const EasterEggs = () => {
+export const EasterEggs = memo(() => {
   const [showMatrix, setShowMatrix] = useState(false);
   const [showCommandPalette, setShowCommandPalette] = useState(false);
 
@@ -18,7 +18,6 @@ export const EasterEggs = () => {
   // Type "resume" to download
   useKeyboardSequence('resume', () => {
     toast.info('📄 Resume download would trigger here!');
-    // In a real implementation, trigger actual download
     console.log('Resume download triggered!');
   });
 
@@ -27,7 +26,7 @@ export const EasterEggs = () => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
-        setShowCommandPalette((prev) => !prev);
+        setShowCommandPalette(prev => !prev);
       } else if (e.key === 'Escape') {
         setShowCommandPalette(false);
       }
@@ -37,19 +36,20 @@ export const EasterEggs = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Time-based messages
+  // Time-based messages - only run once
   useEffect(() => {
     const hour = new Date().getHours();
     if (hour >= 23 || hour < 5) {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         toast('🌙 Still browsing at this hour?', {
           description: 'Me too. Let\'s grab coffee and talk code! ☕',
         });
       }, 3000);
+      return () => clearTimeout(timer);
     }
   }, []);
 
-  // Console messages
+  // Console messages - only run once
   useEffect(() => {
     const styles = {
       title: 'font-size: 24px; font-weight: bold; color: #10b981;',
@@ -84,18 +84,15 @@ export const EasterEggs = () => {
     console.log('%c\nHappy hunting! 🎮', styles.highlight);
   }, []);
 
+  const handleMatrixComplete = useCallback(() => setShowMatrix(false), []);
+  const handlePaletteClose = useCallback(() => setShowCommandPalette(false), []);
+
   return (
     <>
       {showMatrix && (
-        <MatrixRain
-          onComplete={() => setShowMatrix(false)}
-          duration={5000}
-        />
+        <MatrixRain onComplete={handleMatrixComplete} duration={5000} />
       )}
-      <CommandPalette
-        isOpen={showCommandPalette}
-        onClose={() => setShowCommandPalette(false)}
-      />
+      <CommandPalette isOpen={showCommandPalette} onClose={handlePaletteClose} />
       {/* Hidden message for inspectors */}
       <div style={{ display: 'none' }} data-secret="true">
         🎉 Congratulations! You found the hidden div!
@@ -105,4 +102,6 @@ export const EasterEggs = () => {
       </div>
     </>
   );
-};
+});
+
+EasterEggs.displayName = 'EasterEggs';

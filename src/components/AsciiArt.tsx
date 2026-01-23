@@ -8,16 +8,47 @@ interface AsciiArtProps {
   fontSize?: number;
 }
 
+const ASCII_CHARS = " .'`^\",:;Il!i~+_-?][}{1)(|/tfjrxnuvcz*#%@";
+const ASCII_CHARS_DETAILED = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+
+const LETTERS: Record<string, string[]> = {
+  'H': ['██   ██', '██   ██', '███████', '██   ██', '██   ██', '██   ██', '██   ██'],
+  'I': ['███████', '   ██  ', '   ██  ', '   ██  ', '   ██  ', '   ██  ', '███████'],
+  'R': ['██████ ', '██   ██', '██   ██', '██████ ', '██  ██ ', '██   ██', '██   ██'],
+  'E': ['███████', '██     ', '██     ', '█████  ', '██     ', '██     ', '███████'],
+  'M': ['██   ██', '███ ███', '███████', '██ █ ██', '██   ██', '██   ██', '██   ██'],
+  ' ': ['   ', '   ', '   ', '   ', '   ', '   ', '   ']
+};
+
 export const AsciiArt = memo(({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [asciiText, setAsciiText] = useState<string>("");
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const prefersReducedMotion = useReducedMotion();
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
-  // Memoize ASCII characters
-  const ASCII_CHARS = useMemo(() => " .'`^\",:;Il!i~+_-?][}{1)(|/tfjrxnuvcz*#%@", []);
-  const ASCII_CHARS_DETAILED = useMemo(() => " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$", []);
+  // Generate ASCII from image data
+  const generateAscii = useCallback((imageData: ImageData, imgWidth: number, imgHeight: number, detailed: boolean) => {
+    let ascii = "";
+    const chars = detailed ? ASCII_CHARS_DETAILED : ASCII_CHARS;
 
+    for (let y = 0; y < imgHeight; y++) {
+      for (let x = 0; x < imgWidth; x++) {
+        const offset = (y * imgWidth + x) * 4;
+        const r = imageData.data[offset];
+        const g = imageData.data[offset + 1];
+        const b = imageData.data[offset + 2];
+        const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
+        const charIndex = Math.floor((brightness / 255) * (chars.length - 1));
+        ascii += chars[charIndex];
+      }
+      ascii += "\n";
+    }
+    return ascii;
+  }, []);
+
+  // Load image once
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -29,6 +60,7 @@ export const AsciiArt = memo(({ imageSrc, width = 120, fontSize = 8 }: AsciiArtP
     img.crossOrigin = "anonymous";
     
     img.onload = () => {
+      imgRef.current = img;
       const aspectRatio = img.height / img.width;
       const height = Math.floor(width * aspectRatio * 0.5);
 
@@ -37,57 +69,43 @@ export const AsciiArt = memo(({ imageSrc, width = 120, fontSize = 8 }: AsciiArtP
 
       ctx.drawImage(img, 0, 0, width, height);
       const imageData = ctx.getImageData(0, 0, width, height);
-
-      let ascii = "";
-      const chars = isHovered ? ASCII_CHARS_DETAILED : ASCII_CHARS;
-
-      for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-          const offset = (y * width + x) * 4;
-          const r = imageData.data[offset];
-          const g = imageData.data[offset + 1];
-          const b = imageData.data[offset + 2];
-
-          const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
-          const charIndex = Math.floor((brightness / 255) * (chars.length - 1));
-          
-          ascii += chars[charIndex];
-        }
-        ascii += "\n";
-      }
-
-      setAsciiText(ascii);
+      
+      setAsciiText(generateAscii(imageData, width, height, false));
+      setIsLoaded(true);
     };
 
     img.src = imageSrc;
-  }, [imageSrc, width, isHovered, ASCII_CHARS, ASCII_CHARS_DETAILED]);
+  }, [imageSrc, width, generateAscii]);
 
-  // Memoize block letters
-  const letters = useMemo(() => ({
-    'H': ['██   ██', '██   ██', '███████', '██   ██', '██   ██', '██   ██', '██   ██'],
-    'I': ['███████', '   ██  ', '   ██  ', '   ██  ', '   ██  ', '   ██  ', '███████'],
-    'R': ['██████ ', '██   ██', '██   ██', '██████ ', '██  ██ ', '██   ██', '██   ██'],
-    'E': ['███████', '██     ', '██     ', '█████  ', '██     ', '██     ', '███████'],
-    'M': ['██   ██', '███ ███', '███████', '██ █ ██', '██   ██', '██   ██', '██   ██'],
-    ' ': ['   ', '   ', '   ', '   ', '   ', '   ', '   ']
-  }), []);
+  // Regenerate ASCII when hover state changes (only if loaded)
+  useEffect(() => {
+    if (!isLoaded || !imgRef.current || !canvasRef.current) return;
+    
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    if (!ctx) return;
 
-  const generateAsciiBlockText = useCallback(() => {
+    const aspectRatio = imgRef.current.height / imgRef.current.width;
+    const height = Math.floor(width * aspectRatio * 0.5);
+    
+    const imageData = ctx.getImageData(0, 0, width, height);
+    setAsciiText(generateAscii(imageData, width, height, isHovered));
+  }, [isHovered, isLoaded, width, generateAscii]);
+
+  const generateBlockText = useCallback(() => {
     const text = 'HIRE ME';
-    const letterArrays = text.split('').map(char => letters[char as keyof typeof letters] || letters[' ']);
+    const letterArrays = text.split('').map(char => LETTERS[char] || LETTERS[' ']);
     
     const combinedLines: string[] = [];
     for (let row = 0; row < 7; row++) {
-      const line = letterArrays.map(letter => letter[row]).join(' ');
-      combinedLines.push(line);
+      combinedLines.push(letterArrays.map(letter => letter[row]).join(' '));
     }
-    
     return combinedLines;
-  }, [letters]);
+  }, []);
 
   const insertTextIntoAscii = useCallback((ascii: string) => {
     const lines = ascii.split('\n');
-    const blockText = generateAsciiBlockText();
+    const blockText = generateBlockText();
     const startLine = 2;
     
     blockText.forEach((textLine, i) => {
@@ -105,7 +123,7 @@ export const AsciiArt = memo(({ imageSrc, width = 120, fontSize = 8 }: AsciiArtP
     });
     
     return lines;
-  }, [generateAsciiBlockText]);
+  }, [generateBlockText]);
 
   const lines = useMemo(() => 
     isHovered ? insertTextIntoAscii(asciiText) : asciiText.split('\n'),
@@ -115,86 +133,57 @@ export const AsciiArt = memo(({ imageSrc, width = 120, fontSize = 8 }: AsciiArtP
   const handleMouseEnter = useCallback(() => setIsHovered(true), []);
   const handleMouseLeave = useCallback(() => setIsHovered(false), []);
 
+  // Simplified rendering for performance
   return (
     <div className="relative">
       <canvas ref={canvasRef} className="hidden" />
       
       <motion.pre
-        className="font-mono text-primary/80 leading-none select-none overflow-hidden"
+        className="font-mono text-primary/80 leading-none select-none overflow-hidden cursor-pointer"
         style={{ fontSize: `${fontSize}px` }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        initial={{ opacity: 0 }}
         animate={{ 
-          opacity: 1,
-          filter: isHovered ? 'brightness(1.2) contrast(1.1)' : 'brightness(1) contrast(1)'
+          filter: isHovered ? 'brightness(1.2)' : 'brightness(1)'
         }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.2 }}
       >
-        {lines.map((line, i) => {
-          const isMessageLine = isHovered && i >= 2 && i <= 8;
-          
-          // Skip animation for reduced motion
-          if (prefersReducedMotion) {
+        {prefersReducedMotion ? (
+          // Static rendering for reduced motion
+          lines.map((line, i) => {
+            const isMessageLine = isHovered && i >= 2 && i <= 8;
             return (
               <div
                 key={i}
-                className={isMessageLine ? "text-accent font-extrabold" : isHovered ? "text-accent/70" : ""}
-                style={{ 
-                  fontSize: isMessageLine ? `${fontSize * 1.1}px` : `${fontSize}px`,
-                  letterSpacing: isMessageLine ? '0.05em' : 'normal'
-                }}
+                className={isMessageLine ? "text-accent font-bold" : isHovered ? "text-accent/70" : ""}
               >
                 {line}
               </div>
             );
-          }
-          
-          return (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.005, duration: 0.2 }}
-              className={isMessageLine ? "text-accent font-extrabold" : isHovered ? "text-accent/70" : ""}
-              style={{ 
-                fontSize: isMessageLine ? `${fontSize * 1.1}px` : `${fontSize}px`,
-                letterSpacing: isMessageLine ? '0.05em' : 'normal',
-                willChange: 'transform, opacity',
-              }}
-            >
-              {line}
-            </motion.div>
-          );
-        })}
+          })
+        ) : (
+          // Animated rendering - simplified
+          lines.map((line, i) => {
+            const isMessageLine = isHovered && i >= 2 && i <= 8;
+            return (
+              <div
+                key={i}
+                className={`transition-colors duration-200 ${isMessageLine ? "text-accent font-bold" : isHovered ? "text-accent/70" : ""}`}
+              >
+                {line}
+              </div>
+            );
+          })
+        )}
       </motion.pre>
 
-      {/* Scanline effect - simplified for performance */}
+      {/* Static scanline overlay - no animation */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-60"
+        className="absolute inset-0 pointer-events-none opacity-40"
         style={{
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, hsl(217 91% 60% / 0.03) 2px, hsl(217 91% 60% / 0.03) 4px)',
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, hsl(217 91% 60% / 0.02) 2px, hsl(217 91% 60% / 0.02) 4px)',
         }}
       />
-
-      {/* Glitch effect on hover - only when not reduced motion */}
-      {isHovered && !prefersReducedMotion && (
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          animate={{
-            x: [0, -2, 2, 0],
-            opacity: [0, 0.5, 0],
-          }}
-          transition={{
-            duration: 0.2,
-            repeat: Infinity,
-            repeatDelay: 0.5,
-          }}
-          style={{
-            textShadow: '2px 0 hsl(187 85% 53%), -2px 0 hsl(217 91% 60%)',
-          }}
-        />
-      )}
     </div>
   );
 });
