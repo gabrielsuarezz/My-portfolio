@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, memo, useCallback } from "react";
 import { ProjectCard } from "./ProjectCard";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const projects = [
   {
@@ -78,10 +79,11 @@ const projects = [
   }
 ];
 
-export const Projects = () => {
+export const Projects = memo(() => {
   const [revealedNotes, setRevealedNotes] = useState<Set<string>>(new Set());
+  const prefersReducedMotion = useReducedMotion();
 
-  const handleLongPress = (projectTitle: string) => {
+  const handleLongPress = useCallback((projectTitle: string) => {
     setRevealedNotes((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(projectTitle)) {
@@ -97,16 +99,19 @@ export const Projects = () => {
       }
       return newSet;
     });
-  };
+  }, []);
+
+  const headerVariants = prefersReducedMotion 
+    ? { initial: { opacity: 1 }, whileInView: { opacity: 1 } }
+    : { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 } };
 
   return (
     <section id="projects" className="py-24 relative">
       <div className="container mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          {...headerVariants}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4 font-mono">
@@ -132,4 +137,6 @@ export const Projects = () => {
       </div>
     </section>
   );
-};
+});
+
+Projects.displayName = 'Projects';

@@ -1,9 +1,17 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { Code2, Brain, Cpu, Database } from "lucide-react";
+import { Code2, Brain, Cpu, Database, LucideIcon } from "lucide-react";
 import { TerminalBackground } from "./TerminalBackground";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-const skillCategories = [
+interface SkillCategory {
+  icon: LucideIcon;
+  title: string;
+  skills: string[];
+}
+
+const skillCategories: SkillCategory[] = [
   {
     icon: Code2,
     title: "Languages & Frameworks",
@@ -26,16 +34,62 @@ const skillCategories = [
   }
 ];
 
-export const Skills = () => {
+const SkillCard = memo(({ category, index, prefersReducedMotion }: { 
+  category: SkillCategory; 
+  index: number;
+  prefersReducedMotion: boolean;
+}) => {
+  const Icon = category.icon;
+  
+  const cardVariants = prefersReducedMotion 
+    ? { initial: { opacity: 1 }, whileInView: { opacity: 1 } }
+    : { 
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 }
+      };
+
+  return (
+    <motion.div
+      {...cardVariants}
+      viewport={{ once: true }}
+      transition={{ delay: prefersReducedMotion ? 0 : index * 0.1, duration: 0.5 }}
+    >
+      <Card className="p-4 sm:p-6 h-full hover-lift border-border/50 backdrop-blur-sm bg-card/50">
+        <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+          <div className="terminal-icon flex-shrink-0">
+            <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
+          </div>
+          <h3 className="font-mono font-semibold text-base sm:text-lg text-foreground">{category.title}</h3>
+        </div>
+        <div className="flex flex-wrap gap-1.5 sm:gap-2">
+          {category.skills.map((skill) => (
+            <span
+              key={skill}
+              className="text-xs sm:text-sm text-muted-foreground bg-secondary/50 border border-border/50 px-2 sm:px-3 py-1 rounded-sm font-mono hover:border-primary/40 hover:text-primary transition-colors duration-200"
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      </Card>
+    </motion.div>
+  );
+});
+
+SkillCard.displayName = 'SkillCard';
+
+export const Skills = memo(() => {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <section id="skills" className="py-24 bg-muted/30 relative overflow-hidden">
-      <TerminalBackground density="medium" speed="slow" />
+      <TerminalBackground density="light" speed="slow" />
       <div className="container mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 font-mono">
@@ -48,39 +102,18 @@ export const Skills = () => {
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {skillCategories.map((category, index) => {
-            const Icon = category.icon;
-            return (
-              <motion.div
-                key={category.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-              >
-                <Card className="p-4 sm:p-6 h-full hover-lift border-border/50 backdrop-blur-sm bg-card/50 scanlines">
-                  <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                    <div className="terminal-icon flex-shrink-0">
-                      <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
-                    </div>
-                    <h3 className="font-mono font-semibold text-base sm:text-lg text-foreground">{category.title}</h3>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                    {category.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="text-xs sm:text-sm text-muted-foreground bg-secondary/50 border border-border/50 px-2 sm:px-3 py-1 rounded-sm font-mono hover:border-primary/40 hover:text-primary transition-all duration-300"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </Card>
-              </motion.div>
-            );
-          })}
+          {skillCategories.map((category, index) => (
+            <SkillCard 
+              key={category.title}
+              category={category} 
+              index={index}
+              prefersReducedMotion={prefersReducedMotion}
+            />
+          ))}
         </div>
       </div>
     </section>
   );
-};
+});
+
+Skills.displayName = 'Skills';

@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo, useMemo } from "react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface TerminalLine {
+  id: number;
   text: string;
   delay: number;
   x: number;
@@ -30,68 +32,106 @@ const terminalSnippets = [
   ">>> Processing solar panel telemetry...",
 ];
 
-export const TerminalBackground = ({ 
-  density = "medium",
-  speed = "slow" 
-}: { 
+const densityMap = {
+  light: 8,
+  medium: 12,
+  heavy: 18,
+} as const;
+
+const speedMap = {
+  slow: 35,
+  medium: 22,
+  fast: 14,
+} as const;
+
+interface TerminalBackgroundProps {
   density?: "light" | "medium" | "heavy";
   speed?: "slow" | "medium" | "fast";
-}) => {
-  const [lines, setLines] = useState<TerminalLine[]>([]);
+}
 
-  const densityMap = {
-    light: 12,
-    medium: 18,
-    heavy: 26,
-  };
+// Memoized individual line component to prevent re-renders
+const TerminalLine = memo(({ 
+  line, 
+  animationSpeed 
+}: { 
+  line: TerminalLine; 
+  animationSpeed: number;
+}) => (
+  <motion.div
+    initial={{ y: -100, opacity: 0 }}
+    animate={{
+      y: ["0vh", "110vh"],
+      opacity: [0, 0.5, 0.5, 0],
+    }}
+    transition={{
+      duration: animationSpeed,
+      delay: line.delay,
+      repeat: Infinity,
+      ease: "linear",
+    }}
+    className="absolute whitespace-nowrap font-mono text-xs text-primary/70"
+    style={{
+      left: `${line.x}%`,
+      willChange: 'transform',
+    }}
+  >
+    {line.text}
+  </motion.div>
+));
 
-  const speedMap = {
-    slow: 40,
-    medium: 25,
-    fast: 15,
-  };
+TerminalLine.displayName = 'TerminalLine';
 
+export const TerminalBackground = memo(({ 
+  density = "medium",
+  speed = "slow" 
+}: TerminalBackgroundProps) => {
+  const prefersReducedMotion = useReducedMotion();
+  
   const lineCount = densityMap[density];
   const animationSpeed = speedMap[speed];
 
-  useEffect(() => {
+  // Generate lines only once on mount
+  const lines = useMemo(() => {
     const generatedLines: TerminalLine[] = [];
     for (let i = 0; i < lineCount; i++) {
       generatedLines.push({
+        id: i,
         text: terminalSnippets[Math.floor(Math.random() * terminalSnippets.length)],
-        delay: Math.random() * 20,
-        x: Math.random() * 100,
+        delay: Math.random() * 15,
+        x: Math.random() * 90 + 5,
       });
     }
-    setLines(generatedLines);
+    return generatedLines;
   }, [lineCount]);
 
+  // Skip rendering entirely if reduced motion is preferred
+  if (prefersReducedMotion) {
+    return (
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+        {lines.slice(0, 5).map((line) => (
+          <div
+            key={line.id}
+            className="absolute whitespace-nowrap font-mono text-xs text-primary/50"
+            style={{ left: `${line.x}%`, top: `${line.id * 20}%` }}
+          >
+            {line.text}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.25]">
-      {lines.map((line, i) => (
-        <motion.div
-          key={i}
-          initial={{ y: -100, opacity: 0 }}
-          animate={{
-            y: ["0vh", "110vh"],
-            opacity: [0, 0.6, 0.6, 0],
-          }}
-          transition={{
-            duration: animationSpeed,
-            delay: line.delay,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          className="absolute whitespace-nowrap font-mono text-xs md:text-sm text-primary"
-          style={{
-            left: `${line.x}%`,
-            filter: "blur(0.3px)",
-            textShadow: "0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--primary) / 0.3)",
-          }}
-        >
-          {line.text}
-        </motion.div>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+      {lines.map((line) => (
+        <TerminalLine 
+          key={line.id} 
+          line={line} 
+          animationSpeed={animationSpeed} 
+        />
       ))}
     </div>
   );
-};
+});
+
+TerminalBackground.displayName = 'TerminalBackground';
