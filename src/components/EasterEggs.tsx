@@ -61,7 +61,7 @@ export const EasterEggs = memo(() => {
     console.log('%cThanks for checking out my code!', styles.message);
     console.log('%c\nI see you\'re curious about how things work.', styles.message);
     console.log('%cThat\'s exactly the kind of person I want to work with! 🚀', styles.highlight);
-    console.log('%c\nLet\'s connect: gabriel@example.com', styles.highlight);
+    console.log('%c\nLet\'s connect: gabrielsc0513@gmail.com', styles.highlight);
     
     console.log('%c\n🎨 ASCII Art:', 'font-size: 16px; font-weight: bold;');
     console.log(`
