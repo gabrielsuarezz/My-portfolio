@@ -81,14 +81,14 @@ export const SkillConstellation = memo(() => {
       categoryGroups[skill.category].push(skill);
     });
     
-    // Better spread layers with more spacing
+    // Better spread layers with more separation between AI and Web
     const categoryLayers: Record<string, { angle: number; radius: number }> = {
       language: { angle: -90, radius: 15 },    // Top center - core
-      ai: { angle: -35, radius: 32 },          // Top right - AI cluster (more spread)
-      web: { angle: 35, radius: 32 },          // Right - Web cluster
-      data: { angle: 100, radius: 28 },        // Bottom right - Data
-      hardware: { angle: 160, radius: 30 },    // Bottom left - Hardware
-      tool: { angle: -140, radius: 28 },       // Left - Tools
+      ai: { angle: -50, radius: 34 },          // Upper left - AI cluster (moved further left)
+      web: { angle: 50, radius: 34 },          // Upper right - Web cluster (moved further right)
+      data: { angle: 110, radius: 28 },        // Bottom right - Data
+      hardware: { angle: 170, radius: 30 },    // Bottom - Hardware
+      tool: { angle: -150, radius: 28 },       // Left - Tools
     };
     
     const positionedNodes: Array<typeof SKILLS[0] & { x: number; y: number }> = [];
@@ -98,19 +98,19 @@ export const SkillConstellation = memo(() => {
       const count = skills.length;
       
       skills.forEach((skill, index) => {
-        // Wider spread for better label visibility
-        const spreadAngle = Math.min(70, count * 15);
+        // Narrower spread to keep categories more separate
+        const spreadAngle = Math.min(55, count * 12);
         const angleOffset = count > 1 ? (index / (count - 1) - 0.5) * spreadAngle : 0;
         const angle = ((layer.angle + angleOffset) * Math.PI) / 180;
         
-        // Stagger radius slightly for depth effect
-        const radiusVariation = (index % 2) * 5;
+        // Stagger radius more for depth and separation
+        const radiusVariation = (index % 3) * 4;
         const radius = layer.radius + radiusVariation;
         
         positionedNodes.push({
           ...skill,
-          x: Math.max(8, Math.min(92, centerX + Math.cos(angle) * radius)),
-          y: Math.max(8, Math.min(92, centerY + Math.sin(angle) * radius)),
+          x: Math.max(10, Math.min(90, centerX + Math.cos(angle) * radius)),
+          y: Math.max(10, Math.min(90, centerY + Math.sin(angle) * radius)),
         });
       });
     });
