@@ -3,44 +3,71 @@ import { Card } from '@/components/ui/card';
 
 interface Skill {
   name: string;
-  category: 'language' | 'ai' | 'web' | 'data' | 'hardware';
+  category: 'language' | 'ai' | 'web' | 'data' | 'hardware' | 'tool';
   level: number; // 1-5
   connections: string[];
 }
 
 const SKILLS: Skill[] = [
-  // Languages
-  { name: 'Python', category: 'language', level: 5, connections: ['TensorFlow', 'PyTorch', 'Flask', 'FastAPI', 'OpenCV'] },
-  { name: 'TypeScript', category: 'language', level: 4, connections: ['React', 'Next.js', 'Node.js'] },
-  { name: 'Java', category: 'language', level: 4, connections: ['Spring', 'PostgreSQL'] },
-  { name: 'C++', category: 'language', level: 3, connections: ['Arduino', 'OpenCV'] },
-  { name: 'SQL', category: 'language', level: 4, connections: ['PostgreSQL', 'SQLite'] },
+  // Core Languages
+  { name: 'Python', category: 'language', level: 5, connections: ['TensorFlow', 'PyTorch', 'Flask', 'FastAPI', 'OpenCV', 'NumPy', 'Pandas'] },
+  { name: 'TypeScript', category: 'language', level: 4, connections: ['React', 'Next.js', 'Node.js', 'Vite'] },
+  { name: 'JavaScript', category: 'language', level: 4, connections: ['React', 'Node.js', 'Vite'] },
+  { name: 'Java', category: 'language', level: 4, connections: ['Spring', 'PostgreSQL', 'Android'] },
+  { name: 'C++', category: 'language', level: 3, connections: ['Arduino', 'OpenCV', 'Embedded'] },
+  { name: 'SQL', category: 'language', level: 4, connections: ['PostgreSQL', 'SQLite', 'Supabase'] },
   
-  // AI/ML
-  { name: 'TensorFlow', category: 'ai', level: 4, connections: ['Python', 'Computer Vision', 'NLP'] },
-  { name: 'PyTorch', category: 'ai', level: 4, connections: ['Python', 'LLMs', 'NLP'] },
+  // AI/ML Core
+  { name: 'TensorFlow', category: 'ai', level: 4, connections: ['Python', 'Computer Vision', 'NLP', 'Keras'] },
+  { name: 'PyTorch', category: 'ai', level: 4, connections: ['Python', 'LLMs', 'NLP', 'Transformers'] },
   { name: 'OpenCV', category: 'ai', level: 5, connections: ['Python', 'C++', 'Computer Vision', 'MediaPipe'] },
-  { name: 'MediaPipe', category: 'ai', level: 4, connections: ['OpenCV', 'Computer Vision'] },
-  { name: 'LLMs', category: 'ai', level: 4, connections: ['PyTorch', 'NLP', 'FastAPI'] },
-  { name: 'NLP', category: 'ai', level: 4, connections: ['TensorFlow', 'PyTorch', 'LLMs'] },
-  { name: 'Computer Vision', category: 'ai', level: 5, connections: ['TensorFlow', 'OpenCV', 'MediaPipe'] },
+  { name: 'MediaPipe', category: 'ai', level: 4, connections: ['OpenCV', 'Computer Vision', 'Gesture'] },
+  { name: 'LLMs', category: 'ai', level: 4, connections: ['PyTorch', 'NLP', 'FastAPI', 'Transformers', 'GPT'] },
+  { name: 'NLP', category: 'ai', level: 4, connections: ['TensorFlow', 'PyTorch', 'LLMs', 'Transformers'] },
+  { name: 'Computer Vision', category: 'ai', level: 5, connections: ['TensorFlow', 'OpenCV', 'MediaPipe', 'YOLOv8'] },
   
-  // Web
-  { name: 'React', category: 'web', level: 5, connections: ['TypeScript', 'Next.js', 'Node.js'] },
-  { name: 'Next.js', category: 'web', level: 4, connections: ['React', 'TypeScript'] },
-  { name: 'Flask', category: 'web', level: 4, connections: ['Python', 'PostgreSQL'] },
-  { name: 'FastAPI', category: 'web', level: 4, connections: ['Python', 'LLMs'] },
-  { name: 'Node.js', category: 'web', level: 3, connections: ['TypeScript', 'React'] },
+  // AI/ML Extended
+  { name: 'Keras', category: 'ai', level: 4, connections: ['TensorFlow', 'Python'] },
+  { name: 'Transformers', category: 'ai', level: 3, connections: ['PyTorch', 'LLMs', 'NLP'] },
+  { name: 'YOLOv8', category: 'ai', level: 4, connections: ['Computer Vision', 'Python'] },
+  { name: 'GPT', category: 'ai', level: 4, connections: ['LLMs', 'FastAPI'] },
+  { name: 'Gesture', category: 'ai', level: 4, connections: ['MediaPipe', 'TouchDesigner'] },
+  { name: 'NumPy', category: 'ai', level: 4, connections: ['Python', 'Pandas'] },
+  { name: 'Pandas', category: 'ai', level: 4, connections: ['Python', 'NumPy'] },
   
-  // Data
-  { name: 'PostgreSQL', category: 'data', level: 4, connections: ['SQL', 'Flask', 'Java'] },
+  // Web Frontend
+  { name: 'React', category: 'web', level: 5, connections: ['TypeScript', 'JavaScript', 'Next.js', 'Vite', 'Tailwind'] },
+  { name: 'Next.js', category: 'web', level: 4, connections: ['React', 'TypeScript', 'Vercel'] },
+  { name: 'Tailwind', category: 'web', level: 5, connections: ['React', 'Vite'] },
+  { name: 'Vite', category: 'web', level: 4, connections: ['React', 'TypeScript', 'JavaScript'] },
+  
+  // Web Backend
+  { name: 'Flask', category: 'web', level: 4, connections: ['Python', 'PostgreSQL', 'REST'] },
+  { name: 'FastAPI', category: 'web', level: 4, connections: ['Python', 'LLMs', 'REST'] },
+  { name: 'Node.js', category: 'web', level: 3, connections: ['TypeScript', 'JavaScript', 'REST'] },
+  { name: 'REST', category: 'web', level: 4, connections: ['Flask', 'FastAPI', 'Node.js'] },
+  { name: 'Vercel', category: 'web', level: 3, connections: ['Next.js', 'React'] },
+  
+  // Data & Infrastructure
+  { name: 'PostgreSQL', category: 'data', level: 4, connections: ['SQL', 'Flask', 'Java', 'Supabase'] },
   { name: 'SQLite', category: 'data', level: 4, connections: ['SQL', 'Python'] },
+  { name: 'Supabase', category: 'data', level: 4, connections: ['PostgreSQL', 'SQL', 'React'] },
+  { name: 'Firebase', category: 'data', level: 3, connections: ['React', 'Android'] },
   { name: 'Spring', category: 'data', level: 3, connections: ['Java'] },
   
-  // Hardware
-  { name: 'Arduino', category: 'hardware', level: 4, connections: ['C++', 'Sensors'] },
-  { name: 'Raspberry Pi', category: 'hardware', level: 4, connections: ['Python', 'Sensors'] },
+  // Hardware & IoT
+  { name: 'Arduino', category: 'hardware', level: 4, connections: ['C++', 'Sensors', 'Embedded'] },
+  { name: 'Raspberry Pi', category: 'hardware', level: 4, connections: ['Python', 'Sensors', 'Linux'] },
   { name: 'Sensors', category: 'hardware', level: 4, connections: ['Arduino', 'Raspberry Pi'] },
+  { name: 'Embedded', category: 'hardware', level: 3, connections: ['C++', 'Arduino'] },
+  { name: 'Linux', category: 'hardware', level: 3, connections: ['Raspberry Pi', 'Docker'] },
+  
+  // Tools
+  { name: 'TouchDesigner', category: 'tool', level: 4, connections: ['Python', 'Gesture'] },
+  { name: 'Docker', category: 'tool', level: 3, connections: ['Linux', 'Vercel'] },
+  { name: 'Git', category: 'tool', level: 5, connections: ['GitHub'] },
+  { name: 'GitHub', category: 'tool', level: 5, connections: ['Git', 'Vercel'] },
+  { name: 'Android', category: 'tool', level: 3, connections: ['Java', 'Firebase'] },
 ];
 
 const CATEGORY_COLORS = {
@@ -49,6 +76,7 @@ const CATEGORY_COLORS = {
   web: 'hsl(140 70% 50%)',
   data: 'hsl(35 90% 55%)',
   hardware: 'hsl(0 80% 60%)',
+  tool: 'hsl(200 80% 55%)',
 };
 
 const CATEGORY_LABELS = {
@@ -57,41 +85,64 @@ const CATEGORY_LABELS = {
   web: 'Web Dev',
   data: 'Data',
   hardware: 'Hardware',
+  tool: 'Tools',
 };
 
 export const SkillConstellation = memo(() => {
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  // Calculate node positions in a constellation pattern
+  // Calculate node positions in a neural network-like layered pattern
   const nodes = useMemo(() => {
     const centerX = 50;
     const centerY = 50;
-    const categoryAngles: Record<string, number> = {
-      language: -90,
-      ai: -18,
-      web: 54,
-      data: 126,
-      hardware: 198,
+    
+    // Group skills by category
+    const categoryGroups: Record<string, typeof SKILLS> = {};
+    SKILLS.forEach((skill) => {
+      if (!categoryGroups[skill.category]) {
+        categoryGroups[skill.category] = [];
+      }
+      categoryGroups[skill.category].push(skill);
+    });
+    
+    // Define layer positions (like neural network layers)
+    const categoryLayers: Record<string, { angle: number; minRadius: number; maxRadius: number }> = {
+      language: { angle: -90, minRadius: 8, maxRadius: 22 },      // Top center - core
+      ai: { angle: -30, minRadius: 20, maxRadius: 42 },           // Top right - AI cluster
+      web: { angle: 30, minRadius: 20, maxRadius: 42 },           // Right - Web cluster
+      data: { angle: 90, minRadius: 15, maxRadius: 35 },          // Bottom right - Data
+      hardware: { angle: 150, minRadius: 18, maxRadius: 38 },     // Bottom left - Hardware
+      tool: { angle: -150, minRadius: 15, maxRadius: 35 },        // Left - Tools
     };
     
-    const categoryCount: Record<string, number> = {};
+    const positionedNodes: Array<typeof SKILLS[0] & { x: number; y: number }> = [];
     
-    return SKILLS.map((skill) => {
-      const baseAngle = categoryAngles[skill.category];
-      categoryCount[skill.category] = (categoryCount[skill.category] || 0) + 1;
-      const offset = (categoryCount[skill.category] - 1) * 12 - 18;
-      const angle = ((baseAngle + offset) * Math.PI) / 180;
+    Object.entries(categoryGroups).forEach(([category, skills]) => {
+      const layer = categoryLayers[category] || { angle: 0, minRadius: 20, maxRadius: 40 };
+      const count = skills.length;
       
-      // Vary radius based on skill level
-      const radius = 25 + (skill.level * 3) + (categoryCount[skill.category] % 2 === 0 ? 5 : 0);
-      
-      return {
-        ...skill,
-        x: centerX + Math.cos(angle) * radius,
-        y: centerY + Math.sin(angle) * radius,
-      };
+      skills.forEach((skill, index) => {
+        // Spread nodes in an arc within the category zone
+        const spreadAngle = 50; // degrees of spread
+        const angleOffset = count > 1 ? (index / (count - 1) - 0.5) * spreadAngle : 0;
+        const angle = ((layer.angle + angleOffset) * Math.PI) / 180;
+        
+        // Vary radius based on skill level and index for depth
+        const radiusRange = layer.maxRadius - layer.minRadius;
+        const radiusOffset = (index % 3) * (radiusRange / 3);
+        const levelBonus = (skill.level - 3) * 2;
+        const radius = layer.minRadius + radiusOffset + levelBonus + (Math.random() * 3 - 1.5);
+        
+        positionedNodes.push({
+          ...skill,
+          x: Math.max(5, Math.min(95, centerX + Math.cos(angle) * radius)),
+          y: Math.max(5, Math.min(95, centerY + Math.sin(angle) * radius)),
+        });
+      });
     });
+    
+    return positionedNodes;
   }, []);
 
   // Calculate connections
@@ -139,15 +190,15 @@ export const SkillConstellation = memo(() => {
   }, [hoveredSkill, selectedCategory]);
 
   return (
-    <section id="skills" className="py-24 bg-muted/30 relative overflow-hidden">
+    <section id="skill-network" className="py-24 bg-muted/30 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12 opacity-0 animate-[fadeSlideUp_0.5s_ease-out_forwards]">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 font-mono">
             <span className="text-muted-foreground opacity-60">// </span>
-            Technical <span className="text-gradient">Expertise</span>
+            Skill <span className="text-gradient">Network</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto font-mono opacity-80">
-            Interactive skill map — hover to explore connections
+            Neural map of technical expertise — hover to explore connections
           </p>
         </div>
 

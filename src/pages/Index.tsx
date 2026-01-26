@@ -9,6 +9,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 // Lazy load below-the-fold components
 const Projects = lazy(() => import("@/components/Projects").then(m => ({ default: m.Projects })));
+const Skills = lazy(() => import("@/components/Skills").then(m => ({ default: m.Skills })));
 const SkillConstellation = lazy(() => import("@/components/SkillConstellation").then(m => ({ default: m.SkillConstellation })));
 const Experience = lazy(() => import("@/components/Experience").then(m => ({ default: m.Experience })));
 const GitHubStats = lazy(() => import("@/components/GitHubStats").then(m => ({ default: m.GitHubStats })));
@@ -52,7 +53,7 @@ const Index = memo(() => {
       </LazySection>
       
       <LazySection>
-        <SkillConstellation />
+        <Skills />
       </LazySection>
       
       <LazySection>
@@ -63,7 +64,7 @@ const Index = memo(() => {
         <GitHubStats />
       </LazySection>
 
-      {/* GitHub Activity Section */}
+      {/* GitHub Activity + Skill Network Section */}
       <section className="py-16 bg-muted/20">
         <div className="container mx-auto px-6">
           <div className="text-center mb-10 opacity-0 animate-[fadeSlideUp_0.5s_ease-out_forwards]">
@@ -80,6 +81,11 @@ const Index = memo(() => {
           </Suspense>
         </div>
       </section>
+
+      {/* Skill Network Visualization */}
+      <LazySection>
+        <SkillConstellation />
+      </LazySection>
       
       <LazySection>
         <TuringGame />
