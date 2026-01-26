@@ -10,7 +10,7 @@ import {
 import { toast } from 'sonner';
 
 const THEMES = [
-  { id: 'default', name: 'Cyber', color: 'hsl(189 94% 43%)', description: 'Default cyan tech' },
+  { id: 'default', name: 'Neon', color: 'hsl(189 94% 43%)', description: 'Electric cyan glow' },
   { id: 'matrix', name: 'Matrix', color: 'hsl(120 100% 50%)', description: 'Green terminal' },
   { id: 'retro', name: 'Amber CRT', color: 'hsl(35 100% 55%)', description: 'Retro monitor' },
   { id: 'cyberpunk', name: 'Cyberpunk', color: 'hsl(300 100% 60%)', description: 'Neon pink' },
