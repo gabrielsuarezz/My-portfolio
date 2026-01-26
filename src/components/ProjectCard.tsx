@@ -277,17 +277,15 @@ export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: Pr
             </div>
           )}
 
-          {/* Tech stack with terminal styling */}
+          {/* Tech stack */}
           <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6">
-            {project.tags.map((tag, i) => (
+            {project.tags.map((tag) => (
               <Badge 
                 key={tag} 
                 variant="outline" 
                 className="text-xs border-primary/30 hover:border-primary hover:bg-primary/10 transition-colors duration-200 font-mono"
               >
-                <span className="text-primary/40 mr-1">{i === 0 ? '{' : ','}</span>
                 {tag}
-                {i === project.tags.length - 1 && <span className="text-primary/40 ml-1">{'}'}</span>}
               </Badge>
             ))}
           </div>
