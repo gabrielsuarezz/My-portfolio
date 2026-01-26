@@ -1,5 +1,5 @@
 import { useState, useEffect, memo, useCallback } from "react";
-import { Menu, X, FileText, Download } from "lucide-react";
+import { Menu, X, FileText, FileDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -106,10 +106,11 @@ export const Navigation = memo(() => {
                   variant="default"
                   size="sm"
                   asChild
+                  title="Download Resume (PDF)"
                 >
                   <a href="/Gabriel_Suarez_Resume.pdf" download="Gabriel_Suarez_Resume.pdf">
-                    <Download className="h-4 w-4 xl:mr-2" />
-                    <span className="hidden xl:inline">Resume</span>
+                    <FileDown className="h-4 w-4 mr-2" />
+                    <span>Resume</span>
                   </a>
                 </Button>
               </div>
@@ -131,9 +132,11 @@ export const Navigation = memo(() => {
                 variant="default"
                 size="sm"
                 asChild
+                title="Download Resume (PDF)"
               >
                 <a href="/Gabriel_Suarez_Resume.pdf" download="Gabriel_Suarez_Resume.pdf">
-                  <Download className="h-4 w-4" />
+                  <FileDown className="h-4 w-4 mr-1" />
+                  <span className="text-xs">CV</span>
                 </a>
               </Button>
             </div>
@@ -177,8 +180,8 @@ export const Navigation = memo(() => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <a href="/Gabriel_Suarez_Resume.pdf" download="Gabriel_Suarez_Resume.pdf">
-                  <Download className="h-5 w-5 mr-2" />
-                  Download Resume
+                  <FileDown className="h-5 w-5 mr-2" />
+                  Download Resume (PDF)
                 </a>
               </Button>
               <Button
