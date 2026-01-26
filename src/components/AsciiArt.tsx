@@ -7,8 +7,9 @@ interface AsciiArtProps {
   fontSize?: number;
 }
 
-const ASCII_CHARS = " .'`^\",:;Il!i~+_-?][}{1)(|/tfjrxnuvcz*#%@";
-const ASCII_CHARS_DETAILED = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+// Optimized character ramps for better portrait rendering
+const ASCII_CHARS = " .'-:;=+*#%@";
+const ASCII_CHARS_DETAILED = " .'`-:;!=+<>*^~?|/\\(){}[]#%&@$";
 
 const LETTERS: Record<string, string[]> = {
   'H': ['██   ██', '██   ██', '███████', '██   ██', '██   ██', '██   ██', '██   ██'],
@@ -19,7 +20,48 @@ const LETTERS: Record<string, string[]> = {
   ' ': ['   ', '   ', '   ', '   ', '   ', '   ', '   ']
 };
 
-export const AsciiArt = memo(({ imageSrc, width = 120, fontSize = 8 }: AsciiArtProps) => {
+// Enhanced contrast and edge detection for clearer portraits
+const enhanceImageData = (ctx: CanvasRenderingContext2D, width: number, height: number): ImageData => {
+  const imageData = ctx.getImageData(0, 0, width, height);
+  const data = imageData.data;
+  
+  // Calculate histogram for auto-levels
+  const histogram = new Array(256).fill(0);
+  for (let i = 0; i < data.length; i += 4) {
+    const brightness = Math.floor(0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]);
+    histogram[brightness]++;
+  }
+  
+  // Find 5th and 95th percentile for contrast stretching
+  const totalPixels = width * height;
+  let lowThreshold = 0, highThreshold = 255;
+  let cumulative = 0;
+  
+  for (let i = 0; i < 256; i++) {
+    cumulative += histogram[i];
+    if (cumulative / totalPixels <= 0.05) lowThreshold = i;
+    if (cumulative / totalPixels <= 0.95) highThreshold = i;
+  }
+  
+  const range = highThreshold - lowThreshold || 1;
+  
+  // Apply contrast enhancement and slight sharpening
+  for (let i = 0; i < data.length; i += 4) {
+    // Contrast stretch
+    for (let c = 0; c < 3; c++) {
+      let val = data[i + c];
+      val = ((val - lowThreshold) / range) * 255;
+      val = Math.max(0, Math.min(255, val));
+      // Boost contrast slightly
+      val = ((val / 255 - 0.5) * 1.3 + 0.5) * 255;
+      data[i + c] = Math.max(0, Math.min(255, val));
+    }
+  }
+  
+  return imageData;
+};
+
+export const AsciiArt = memo(({ imageSrc, width = 150, fontSize = 6 }: AsciiArtProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [asciiText, setAsciiText] = useState<string>("");
   const [isHovered, setIsHovered] = useState(false);
@@ -27,19 +69,25 @@ export const AsciiArt = memo(({ imageSrc, width = 120, fontSize = 8 }: AsciiArtP
   const prefersReducedMotion = useReducedMotion();
   const imgRef = useRef<HTMLImageElement | null>(null);
 
-  // Generate ASCII from image data
+  // Generate ASCII from image data with improved algorithm
   const generateAscii = useCallback((imageData: ImageData, imgWidth: number, imgHeight: number, detailed: boolean) => {
     let ascii = "";
     const chars = detailed ? ASCII_CHARS_DETAILED : ASCII_CHARS;
+    const data = imageData.data;
 
     for (let y = 0; y < imgHeight; y++) {
       for (let x = 0; x < imgWidth; x++) {
         const offset = (y * imgWidth + x) * 4;
-        const r = imageData.data[offset];
-        const g = imageData.data[offset + 1];
-        const b = imageData.data[offset + 2];
-        const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
-        const charIndex = Math.floor((brightness / 255) * (chars.length - 1));
+        const r = data[offset];
+        const g = data[offset + 1];
+        const b = data[offset + 2];
+        
+        // Use luminance formula for more accurate brightness
+        const brightness = (0.2126 * r + 0.7152 * g + 0.0722 * b);
+        
+        // Non-linear mapping for better detail in midtones
+        const normalizedBrightness = Math.pow(brightness / 255, 0.8);
+        const charIndex = Math.floor(normalizedBrightness * (chars.length - 1));
         ascii += chars[charIndex];
       }
       ascii += "\n";
@@ -61,15 +109,16 @@ export const AsciiArt = memo(({ imageSrc, width = 120, fontSize = 8 }: AsciiArtP
     img.onload = () => {
       imgRef.current = img;
       const aspectRatio = img.height / img.width;
-      const height = Math.floor(width * aspectRatio * 0.5);
+      // Adjust for character aspect ratio (characters are taller than wide)
+      const height = Math.floor(width * aspectRatio * 0.45);
 
       canvas.width = width;
       canvas.height = height;
 
       ctx.drawImage(img, 0, 0, width, height);
-      const imageData = ctx.getImageData(0, 0, width, height);
+      const enhancedData = enhanceImageData(ctx, width, height);
       
-      setAsciiText(generateAscii(imageData, width, height, false));
+      setAsciiText(generateAscii(enhancedData, width, height, false));
       setIsLoaded(true);
     };
 
@@ -85,10 +134,10 @@ export const AsciiArt = memo(({ imageSrc, width = 120, fontSize = 8 }: AsciiArtP
     if (!ctx) return;
 
     const aspectRatio = imgRef.current.height / imgRef.current.width;
-    const height = Math.floor(width * aspectRatio * 0.5);
+    const height = Math.floor(width * aspectRatio * 0.45);
     
-    const imageData = ctx.getImageData(0, 0, width, height);
-    setAsciiText(generateAscii(imageData, width, height, isHovered));
+    const enhancedData = enhanceImageData(ctx, width, height);
+    setAsciiText(generateAscii(enhancedData, width, height, isHovered));
   }, [isHovered, isLoaded, width, generateAscii]);
 
   const generateBlockText = useCallback(() => {
