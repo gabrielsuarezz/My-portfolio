@@ -298,7 +298,7 @@ export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: Pr
               <Button variant="default" size="sm" asChild className="group/btn font-mono">
                 <a href={project.links.demo} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="mr-2 h-4 w-4 group-hover/btn:rotate-45 transition-transform duration-200" />
-                  <span className="opacity-60 mr-1">&gt;</span>run
+                  Live Demo
                 </a>
               </Button>
             )}
@@ -306,14 +306,14 @@ export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: Pr
               <Button variant="outline" size="sm" asChild className="group/btn font-mono">
                 <a href={project.links.github} target="_blank" rel="noopener noreferrer">
                   <Github className="mr-2 h-4 w-4 group-hover/btn:scale-110 transition-transform duration-200" />
-                  <span className="opacity-60 mr-1">$</span>git
+                  GitHub
                 </a>
               </Button>
             )}
             {project.links.devpost && (
               <Button variant="outline" size="sm" asChild className="font-mono">
                 <a href={project.links.devpost} target="_blank" rel="noopener noreferrer">
-                  <span className="opacity-60 mr-1">::</span>devpost
+                  Devpost
                 </a>
               </Button>
             )}

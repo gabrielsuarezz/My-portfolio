@@ -40,7 +40,7 @@ const projects = [
     title: "Shadow Vision",
     description: "Real-time computer vision system that detects hand gestures and projects them as interactive digital shadow puppets. Built custom dataset from scratch, achieving 90%+ gesture detection accuracy.",
     tags: ["Python", "TouchDesigner", "OpenCV", "MediaPipe", "TensorFlow", "Flask"],
-    award: "🎨 Best Creative Hack - ShellHacks 2025",
+    award: "🎨 ShellHacks 2025",
     links: {
       github: "https://github.com/gabrielsuarezz/Shadow-Vision",
       devpost: "https://devpost.com/software/shadow-vision"
