@@ -1,5 +1,5 @@
 import { useState, useEffect, memo, useCallback } from "react";
-import { Menu, X, FileText } from "lucide-react";
+import { Menu, X, FileText, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
@@ -7,6 +7,7 @@ const navItems = [
   { label: "Projects", href: "#projects" },
   { label: "Skills", href: "#skills" },
   { label: "Experience", href: "#experience" },
+  { label: "GitHub", href: "#github-stats" },
   { label: "AI Game", href: "#turing-game" },
   { label: "Contact", href: "#contact" },
 ];
@@ -89,15 +90,26 @@ export const Navigation = memo(() => {
                   {item.label}
                 </button>
               ))}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handlePrint}
-                className="ml-2"
-              >
-                <FileText className="h-4 w-4 mr-2" />
-                Resume
-              </Button>
+              <div className="flex items-center gap-2 ml-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handlePrint}
+                >
+                  <FileText className="h-4 w-4 mr-2" />
+                  Print
+                </Button>
+                <Button
+                  variant="default"
+                  size="sm"
+                  asChild
+                >
+                  <a href="/Gabriel_Suarez_Resume.pdf" download="Gabriel_Suarez_Resume.pdf">
+                    <Download className="h-4 w-4 mr-2" />
+                    Resume
+                  </a>
+                </Button>
+              </div>
             </div>
 
             {/* Mobile Menu Button */}
@@ -129,9 +141,20 @@ export const Navigation = memo(() => {
               </button>
             ))}
             <div
-              className="opacity-0 animate-[fadeSlideUp_0.3s_ease-out_forwards]"
+              className="flex flex-col gap-3 opacity-0 animate-[fadeSlideUp_0.3s_ease-out_forwards]"
               style={{ animationDelay: `${navItems.length * 0.1}s` }}
             >
+              <Button
+                variant="default"
+                size="lg"
+                asChild
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <a href="/Gabriel_Suarez_Resume.pdf" download="Gabriel_Suarez_Resume.pdf">
+                  <Download className="h-5 w-5 mr-2" />
+                  Download Resume
+                </a>
+              </Button>
               <Button
                 variant="outline"
                 size="lg"
@@ -141,7 +164,7 @@ export const Navigation = memo(() => {
                 }}
               >
                 <FileText className="h-5 w-5 mr-2" />
-                Download Resume
+                Print Resume
               </Button>
             </div>
           </div>
