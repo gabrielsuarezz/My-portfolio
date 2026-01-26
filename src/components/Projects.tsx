@@ -33,6 +33,7 @@ const projects = [
     tags: ["YOLOv8", "Gemini VLM", "ElevenLabs", "Next.js", "TensorFlow.js", "Supabase"],
     award: "🔒 SharkByte 2025",
     links: {
+      demo: "https://viewguard.vercel.app/",
       github: "https://github.com/gabrielsuarezz/ViewGuard",
       devpost: "https://devpost.com/software/viewguard"
     }
