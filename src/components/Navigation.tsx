@@ -139,7 +139,8 @@ export const Navigation = memo(() => {
                 title="Preview & Download Resume"
                 onClick={openResumeModal}
               >
-                <FileDown className="h-4 w-4" />
+                <FileDown className="h-4 w-4 mr-1" />
+                <span className="text-xs">Resume</span>
               </Button>
             </div>
 
