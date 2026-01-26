@@ -1,8 +1,6 @@
-import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useState, memo, useCallback } from "react";
 import { ProjectCard } from "./ProjectCard";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const projects = [
   {
@@ -82,7 +80,6 @@ const projects = [
 
 export const Projects = memo(() => {
   const [revealedNotes, setRevealedNotes] = useState<Set<string>>(new Set());
-  const prefersReducedMotion = useReducedMotion();
 
   const handleLongPress = useCallback((projectTitle: string) => {
     setRevealedNotes((prev) => {
@@ -102,19 +99,10 @@ export const Projects = memo(() => {
     });
   }, []);
 
-  const headerVariants = prefersReducedMotion 
-    ? { initial: { opacity: 1 }, whileInView: { opacity: 1 } }
-    : { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 } };
-
   return (
     <section id="projects" className="py-24 relative">
       <div className="container mx-auto px-6">
-        <motion.div
-          {...headerVariants}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16 opacity-0 animate-[fadeSlideUp_0.5s_ease-out_forwards]">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 font-mono">
             <span className="text-muted-foreground opacity-60">// </span>
             Featured <span className="text-gradient">Projects</span>
@@ -122,7 +110,7 @@ export const Projects = memo(() => {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-mono opacity-80">
             Award-winning projects spanning AI, computer vision, and IoT — built at Florida's top hackathons
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           {projects.map((project, index) => (

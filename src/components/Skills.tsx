@@ -1,9 +1,7 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Code2, Brain, Cpu, Database, LucideIcon } from "lucide-react";
 import { TerminalBackground } from "./TerminalBackground";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface SkillCategory {
   icon: LucideIcon;
@@ -34,27 +32,21 @@ const skillCategories: SkillCategory[] = [
   }
 ];
 
-const SkillCard = memo(({ category, index, prefersReducedMotion }: { 
+const SkillCard = memo(({ category, index }: { 
   category: SkillCategory; 
   index: number;
-  prefersReducedMotion: boolean;
 }) => {
   const Icon = category.icon;
-  
-  const cardVariants = prefersReducedMotion 
-    ? { initial: { opacity: 1 }, whileInView: { opacity: 1 } }
-    : { 
-        initial: { opacity: 0, y: 20 },
-        whileInView: { opacity: 1, y: 0 }
-      };
 
   return (
-    <motion.div
-      {...cardVariants}
-      viewport={{ once: true }}
-      transition={{ delay: prefersReducedMotion ? 0 : index * 0.1, duration: 0.5 }}
+    <div 
+      className="opacity-0 animate-[fadeSlideUp_0.5s_ease-out_forwards]"
+      style={{ 
+        animationDelay: `${index * 0.1}s`,
+        transform: 'translateZ(0)',
+      }}
     >
-      <Card className="p-4 sm:p-6 h-full hover-lift border-border/50 backdrop-blur-sm bg-card/50">
+      <Card className="p-4 sm:p-6 h-full border-border/50 backdrop-blur-sm bg-card/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_-15px_hsl(var(--primary)/0.3)]">
         <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
           <div className="terminal-icon flex-shrink-0">
             <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -72,26 +64,18 @@ const SkillCard = memo(({ category, index, prefersReducedMotion }: {
           ))}
         </div>
       </Card>
-    </motion.div>
+    </div>
   );
 });
 
 SkillCard.displayName = 'SkillCard';
 
 export const Skills = memo(() => {
-  const prefersReducedMotion = useReducedMotion();
-
   return (
     <section id="skills" className="py-24 bg-muted/30 relative overflow-hidden">
       <TerminalBackground density="light" speed="slow" />
       <div className="container mx-auto px-6">
-        <motion.div
-          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16 opacity-0 animate-[fadeSlideUp_0.5s_ease-out_forwards]">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 font-mono">
             <span className="text-muted-foreground opacity-60">// </span>
             Technical <span className="text-gradient">Expertise</span>
@@ -99,7 +83,7 @@ export const Skills = memo(() => {
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto font-mono opacity-80">
             Full-stack capabilities with a focus on AI, machine learning, and systems that bridge hardware with intelligence
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {skillCategories.map((category, index) => (
@@ -107,7 +91,6 @@ export const Skills = memo(() => {
               key={category.title}
               category={category} 
               index={index}
-              prefersReducedMotion={prefersReducedMotion}
             />
           ))}
         </div>

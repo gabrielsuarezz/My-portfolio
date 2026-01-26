@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, memo, useMemo, useCallback } from "react";
-import { motion } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface AsciiArtProps {
@@ -133,53 +132,35 @@ export const AsciiArt = memo(({ imageSrc, width = 120, fontSize = 8 }: AsciiArtP
   const handleMouseEnter = useCallback(() => setIsHovered(true), []);
   const handleMouseLeave = useCallback(() => setIsHovered(false), []);
 
-  // Simplified rendering for performance
   return (
     <div className="relative">
       <canvas ref={canvasRef} className="hidden" />
       
-      <motion.pre
-        className="font-mono text-primary/80 leading-none select-none overflow-hidden cursor-pointer"
-        style={{ fontSize: `${fontSize}px` }}
+      <pre
+        className={`font-mono text-primary/80 leading-none select-none overflow-hidden cursor-pointer transition-all duration-200 ${isHovered ? 'brightness-125' : ''}`}
+        style={{ 
+          fontSize: `${fontSize}px`,
+          transform: 'translateZ(0)',
+        }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        animate={{ 
-          filter: isHovered ? 'brightness(1.2)' : 'brightness(1)'
-        }}
-        transition={{ duration: 0.2 }}
       >
-        {prefersReducedMotion ? (
-          // Static rendering for reduced motion
-          lines.map((line, i) => {
-            const isMessageLine = isHovered && i >= 2 && i <= 8;
-            return (
-              <div
-                key={i}
-                className={isMessageLine ? "text-accent font-bold" : isHovered ? "text-accent/70" : ""}
-              >
-                {line}
-              </div>
-            );
-          })
-        ) : (
-          // Animated rendering - simplified
-          lines.map((line, i) => {
-            const isMessageLine = isHovered && i >= 2 && i <= 8;
-            return (
-              <div
-                key={i}
-                className={`transition-colors duration-200 ${isMessageLine ? "text-accent font-bold" : isHovered ? "text-accent/70" : ""}`}
-              >
-                {line}
-              </div>
-            );
-          })
-        )}
-      </motion.pre>
+        {lines.map((line, i) => {
+          const isMessageLine = isHovered && i >= 2 && i <= 8;
+          return (
+            <div
+              key={i}
+              className={`transition-colors duration-150 ${isMessageLine ? "text-accent font-bold" : isHovered ? "text-accent/70" : ""}`}
+            >
+              {line}
+            </div>
+          );
+        })}
+      </pre>
 
-      {/* Static scanline overlay - no animation */}
+      {/* Static scanline overlay */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-40"
+        className="absolute inset-0 pointer-events-none opacity-30"
         style={{
           background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, hsl(217 91% 60% / 0.02) 2px, hsl(217 91% 60% / 0.02) 4px)',
         }}

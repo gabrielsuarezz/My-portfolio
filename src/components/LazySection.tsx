@@ -1,5 +1,4 @@
-import { Suspense, lazy, ComponentType, ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { Suspense, ReactNode, memo } from 'react';
 
 interface LazySectionProps {
   children: ReactNode;
@@ -7,15 +6,15 @@ interface LazySectionProps {
 }
 
 /**
- * Wrapper for lazy-loaded sections with a smooth loading state
+ * Lightweight wrapper for lazy-loaded sections
+ * Uses CSS-only loading state for zero JS overhead during scroll
  */
-export const LazySection = ({ children, fallback }: LazySectionProps) => {
+export const LazySection = memo(({ children, fallback }: LazySectionProps) => {
   const defaultFallback = (
     <div className="min-h-[400px] flex items-center justify-center">
-      <motion.div
-        className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+      <div 
+        className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"
+        style={{ willChange: 'transform' }}
       />
     </div>
   );
@@ -25,13 +24,6 @@ export const LazySection = ({ children, fallback }: LazySectionProps) => {
       {children}
     </Suspense>
   );
-};
+});
 
-/**
- * Creates a lazy-loaded component with built-in suspense
- */
-export function createLazyComponent<T extends ComponentType<any>>(
-  importFn: () => Promise<{ default: T }>
-) {
-  return lazy(importFn);
-}
+LazySection.displayName = 'LazySection';
