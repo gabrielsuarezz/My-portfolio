@@ -18,30 +18,54 @@ export const EasterEggHint = () => {
 
   return (
     <>
-      {/* Floating hint button */}
+      {/* Floating hint button with enhanced pulse */}
       <motion.button
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-accent/10 border border-accent/30 backdrop-blur-sm hover:bg-accent/20 transition-colors group"
-        whileHover={{ scale: 1.05 }}
+        whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 2 }}
+        transition={{ delay: 3 }}
       >
         <div className="relative">
           <Sparkles className="h-5 w-5 text-accent" />
+          {/* Multiple pulse rings for attention */}
           <motion.div
-            className="absolute inset-0 rounded-full bg-accent/20"
+            className="absolute inset-0 rounded-full border-2 border-accent/50"
             animate={{
-              scale: [1, 1.5, 1],
-              opacity: [0.5, 0, 0.5],
+              scale: [1, 2, 2],
+              opacity: [0.6, 0.2, 0],
             }}
             transition={{
               duration: 2,
               repeat: Infinity,
+              ease: "easeOut",
+            }}
+          />
+          <motion.div
+            className="absolute inset-0 rounded-full border border-accent/30"
+            animate={{
+              scale: [1, 2.5, 2.5],
+              opacity: [0.4, 0.1, 0],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeOut",
+              delay: 0.3,
             }}
           />
         </div>
+        {/* Tooltip hint on first load */}
+        <motion.div
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 4 }}
+          className="absolute right-full mr-3 top-1/2 -translate-y-1/2 whitespace-nowrap bg-card/90 backdrop-blur-sm border border-border px-3 py-1.5 rounded-lg text-xs font-mono hidden sm:block"
+        >
+          <span className="text-accent">✨</span> Secrets await...
+        </motion.div>
       </motion.button>
 
       {/* Hints modal */}

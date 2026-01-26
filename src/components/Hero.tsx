@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowDown, Github, Linkedin, Mail, Terminal } from "lucide-react";
 import { useEffect, useState, memo, useCallback } from "react";
 import { AsciiArt } from "./AsciiArt";
+import { InteractiveTerminal } from "./InteractiveTerminal";
 import headshot from "@/assets/headshot.jpg";
 import { useClickCounter } from "@/hooks/useClickCounter";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -171,8 +172,9 @@ export const Hero = memo(() => {
                 <AsciiArt imageSrc={headshot} width={120} fontSize={5} />
               </div>
               
-              <div className="mt-2 text-xs md:text-sm font-mono text-accent/70 text-center">
-                &gt; Hover to enhance resolution_
+              {/* Interactive terminal */}
+              <div className="mt-3 border-t border-primary/20 pt-3">
+                <InteractiveTerminal />
               </div>
             </div>
           </div>

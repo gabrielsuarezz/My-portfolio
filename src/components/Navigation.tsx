@@ -1,6 +1,7 @@
 import { useState, useEffect, memo, useCallback } from "react";
 import { Menu, X, FileText, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const navItems = [
@@ -91,6 +92,7 @@ export const Navigation = memo(() => {
                 </button>
               ))}
               <div className="flex items-center gap-2 ml-2">
+                <ThemeSwitcher />
                 <Button
                   variant="outline"
                   size="sm"
@@ -124,6 +126,7 @@ export const Navigation = memo(() => {
                   {item.label}
                 </button>
               ))}
+              <ThemeSwitcher />
               <Button
                 variant="default"
                 size="sm"
