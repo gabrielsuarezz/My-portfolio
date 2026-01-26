@@ -140,7 +140,7 @@ export const Navigation = memo(() => {
                 onClick={openResumeModal}
               >
                 <FileDown className="h-4 w-4 mr-1" />
-                <span className="text-xs">Resume</span>
+                <span className="text-xs">CV</span>
               </Button>
             </div>
 
