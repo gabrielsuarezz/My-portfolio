@@ -105,7 +105,7 @@ const Index = memo(() => {
       {/* Footer with easter egg teaser */}
       <footer className="py-8 border-t border-border/50">
         <div className="container mx-auto px-6 text-center text-sm text-muted-foreground">
-          <p>© 2025 Gabriel Suarez. Built with React, TypeScript, and Tailwind CSS.</p>
+          <p>© {new Date().getFullYear()} Gabriel Suarez. Built with React, TypeScript, and Tailwind CSS.</p>
           <p className="mt-1 text-xs opacity-60">Use ↑↓ or j/k keys to navigate sections</p>
           <p className="mt-3 text-xs font-mono text-accent/40 hover:text-accent/70 transition-colors cursor-default">
             // secrets.hidden = true; // explore to discover
