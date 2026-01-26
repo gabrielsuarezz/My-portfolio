@@ -81,13 +81,14 @@ const FloatingCodeSnippets = memo(() => {
       {codeSnippets.map((snippet, i) => (
         <div
           key={i}
-          className="absolute text-primary/15 font-mono text-sm hidden lg:block"
+          className="absolute text-primary/30 font-mono text-sm hidden lg:block"
           style={{
-            left: `${25 + i * 30}%`,
-            top: `${35 + i * 15}%`,
-            animation: `floatCode ${12 + i * 4}s ease-in-out infinite`,
-            animationDelay: `${i * 3}s`,
+            left: `${15 + i * 35}%`,
+            top: `${30 + i * 20}%`,
+            animation: `floatCode ${10 + i * 3}s ease-in-out infinite`,
+            animationDelay: `${i * 2}s`,
             transform: 'translateZ(0)',
+            textShadow: '0 0 20px hsl(var(--primary) / 0.3)',
           }}
         >
           {snippet}
