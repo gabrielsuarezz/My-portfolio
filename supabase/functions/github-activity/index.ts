@@ -86,6 +86,41 @@ serve(async (req) => {
     const events = await eventsRes.json();
     const reposData = await reposRes.json();
 
+    // Enrich PushEvents with commit messages by fetching from commits API
+    const enrichedEvents = await Promise.all(
+      events.map(async (event: any) => {
+        if (event.type === 'PushEvent' && event.payload?.head) {
+          try {
+            const repoName = event.repo.name;
+            const commitSha = event.payload.head;
+            
+            const commitRes = await fetch(
+              `https://api.github.com/repos/${repoName}/commits/${commitSha}`,
+              { headers }
+            );
+            
+            if (commitRes.ok) {
+              const commitData = await commitRes.json();
+              // Add the commit message to the payload
+              return {
+                ...event,
+                payload: {
+                  ...event.payload,
+                  commits: [{
+                    message: commitData.commit?.message || 'Updated code',
+                    sha: commitSha
+                  }]
+                }
+              };
+            }
+          } catch (e) {
+            console.log('Failed to fetch commit details:', e);
+          }
+        }
+        return event;
+      })
+    );
+
     // Sort repos by stars and take top 3
     const repos = reposData
       .sort((a: any, b: any) => b.stargazers_count - a.stargazers_count)
@@ -100,7 +135,7 @@ serve(async (req) => {
       }));
 
     return new Response(
-      JSON.stringify({ events, repos, fallback: false }),
+      JSON.stringify({ events: enrichedEvents, repos, fallback: false }),
       { 
         headers: { 
           ...corsHeaders, 
