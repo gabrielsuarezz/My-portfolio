@@ -10,5 +10,14 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: LinkedInBot
+Allow: /
+
 User-agent: *
 Allow: /
+
+# Sitemap
+Sitemap: https://gabrielsuarez.dev/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
