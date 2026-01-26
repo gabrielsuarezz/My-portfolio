@@ -1,5 +1,4 @@
-import { motion } from "framer-motion";
-import { useEffect, useState, memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface TerminalLine {
@@ -14,34 +13,18 @@ const terminalSnippets = [
   ">>> import tensorflow as tf",
   "$ npm run build --production",
   "const model = await tf.loadLayersModel()",
-  "$ python train_model.py --epochs 100",
-  ">>> accuracy: 0.94 | loss: 0.12",
-  "$ docker-compose up -d",
-  "SELECT * FROM solar_panels WHERE status='active'",
-  "$ curl https://api.openai.com/v1/chat",
-  "def predict(image): return knn_model.classify()",
-  "$ ssh deployment@server -p 2222",
-  ">>> Training KNN classifier...",
-  "$ terraform apply --auto-approve",
-  "console.log('AI response:', data.choices[0])",
-  "$ pytest tests/ --coverage",
-  ">>> Model saved to ./shadow_vision/model.h5",
-  "$ kubectl get pods --all-namespaces",
-  "import { supabase } from '@/integrations'",
-  "$ cargo build --release",
-  ">>> Processing solar panel telemetry...",
 ];
 
 const densityMap = {
-  light: 8,
-  medium: 12,
-  heavy: 18,
+  light: 4,
+  medium: 6,
+  heavy: 8,
 } as const;
 
 const speedMap = {
-  slow: 35,
-  medium: 22,
-  fast: 14,
+  slow: 50,
+  medium: 35,
+  fast: 25,
 } as const;
 
 interface TerminalBackgroundProps {
@@ -49,38 +32,7 @@ interface TerminalBackgroundProps {
   speed?: "slow" | "medium" | "fast";
 }
 
-// Memoized individual line component to prevent re-renders
-const TerminalLine = memo(({ 
-  line, 
-  animationSpeed 
-}: { 
-  line: TerminalLine; 
-  animationSpeed: number;
-}) => (
-  <motion.div
-    initial={{ y: -100, opacity: 0 }}
-    animate={{
-      y: ["0vh", "110vh"],
-      opacity: [0, 0.5, 0.5, 0],
-    }}
-    transition={{
-      duration: animationSpeed,
-      delay: line.delay,
-      repeat: Infinity,
-      ease: "linear",
-    }}
-    className="absolute whitespace-nowrap font-mono text-xs text-primary/70"
-    style={{
-      left: `${line.x}%`,
-      willChange: 'transform',
-    }}
-  >
-    {line.text}
-  </motion.div>
-));
-
-TerminalLine.displayName = 'TerminalLine';
-
+// Pure CSS animation - zero JS overhead during scroll
 export const TerminalBackground = memo(({ 
   density = "medium",
   speed = "slow" 
@@ -88,31 +40,31 @@ export const TerminalBackground = memo(({
   const prefersReducedMotion = useReducedMotion();
   
   const lineCount = densityMap[density];
-  const animationSpeed = speedMap[speed];
+  const animationDuration = speedMap[speed];
 
-  // Generate lines only once on mount
+  // Generate lines only once
   const lines = useMemo(() => {
     const generatedLines: TerminalLine[] = [];
     for (let i = 0; i < lineCount; i++) {
       generatedLines.push({
         id: i,
-        text: terminalSnippets[Math.floor(Math.random() * terminalSnippets.length)],
-        delay: Math.random() * 15,
-        x: Math.random() * 90 + 5,
+        text: terminalSnippets[i % terminalSnippets.length],
+        delay: (i / lineCount) * animationDuration,
+        x: 5 + (i * (90 / lineCount)),
       });
     }
     return generatedLines;
-  }, [lineCount]);
+  }, [lineCount, animationDuration]);
 
   // Skip rendering entirely if reduced motion is preferred
   if (prefersReducedMotion) {
     return (
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
-        {lines.slice(0, 5).map((line) => (
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-5">
+        {lines.slice(0, 2).map((line) => (
           <div
             key={line.id}
             className="absolute whitespace-nowrap font-mono text-xs text-primary/50"
-            style={{ left: `${line.x}%`, top: `${line.id * 20}%` }}
+            style={{ left: `${line.x}%`, top: `${line.id * 30}%` }}
           >
             {line.text}
           </div>
@@ -122,13 +74,29 @@ export const TerminalBackground = memo(({
   }
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+      <style>{`
+        @keyframes terminalFloat {
+          0% { transform: translateY(-5%) translateZ(0); opacity: 0; }
+          5% { opacity: 0.4; }
+          95% { opacity: 0.4; }
+          100% { transform: translateY(105vh) translateZ(0); opacity: 0; }
+        }
+      `}</style>
       {lines.map((line) => (
-        <TerminalLine 
-          key={line.id} 
-          line={line} 
-          animationSpeed={animationSpeed} 
-        />
+        <div
+          key={line.id}
+          className="absolute whitespace-nowrap font-mono text-xs text-primary/60"
+          style={{
+            left: `${line.x}%`,
+            animation: `terminalFloat ${animationDuration}s linear infinite`,
+            animationDelay: `${line.delay}s`,
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden',
+          }}
+        >
+          {line.text}
+        </div>
       ))}
     </div>
   );

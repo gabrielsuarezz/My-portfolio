@@ -1,9 +1,7 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Briefcase, GraduationCap, Users, Shield, LucideIcon } from "lucide-react";
 import { TerminalBackground } from "./TerminalBackground";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface Experience {
   icon: LucideIcon;
@@ -44,27 +42,21 @@ const experiences: Experience[] = [
   }
 ];
 
-const ExperienceCard = memo(({ exp, index, prefersReducedMotion }: { 
+const ExperienceCard = memo(({ exp, index }: { 
   exp: Experience; 
   index: number;
-  prefersReducedMotion: boolean;
 }) => {
   const Icon = exp.icon;
-  
-  const cardVariants = prefersReducedMotion 
-    ? { initial: { opacity: 1 }, whileInView: { opacity: 1 } }
-    : { 
-        initial: { opacity: 0, x: -20 },
-        whileInView: { opacity: 1, x: 0 }
-      };
 
   return (
-    <motion.div
-      {...cardVariants}
-      viewport={{ once: true }}
-      transition={{ delay: prefersReducedMotion ? 0 : index * 0.1, duration: 0.5 }}
+    <div
+      className="opacity-0 animate-[fadeSlideLeft_0.5s_ease-out_forwards]"
+      style={{ 
+        animationDelay: `${index * 0.1}s`,
+        transform: 'translateZ(0)',
+      }}
     >
-      <Card className="p-4 sm:p-6 hover-lift border-border/50 backdrop-blur-sm bg-card/50">
+      <Card className="p-4 sm:p-6 border-border/50 backdrop-blur-sm bg-card/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_-15px_hsl(var(--primary)/0.3)]">
         <div className="flex gap-3 sm:gap-4">
           <div className="flex-shrink-0">
             <div className="terminal-icon">
@@ -81,26 +73,18 @@ const ExperienceCard = memo(({ exp, index, prefersReducedMotion }: {
           </div>
         </div>
       </Card>
-    </motion.div>
+    </div>
   );
 });
 
 ExperienceCard.displayName = 'ExperienceCard';
 
 export const Experience = memo(() => {
-  const prefersReducedMotion = useReducedMotion();
-
   return (
     <section id="experience" className="py-24 relative overflow-hidden">
       <TerminalBackground density="light" speed="slow" />
       <div className="container mx-auto px-6">
-        <motion.div
-          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16 opacity-0 animate-[fadeSlideUp_0.5s_ease-out_forwards]">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 font-mono">
             <span className="text-muted-foreground opacity-60">// </span>
             Experience & <span className="text-gradient">Education</span>
@@ -108,7 +92,7 @@ export const Experience = memo(() => {
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto font-mono opacity-80">
             From internships to leadership roles, building impact through code and community
           </p>
-        </motion.div>
+        </div>
 
         <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
           {experiences.map((exp, index) => (
@@ -116,7 +100,6 @@ export const Experience = memo(() => {
               key={exp.title}
               exp={exp} 
               index={index}
-              prefersReducedMotion={prefersReducedMotion}
             />
           ))}
         </div>
