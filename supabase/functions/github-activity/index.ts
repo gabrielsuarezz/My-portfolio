@@ -3,9 +3,13 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
 };
 
 const GITHUB_USERNAME = 'gabrielsuarezz';
+const MAX_EVENTS = 5;
+const MAX_REPOS = 6;
 
 serve(async (req) => {
   // Handle CORS preflight
@@ -26,11 +30,22 @@ serve(async (req) => {
       headers['Authorization'] = `Bearer ${githubToken}`;
     }
 
-    // Fetch events and repos in parallel
+    // Fetch events and repos in parallel with timeout
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000); // 10s timeout
+    
     const [eventsRes, reposRes] = await Promise.all([
-      fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events/public?per_page=5`, { headers }),
-      fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6`, { headers }),
+      fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events/public?per_page=${MAX_EVENTS}`, { 
+        headers,
+        signal: controller.signal 
+      }),
+      fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=${MAX_REPOS}`, { 
+        headers,
+        signal: controller.signal 
+      }),
     ]);
+    
+    clearTimeout(timeout);
 
     if (!eventsRes.ok || !reposRes.ok) {
       console.error('GitHub API error:', eventsRes.status, reposRes.status);
