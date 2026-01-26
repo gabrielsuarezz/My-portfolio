@@ -11,7 +11,7 @@ const streakUrl = `https://github-readme-streak-stats.herokuapp.com/?user=${GITH
 
 export const GitHubStats = memo(() => {
   return (
-    <section className="py-16 bg-muted/30 relative overflow-hidden">
+    <section id="github-stats" className="py-16 bg-muted/30 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12 opacity-0 animate-[fadeSlideUp_0.5s_ease-out_forwards]">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 font-mono">

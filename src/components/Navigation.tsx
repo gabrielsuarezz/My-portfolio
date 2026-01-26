@@ -80,12 +80,12 @@ export const Navigation = memo(() => {
             </button>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1">
+            <div className="hidden lg:flex items-center gap-1">
               {navItems.map((item) => (
                 <button
                   key={item.href}
                   onClick={() => scrollToSection(item.href)}
-                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 rounded-md hover:bg-secondary/50"
+                  className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 rounded-md hover:bg-secondary/50"
                 >
                   {item.label}
                 </button>
@@ -95,6 +95,7 @@ export const Navigation = memo(() => {
                   variant="outline"
                   size="sm"
                   onClick={handlePrint}
+                  className="hidden xl:flex"
                 >
                   <FileText className="h-4 w-4 mr-2" />
                   Print
@@ -105,11 +106,33 @@ export const Navigation = memo(() => {
                   asChild
                 >
                   <a href="/Gabriel_Suarez_Resume.pdf" download="Gabriel_Suarez_Resume.pdf">
-                    <Download className="h-4 w-4 mr-2" />
-                    Resume
+                    <Download className="h-4 w-4 xl:mr-2" />
+                    <span className="hidden xl:inline">Resume</span>
                   </a>
                 </Button>
               </div>
+            </div>
+
+            {/* Tablet Navigation - Compact */}
+            <div className="hidden md:flex lg:hidden items-center gap-1">
+              {navItems.slice(0, 4).map((item) => (
+                <button
+                  key={item.href}
+                  onClick={() => scrollToSection(item.href)}
+                  className="px-2 py-2 text-xs text-muted-foreground hover:text-foreground transition-colors duration-200 rounded-md hover:bg-secondary/50"
+                >
+                  {item.label}
+                </button>
+              ))}
+              <Button
+                variant="default"
+                size="sm"
+                asChild
+              >
+                <a href="/Gabriel_Suarez_Resume.pdf" download="Gabriel_Suarez_Resume.pdf">
+                  <Download className="h-4 w-4" />
+                </a>
+              </Button>
             </div>
 
             {/* Mobile Menu Button */}
