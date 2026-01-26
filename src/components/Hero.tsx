@@ -168,7 +168,7 @@ export const Hero = memo(() => {
                 onClick={handleHeadshotClick}
                 style={{ transform: 'translateZ(0)' }}
               >
-                <AsciiArt imageSrc={headshot} width={80} fontSize={6} />
+                <AsciiArt imageSrc={headshot} width={120} fontSize={5} />
               </div>
               
               <div className="mt-2 text-xs md:text-sm font-mono text-accent/70 text-center">
