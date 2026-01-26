@@ -77,9 +77,11 @@ export const TerminalBackground = memo(({
     <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-25">
       <style>{`
         @keyframes terminalFloat {
-          0% { transform: translateY(-5%) translateZ(0); opacity: 0; }
-          5% { opacity: 0.6; }
-          95% { opacity: 0.6; }
+          0% { transform: translateY(-100px) translateZ(0); opacity: 0; }
+          10% { opacity: 0; }
+          15% { opacity: 0.5; }
+          85% { opacity: 0.5; }
+          95% { opacity: 0; }
           100% { transform: translateY(105vh) translateZ(0); opacity: 0; }
         }
       `}</style>
