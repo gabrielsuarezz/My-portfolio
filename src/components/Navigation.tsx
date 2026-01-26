@@ -2,6 +2,7 @@ import { useState, useEffect, memo, useCallback } from "react";
 import { Menu, X, FileText, FileDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { ResumePreviewModal } from "@/components/ResumePreviewModal";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const navItems = [
@@ -16,6 +17,7 @@ const navItems = [
 export const Navigation = memo(() => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -53,6 +55,11 @@ export const Navigation = memo(() => {
 
   const toggleMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(prev => !prev);
+  }, []);
+
+  const openResumeModal = useCallback(() => {
+    setIsResumeModalOpen(true);
+    setIsMobileMenuOpen(false);
   }, []);
 
   return (
@@ -105,13 +112,11 @@ export const Navigation = memo(() => {
                 <Button
                   variant="default"
                   size="sm"
-                  asChild
-                  title="Download Resume (PDF)"
+                  title="Preview & Download Resume"
+                  onClick={openResumeModal}
                 >
-                  <a href="/Gabriel_Suarez_Resume.pdf" download="Gabriel_Suarez_Resume.pdf">
-                    <FileDown className="h-4 w-4 mr-2" />
-                    <span>Resume</span>
-                  </a>
+                  <FileDown className="h-4 w-4 mr-2" />
+                  <span>Resume</span>
                 </Button>
               </div>
             </div>
@@ -131,13 +136,11 @@ export const Navigation = memo(() => {
               <Button
                 variant="default"
                 size="sm"
-                asChild
-                title="Download Resume (PDF)"
+                title="Preview & Download Resume"
+                onClick={openResumeModal}
               >
-                <a href="/Gabriel_Suarez_Resume.pdf" download="Gabriel_Suarez_Resume.pdf">
-                  <FileDown className="h-4 w-4 mr-1" />
-                  <span className="text-xs">CV</span>
-                </a>
+                <FileDown className="h-4 w-4 mr-1" />
+                <span className="text-xs">CV</span>
               </Button>
             </div>
 
@@ -176,13 +179,10 @@ export const Navigation = memo(() => {
               <Button
                 variant="default"
                 size="lg"
-                asChild
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={openResumeModal}
               >
-                <a href="/Gabriel_Suarez_Resume.pdf" download="Gabriel_Suarez_Resume.pdf">
-                  <FileDown className="h-5 w-5 mr-2" />
-                  Download Resume (PDF)
-                </a>
+                <FileDown className="h-5 w-5 mr-2" />
+                Preview Resume
               </Button>
               <Button
                 variant="outline"
@@ -199,6 +199,10 @@ export const Navigation = memo(() => {
           </div>
         </div>
       )}
+      <ResumePreviewModal 
+        open={isResumeModalOpen} 
+        onOpenChange={setIsResumeModalOpen} 
+      />
     </>
   );
 });
