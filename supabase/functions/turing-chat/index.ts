@@ -1,8 +1,23 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { 
+  checkRateLimit, 
+  getClientId, 
+  rateLimitHeaders, 
+  rateLimitExceededResponse 
+} from "../_shared/rate-limiter.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+};
+
+// Rate limit: 10 requests per minute per client (more restrictive for AI chat)
+const RATE_LIMIT_CONFIG = {
+  maxRequests: 10,
+  windowMs: 60 * 1000, // 1 minute
+  keyPrefix: 'turing-chat',
 };
 
 // Gabriel's ultra-detailed persona for the Turing Test
@@ -148,6 +163,14 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Check rate limit
+  const clientId = getClientId(req);
+  const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIG);
+  
+  if (!rateLimitResult.allowed) {
+    return rateLimitExceededResponse(rateLimitResult, corsHeaders);
+  }
+
   try {
     const { messages, isGabriel } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
@@ -178,25 +201,29 @@ serve(async (req) => {
       if (response.status === 429) {
         return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again later." }), {
           status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...corsHeaders, ...rateLimitHeaders(rateLimitResult), "Content-Type": "application/json" },
         });
       }
       if (response.status === 402) {
         return new Response(JSON.stringify({ error: "AI credits depleted. Please contact the site owner." }), {
           status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...corsHeaders, ...rateLimitHeaders(rateLimitResult), "Content-Type": "application/json" },
         });
       }
       const errorText = await response.text();
       console.error("AI gateway error:", response.status, errorText);
       return new Response(JSON.stringify({ error: "AI gateway error" }), {
         status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...corsHeaders, ...rateLimitHeaders(rateLimitResult), "Content-Type": "application/json" },
       });
     }
 
     return new Response(response.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+      headers: { 
+        ...corsHeaders, 
+        ...rateLimitHeaders(rateLimitResult),
+        "Content-Type": "text/event-stream" 
+      },
     });
   } catch (error) {
     console.error("Turing chat error:", error);
@@ -204,7 +231,7 @@ serve(async (req) => {
       JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }),
       {
         status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...corsHeaders, ...rateLimitHeaders(rateLimitResult), "Content-Type": "application/json" },
       }
     );
   }

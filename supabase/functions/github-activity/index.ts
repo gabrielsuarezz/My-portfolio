@@ -1,4 +1,10 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { 
+  checkRateLimit, 
+  getClientId, 
+  rateLimitHeaders, 
+  rateLimitExceededResponse 
+} from "../_shared/rate-limiter.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -11,10 +17,25 @@ const GITHUB_USERNAME = 'gabrielsuarezz';
 const MAX_EVENTS = 5;
 const MAX_REPOS = 6;
 
+// Rate limit: 30 requests per minute per client
+const RATE_LIMIT_CONFIG = {
+  maxRequests: 30,
+  windowMs: 60 * 1000, // 1 minute
+  keyPrefix: 'github-activity',
+};
+
 serve(async (req) => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  // Check rate limit
+  const clientId = getClientId(req);
+  const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIG);
+  
+  if (!rateLimitResult.allowed) {
+    return rateLimitExceededResponse(rateLimitResult, corsHeaders);
   }
 
   try {
@@ -51,7 +72,14 @@ serve(async (req) => {
       console.error('GitHub API error:', eventsRes.status, reposRes.status);
       return new Response(
         JSON.stringify({ error: 'GitHub API error', fallback: true }),
-        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { 
+          status: 200, 
+          headers: { 
+            ...corsHeaders, 
+            ...rateLimitHeaders(rateLimitResult),
+            'Content-Type': 'application/json' 
+          } 
+        }
       );
     }
 
@@ -73,13 +101,26 @@ serve(async (req) => {
 
     return new Response(
       JSON.stringify({ events, repos, fallback: false }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { 
+        headers: { 
+          ...corsHeaders, 
+          ...rateLimitHeaders(rateLimitResult),
+          'Content-Type': 'application/json' 
+        } 
+      }
     );
   } catch (error) {
     console.error('Error fetching GitHub data:', error);
     return new Response(
       JSON.stringify({ error: 'Failed to fetch GitHub data', fallback: true }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { 
+        status: 200, 
+        headers: { 
+          ...corsHeaders, 
+          ...rateLimitHeaders(rateLimitResult),
+          'Content-Type': 'application/json' 
+        } 
+      }
     );
   }
 });
