@@ -3,6 +3,7 @@ import { ArrowDown, Github, Linkedin, Mail, Terminal } from "lucide-react";
 import { useEffect, useState, memo, useCallback } from "react";
 import { AsciiArt } from "./AsciiArt";
 import { InteractiveTerminal } from "./InteractiveTerminal";
+import { MagneticButton } from "./MagneticButton";
 import headshot from "@/assets/headshot.jpg";
 import { useClickCounter } from "@/hooks/useClickCounter";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -214,22 +215,26 @@ export const Hero = memo(() => {
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-3 md:gap-4 justify-center mb-8 md:mb-12 opacity-0 animate-[fadeSlideUp_0.8s_ease-out_1s_forwards]">
-            <Button
-              size="lg"
-              onClick={scrollToProjects}
-              className="group relative overflow-hidden text-lg px-8 py-6"
-            >
-              <span className="relative z-10 flex items-center">
-                Explore My Work
-                <ArrowDown className="ml-2 h-5 w-5 group-hover:translate-y-1 transition-transform duration-200" />
-              </span>
-            </Button>
-            <Button variant="outline" size="lg" asChild className="text-lg px-8 py-6 border-2">
-              <a href="mailto:gsuarez@fiu.edu">
-                <Mail className="mr-2 h-5 w-5" />
-                Get In Touch
-              </a>
-            </Button>
+            <MagneticButton strength={0.25}>
+              <Button
+                size="lg"
+                onClick={scrollToProjects}
+                className="group relative overflow-hidden text-lg px-8 py-6"
+              >
+                <span className="relative z-10 flex items-center">
+                  Explore My Work
+                  <ArrowDown className="ml-2 h-5 w-5 group-hover:translate-y-1 transition-transform duration-200" />
+                </span>
+              </Button>
+            </MagneticButton>
+            <MagneticButton strength={0.25}>
+              <Button variant="outline" size="lg" asChild className="text-lg px-8 py-6 border-2">
+                <a href="mailto:gsuarez@fiu.edu">
+                  <Mail className="mr-2 h-5 w-5" />
+                  Get In Touch
+                </a>
+              </Button>
+            </MagneticButton>
           </div>
 
           {/* Social Links */}

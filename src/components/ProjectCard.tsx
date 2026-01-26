@@ -14,6 +14,7 @@ import {
   Eye
 } from "lucide-react";
 import { useLongPress } from "@/hooks/useLongPress";
+import { useTiltEffect } from "@/hooks/useTiltEffect";
 import { memo, useMemo } from "react";
 
 // Project-specific icon configurations
@@ -188,6 +189,7 @@ AwardBadge.displayName = 'AwardBadge';
 
 export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: ProjectCardProps) => {
   const longPressHandlers = useLongPress(() => onLongPress(project.title));
+  const { ref: tiltRef, handlers: tiltHandlers } = useTiltEffect({ maxTilt: 8, scale: 1.02 });
   
   const devNote = useMemo(() => 
     DEV_NOTES[project.title] || DEFAULT_DEV_NOTE,
@@ -198,14 +200,17 @@ export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: Pr
 
   return (
     <div
+      ref={tiltRef}
       className="opacity-0 animate-[fadeSlideUp_0.6s_ease-out_forwards]"
       style={{ 
         animationDelay: `${index * 0.1}s`,
-        transform: 'translateZ(0)',
+        transformStyle: 'preserve-3d',
+        transition: 'transform 0.15s ease-out',
       }}
       {...longPressHandlers}
+      {...tiltHandlers}
     >
-      <Card className={`p-4 sm:p-6 md:p-8 h-full border-border/50 backdrop-blur-sm bg-card/30 relative overflow-hidden group select-none transition-transform duration-300 hover:-translate-y-2 hover:shadow-[0_10px_40px_-15px_hsl(var(--primary)/0.3)] ${
+      <Card className={`p-4 sm:p-6 md:p-8 h-full border-border/50 backdrop-blur-sm bg-card/30 relative overflow-hidden group select-none ${
         isWinner ? 'border-yellow-500/30 hover:border-yellow-500/50' : ''
       }`}>
         {/* Winner confetti overlay */}

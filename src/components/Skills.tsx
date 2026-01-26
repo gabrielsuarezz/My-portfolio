@@ -54,10 +54,11 @@ const SkillCard = memo(({ category, index }: {
           <h3 className="font-mono font-semibold text-base sm:text-lg text-foreground">{category.title}</h3>
         </div>
         <div className="flex flex-wrap gap-1.5 sm:gap-2">
-          {category.skills.map((skill) => (
+          {category.skills.map((skill, skillIndex) => (
             <span
               key={skill}
-              className="text-xs sm:text-sm text-muted-foreground bg-secondary/50 border border-border/50 px-2 sm:px-3 py-1 rounded-sm font-mono hover:border-primary/40 hover:text-primary transition-colors duration-200"
+              className="text-xs sm:text-sm text-muted-foreground bg-secondary/50 border border-border/50 px-2 sm:px-3 py-1 rounded-sm font-mono hover:border-primary/40 hover:text-primary transition-all duration-200 opacity-0 animate-[fadeSlideUp_0.3s_ease-out_forwards]"
+              style={{ animationDelay: `${(index * 0.1) + (skillIndex * 0.05)}s` }}
             >
               {skill}
             </span>
