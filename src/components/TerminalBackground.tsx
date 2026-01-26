@@ -74,25 +74,26 @@ export const TerminalBackground = memo(({
   }
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-25">
       <style>{`
         @keyframes terminalFloat {
           0% { transform: translateY(-5%) translateZ(0); opacity: 0; }
-          5% { opacity: 0.4; }
-          95% { opacity: 0.4; }
+          5% { opacity: 0.6; }
+          95% { opacity: 0.6; }
           100% { transform: translateY(105vh) translateZ(0); opacity: 0; }
         }
       `}</style>
       {lines.map((line) => (
         <div
           key={line.id}
-          className="absolute whitespace-nowrap font-mono text-xs text-primary/60"
+          className="absolute whitespace-nowrap font-mono text-xs text-primary/80"
           style={{
             left: `${line.x}%`,
             animation: `terminalFloat ${animationDuration}s linear infinite`,
             animationDelay: `${line.delay}s`,
             transform: 'translateZ(0)',
             backfaceVisibility: 'hidden',
+            textShadow: '0 0 10px hsl(var(--primary) / 0.4)',
           }}
         >
           {line.text}
