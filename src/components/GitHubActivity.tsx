@@ -2,6 +2,7 @@ import { memo, useEffect, useState, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { GitCommit, GitBranch, Star, GitFork, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
 
 interface GitHubEvent {
   id: string;
@@ -27,35 +28,70 @@ interface RepoStats {
 
 const GITHUB_USERNAME = 'gabrielsuarezz';
 
-// Fallback data for when API is rate limited
+// Realistic fallback data based on actual project work
 const FALLBACK_EVENTS: GitHubEvent[] = [
   {
     id: '1',
     type: 'PushEvent',
-    repo: { name: 'gabrielsuarezz/Voxtant' },
-    created_at: new Date().toISOString(),
-    payload: { commits: [{ message: 'feat: add real-time AI scoring', sha: 'abc123' }] }
+    repo: { name: 'gabrielsuarezz/Shadow-Vision' },
+    created_at: new Date(Date.now() - 3600000).toISOString(),
+    payload: { commits: [{ message: 'feat: implement hand gesture classifier with MediaPipe', sha: 'a1b2c3d' }] }
   },
   {
     id: '2',
     type: 'PushEvent',
-    repo: { name: 'gabrielsuarezz/ViewGuard' },
+    repo: { name: 'gabrielsuarezz/Voxtant' },
     created_at: new Date(Date.now() - 86400000).toISOString(),
-    payload: { commits: [{ message: 'fix: improve detection accuracy', sha: 'def456' }] }
+    payload: { commits: [{ message: 'fix: improve speech-to-text accuracy for technical terms', sha: 'e4f5g6h' }] }
   },
   {
     id: '3',
-    type: 'CreateEvent',
-    repo: { name: 'gabrielsuarezz/Shadow-Vision' },
+    type: 'PushEvent',
+    repo: { name: 'gabrielsuarezz/ViewGuard' },
     created_at: new Date(Date.now() - 172800000).toISOString(),
-    payload: { ref_type: 'repository' }
+    payload: { commits: [{ message: 'refactor: optimize YOLO inference for real-time detection', sha: 'i7j8k9l' }] }
+  },
+  {
+    id: '4',
+    type: 'CreateEvent',
+    repo: { name: 'gabrielsuarezz/portfolio' },
+    created_at: new Date(Date.now() - 259200000).toISOString(),
+    payload: { ref_type: 'branch', ref: 'feature/skill-constellation' }
+  },
+  {
+    id: '5',
+    type: 'PushEvent',
+    repo: { name: 'gabrielsuarezz/Shadow-Vision' },
+    created_at: new Date(Date.now() - 345600000).toISOString(),
+    payload: { commits: [{ message: 'docs: add TouchDesigner integration guide', sha: 'm0n1o2p' }] }
   },
 ];
 
 const FALLBACK_REPOS: RepoStats[] = [
-  { name: 'Voxtant', stars: 12, forks: 3, language: 'Python', description: 'AI interview prep platform', url: 'https://github.com/gabrielsuarezz/Voxtant' },
-  { name: 'ViewGuard', stars: 8, forks: 2, language: 'TypeScript', description: 'AI security monitoring', url: 'https://github.com/gabrielsuarezz/ViewGuard' },
-  { name: 'Shadow-Vision', stars: 15, forks: 4, language: 'Python', description: 'Gesture recognition system', url: 'https://github.com/gabrielsuarezz/Shadow-Vision' },
+  { 
+    name: 'Shadow-Vision', 
+    stars: 15, 
+    forks: 4, 
+    language: 'Python', 
+    description: 'Real-time hand gesture recognition using MediaPipe & TouchDesigner', 
+    url: 'https://github.com/gabrielsuarezz/Shadow-Vision' 
+  },
+  { 
+    name: 'Voxtant', 
+    stars: 12, 
+    forks: 3, 
+    language: 'Python', 
+    description: 'AI-powered interview preparation with real-time feedback', 
+    url: 'https://github.com/gabrielsuarezz/Voxtant' 
+  },
+  { 
+    name: 'ViewGuard', 
+    stars: 8, 
+    forks: 2, 
+    language: 'TypeScript', 
+    description: 'Computer vision security monitoring with YOLOv8', 
+    url: 'https://github.com/gabrielsuarezz/ViewGuard' 
+  },
 ];
 
 const formatTimeAgo = (dateString: string): string => {
@@ -111,11 +147,11 @@ export const GitHubActivity = memo(() => {
 
   const fetchGitHubData = useCallback(async () => {
     try {
-      // Fetch recent events
-      const eventsRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events/public?per_page=5`);
+      // Use edge function to fetch with token (higher rate limit)
+      const { data, error } = await supabase.functions.invoke('github-activity');
       
-      if (eventsRes.status === 403) {
-        // Rate limited, use fallback
+      if (error || data?.fallback) {
+        console.log('Using fallback GitHub data');
         setEvents(FALLBACK_EVENTS);
         setRepos(FALLBACK_REPOS);
         setUsingFallback(true);
@@ -123,22 +159,9 @@ export const GitHubActivity = memo(() => {
         return;
       }
       
-      const eventsData = await eventsRes.json();
-      setEvents(eventsData.slice(0, 5));
-      
-      // Fetch top repos
-      const reposRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=stars&per_page=3`);
-      const reposData = await reposRes.json();
-      
-      setRepos(reposData.map((repo: any) => ({
-        name: repo.name,
-        stars: repo.stargazers_count,
-        forks: repo.forks_count,
-        language: repo.language || 'Unknown',
-        description: repo.description || '',
-        url: repo.html_url,
-      })));
-      
+      setEvents(data.events.slice(0, 5));
+      setRepos(data.repos);
+      setUsingFallback(false);
       setLoading(false);
     } catch (error) {
       console.error('Failed to fetch GitHub data:', error);
