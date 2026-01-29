@@ -26,8 +26,13 @@ export default defineConfig(({ mode }) => ({
         // Code splitting for better caching
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-tooltip', '@radix-ui/react-tabs'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-tooltip', '@radix-ui/react-slot', '@radix-ui/react-label'],
           query: ['@tanstack/react-query'],
+          animations: ['framer-motion'],
+          icons: ['lucide-react'],
+          charts: ['recharts'],
+          supabase: ['@supabase/supabase-js'],
+          dropdownMenu: ['@radix-ui/react-dropdown-menu'],
         },
       },
     },

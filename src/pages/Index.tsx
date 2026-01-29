@@ -65,22 +65,22 @@ const Index = memo(() => {
       </LazySection>
 
       {/* GitHub Activity + Skill Network Section */}
-      <section className="py-16 bg-muted/20">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-10 opacity-0 animate-[fadeSlideUp_0.5s_ease-out_forwards]">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-2 font-mono">
-              <span className="text-muted-foreground opacity-60">// </span>
-              Live <span className="text-gradient">Activity</span>
-            </h2>
-            <p className="text-sm text-muted-foreground font-mono opacity-80">
-              Real-time GitHub contributions
-            </p>
-          </div>
-          <Suspense fallback={<div className="h-64 animate-pulse bg-muted/30 rounded-lg" />}>
+      <LazySection>
+        <section className="py-16 bg-muted/20">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-10 opacity-0 animate-[fadeSlideUp_0.5s_ease-out_forwards]">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2 font-mono">
+                <span className="text-muted-foreground opacity-60">// </span>
+                Live <span className="text-gradient">Activity</span>
+              </h2>
+              <p className="text-sm text-muted-foreground font-mono opacity-80">
+                Real-time GitHub contributions
+              </p>
+            </div>
             <GitHubActivity />
-          </Suspense>
-        </div>
-      </section>
+          </div>
+        </section>
+      </LazySection>
 
       {/* Skill Network Visualization */}
       <LazySection>
