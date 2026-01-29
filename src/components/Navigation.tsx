@@ -67,7 +67,7 @@ export const Navigation = memo(() => {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 opacity-0 animate-[fadeSlideUp_0.5s_ease-out_0.2s_forwards] ${
           isScrolled
-            ? "bg-background/80 backdrop-blur-lg border-b border-border/50 shadow-lg"
+            ? "bg-background/95 border-b border-border/50 shadow-lg"
             : "bg-transparent"
         }`}
         style={{ transform: 'translateZ(0)' }}
@@ -159,7 +159,7 @@ export const Navigation = memo(() => {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 z-40 bg-background/95 backdrop-blur-lg md:hidden animate-[fadeIn_0.2s_ease-out]"
+          className="fixed inset-0 z-40 bg-background/98 md:hidden animate-[fadeIn_0.2s_ease-out]"
         >
           <div className="flex flex-col items-center justify-center h-full gap-6">
             {navItems.map((item, index) => (

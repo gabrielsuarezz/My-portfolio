@@ -64,38 +64,39 @@ const enhanceImageData = (ctx: CanvasRenderingContext2D, width: number, height: 
 export const AsciiArt = memo(({ imageSrc, width = 150, fontSize = 6 }: AsciiArtProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [asciiText, setAsciiText] = useState<string>("");
+  const [detailedAsciiText, setDetailedAsciiText] = useState<string>("");
   const [isHovered, setIsHovered] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const prefersReducedMotion = useReducedMotion();
-  const imgRef = useRef<HTMLImageElement | null>(null);
 
-  // Generate ASCII from image data with improved algorithm
+  // Generate ASCII from image data with improved algorithm - optimized with array join
   const generateAscii = useCallback((imageData: ImageData, imgWidth: number, imgHeight: number, detailed: boolean) => {
-    let ascii = "";
+    const lines: string[] = [];
     const chars = detailed ? ASCII_CHARS_DETAILED : ASCII_CHARS;
     const data = imageData.data;
 
     for (let y = 0; y < imgHeight; y++) {
+      const lineChars: string[] = [];
       for (let x = 0; x < imgWidth; x++) {
         const offset = (y * imgWidth + x) * 4;
         const r = data[offset];
         const g = data[offset + 1];
         const b = data[offset + 2];
-        
+
         // Use luminance formula for more accurate brightness
         const brightness = (0.2126 * r + 0.7152 * g + 0.0722 * b);
-        
+
         // Non-linear mapping for better detail in midtones
         const normalizedBrightness = Math.pow(brightness / 255, 0.8);
         const charIndex = Math.floor(normalizedBrightness * (chars.length - 1));
-        ascii += chars[charIndex];
+        lineChars.push(chars[charIndex]);
       }
-      ascii += "\n";
+      lines.push(lineChars.join(''));
     }
-    return ascii;
+    return lines.join('\n');
   }, []);
 
-  // Load image once
+  // Load image once and pre-compute BOTH ASCII versions
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -105,9 +106,8 @@ export const AsciiArt = memo(({ imageSrc, width = 150, fontSize = 6 }: AsciiArtP
 
     const img = new Image();
     img.crossOrigin = "anonymous";
-    
+
     img.onload = () => {
-      imgRef.current = img;
       const aspectRatio = img.height / img.width;
       // Adjust for character aspect ratio (characters are taller than wide)
       const height = Math.floor(width * aspectRatio * 0.45);
@@ -116,29 +116,18 @@ export const AsciiArt = memo(({ imageSrc, width = 150, fontSize = 6 }: AsciiArtP
       canvas.height = height;
 
       ctx.drawImage(img, 0, 0, width, height);
+
+      // Process image ONCE and cache enhanced data
       const enhancedData = enhanceImageData(ctx, width, height);
-      
+
+      // Pre-compute BOTH versions - do expensive work upfront, not on hover
       setAsciiText(generateAscii(enhancedData, width, height, false));
+      setDetailedAsciiText(generateAscii(enhancedData, width, height, true));
       setIsLoaded(true);
     };
 
     img.src = imageSrc;
   }, [imageSrc, width, generateAscii]);
-
-  // Regenerate ASCII when hover state changes (only if loaded)
-  useEffect(() => {
-    if (!isLoaded || !imgRef.current || !canvasRef.current) return;
-    
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    if (!ctx) return;
-
-    const aspectRatio = imgRef.current.height / imgRef.current.width;
-    const height = Math.floor(width * aspectRatio * 0.45);
-    
-    const enhancedData = enhanceImageData(ctx, width, height);
-    setAsciiText(generateAscii(enhancedData, width, height, isHovered));
-  }, [isHovered, isLoaded, width, generateAscii]);
 
   const generateBlockText = useCallback(() => {
     const text = 'HIRE ME';
@@ -173,9 +162,11 @@ export const AsciiArt = memo(({ imageSrc, width = 150, fontSize = 6 }: AsciiArtP
     return lines;
   }, [generateBlockText]);
 
-  const lines = useMemo(() => 
-    isHovered ? insertTextIntoAscii(asciiText) : asciiText.split('\n'),
-    [isHovered, asciiText, insertTextIntoAscii]
+  // Use pre-computed version based on hover state - no expensive recalculation!
+  const currentAscii = isHovered ? detailedAsciiText : asciiText;
+  const lines = useMemo(() =>
+    isHovered ? insertTextIntoAscii(currentAscii) : currentAscii.split('\n'),
+    [isHovered, currentAscii, insertTextIntoAscii]
   );
 
   const handleMouseEnter = useCallback(() => setIsHovered(true), []);

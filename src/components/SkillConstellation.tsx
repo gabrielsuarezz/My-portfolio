@@ -212,7 +212,7 @@ export const SkillConstellation = memo(() => {
                 y2={conn.to.y}
                 stroke={isConnectionHighlighted(conn) ? 'hsl(var(--primary) / 0.4)' : 'hsl(var(--border) / 0.2)'}
                 strokeWidth={isConnectionHighlighted(conn) && hoveredSkill ? 0.3 : 0.15}
-                className="transition-all duration-300"
+                className="transition-all duration-150"
               />
             ))}
             
@@ -248,7 +248,7 @@ export const SkillConstellation = memo(() => {
                     r={node.level * 0.5 + 1}
                     fill={CATEGORY_COLORS[node.category]}
                     opacity={highlighted ? 1 : 0.2}
-                    className="transition-all duration-300"
+                    className="transition-all duration-150"
                   />
                   
                   {/* Label with better visibility */}
@@ -261,7 +261,7 @@ export const SkillConstellation = memo(() => {
                     fontFamily="monospace"
                     fontWeight={isHovered ? 600 : 400}
                     opacity={highlighted ? 1 : 0.5}
-                    className="transition-all duration-300 select-none"
+                    className="transition-all duration-150 select-none"
                     style={{ textShadow: '0 0 3px hsl(var(--background))' }}
                   >
                     {node.name}

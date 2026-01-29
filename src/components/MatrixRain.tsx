@@ -21,13 +21,27 @@ export const MatrixRain = ({ onComplete, duration = 5000 }: MatrixRainProps) => 
 
     const chars = 'ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ01';
     const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops: number[] = Array(Math.floor(columns)).fill(1);
 
+    // Cap columns at 60 for performance on large screens
+    const maxColumns = Math.min(Math.floor(canvas.width / fontSize), 60);
+    const drops: number[] = Array(maxColumns).fill(1);
+
+    // Target 30 FPS for better performance on low-end devices
+    const targetFPS = 30;
+    const frameInterval = 1000 / targetFPS;
+    let lastFrameTime = 0;
     let animationId: number;
 
-    const draw = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    const draw = (currentTime: number) => {
+      // Throttle to target FPS
+      if (currentTime - lastFrameTime < frameInterval) {
+        animationId = requestAnimationFrame(draw);
+        return;
+      }
+      lastFrameTime = currentTime;
+
+      // Increased fade alpha for less compositing (0.05 -> 0.1)
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = '#0F0';
@@ -46,7 +60,7 @@ export const MatrixRain = ({ onComplete, duration = 5000 }: MatrixRainProps) => 
       animationId = requestAnimationFrame(draw);
     };
 
-    draw();
+    animationId = requestAnimationFrame(draw);
 
     const timer = setTimeout(() => {
       cancelAnimationFrame(animationId);

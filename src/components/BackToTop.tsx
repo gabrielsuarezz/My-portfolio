@@ -8,8 +8,16 @@ export const BackToTop = memo(() => {
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
+    let ticking = false;
+
     const toggleVisibility = () => {
-      setIsVisible(window.scrollY > 500);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setIsVisible(window.scrollY > 500);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", toggleVisibility, { passive: true });
