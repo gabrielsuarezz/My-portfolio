@@ -9,6 +9,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 // Lazy load below-the-fold components
 const Projects = lazy(() => import("@/components/Projects").then(m => ({ default: m.Projects })));
+const About = lazy(() => import("@/components/About").then(m => ({ default: m.About })));
 const Skills = lazy(() => import("@/components/Skills").then(m => ({ default: m.Skills })));
 const SkillConstellation = lazy(() => import("@/components/SkillConstellation").then(m => ({ default: m.SkillConstellation })));
 const Experience = lazy(() => import("@/components/Experience").then(m => ({ default: m.Experience })));
@@ -51,7 +52,11 @@ const Index = memo(() => {
       <LazySection>
         <Projects />
       </LazySection>
-      
+
+      <LazySection>
+        <About />
+      </LazySection>
+
       <LazySection>
         <Skills />
       </LazySection>
@@ -66,9 +71,9 @@ const Index = memo(() => {
 
       {/* GitHub Activity + Skill Network Section */}
       <LazySection>
-        <section className="py-16 bg-muted/20">
+        <section className="py-24 bg-muted/20">
           <div className="container mx-auto px-6">
-            <div className="text-center mb-10 opacity-0 animate-[fadeSlideUp_0.5s_ease-out_forwards]">
+            <div className="text-center mb-16 opacity-0 animate-[fadeSlideUp_0.5s_ease-out_forwards]">
               <h2 className="text-2xl sm:text-3xl font-bold mb-2 font-mono">
                 <span className="text-muted-foreground opacity-60">// </span>
                 Live <span className="text-gradient">Activity</span>

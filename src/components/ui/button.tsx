@@ -9,13 +9,13 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-[0_0_20px_hsl(var(--primary)/0.5)] border border-primary/50 rounded-sm",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-[var(--shadow-medium)] border border-primary/50 rounded-sm",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 border border-destructive/50 rounded-sm",
-        outline: "border border-primary/40 bg-background/90 hover:bg-primary/10 hover:border-primary hover:shadow-[0_0_15px_hsl(var(--primary)/0.3)] text-foreground rounded-sm",
+        outline: "border border-primary/40 bg-background/90 hover:bg-primary/10 hover:border-primary hover:shadow-[var(--shadow-subtle)] text-foreground rounded-sm",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border rounded-sm",
         ghost: "border border-transparent hover:border-primary/40 hover:bg-primary/10 hover:text-primary rounded-sm",
         link: "text-primary underline-offset-4 hover:underline",
-        terminal: "bg-transparent border border-primary/60 text-primary hover:bg-primary/20 hover:shadow-[0_0_25px_hsl(var(--primary)/0.4)] rounded-none font-mono uppercase tracking-widest",
+        terminal: "bg-transparent border border-primary/60 text-primary hover:bg-primary/20 hover:shadow-[var(--shadow-medium)] rounded-none font-mono uppercase tracking-widest",
       },
       size: {
         default: "h-10 px-4 py-2",

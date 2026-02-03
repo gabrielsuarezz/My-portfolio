@@ -46,7 +46,7 @@ const SkillCard = memo(({ category, index }: {
         transform: 'translateZ(0)',
       }}
     >
-      <Card className="p-4 sm:p-6 h-full border-border/50 backdrop-blur-sm bg-card/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_-15px_hsl(var(--primary)/0.3)]">
+      <Card className="p-4 sm:p-6 h-full border-border/50 backdrop-blur-sm bg-card/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-medium)]">
         <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
           <div className="terminal-icon flex-shrink-0">
             <Icon className="h-5 w-5 sm:h-6 sm:w-6" />

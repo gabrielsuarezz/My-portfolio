@@ -92,10 +92,10 @@ const ProjectIcon = memo(({ title }: { title: string }) => {
         }}
       />
       {/* Icon with terminal bracket wrapper */}
-      <div className="relative flex items-center gap-0.5 font-mono text-sm bg-secondary/50 border border-border/50 rounded px-2 py-1.5">
+      <div className="relative flex items-center gap-0.5 font-mono text-sm bg-secondary/50 border border-border/50 rounded-sm px-2 py-1.5">
         <span className="text-muted-foreground/60">[</span>
-        <Icon 
-          className={`h-5 w-5 ${config.color} transition-all duration-300`} 
+        <Icon
+          className={`h-5 w-5 ${config.color} transition-all duration-300`}
           style={{ filter: `drop-shadow(0 0 6px currentColor)` }}
         />
         <span className="text-muted-foreground/60">]</span>
@@ -276,7 +276,7 @@ export const ProjectCard = memo(({ project, index, isRevealed, onLongPress }: Pr
           </p>
 
           {isRevealed && (
-            <div className="mb-4 p-3 bg-accent/10 border border-accent/30 rounded font-mono text-sm text-accent animate-[fadeIn_0.3s_ease-out]">
+            <div className="mb-4 p-3 bg-accent/10 border border-accent/30 rounded-sm font-mono text-sm text-accent animate-[fadeIn_0.3s_ease-out]">
               <span className="opacity-60">// </span>
               <strong>dev_note:</strong> {devNote}
             </div>

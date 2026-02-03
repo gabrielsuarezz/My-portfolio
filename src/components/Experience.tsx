@@ -56,7 +56,7 @@ const ExperienceCard = memo(({ exp, index }: {
         transform: 'translateZ(0)',
       }}
     >
-      <Card className="p-4 sm:p-6 border-border/50 backdrop-blur-sm bg-card/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_-15px_hsl(var(--primary)/0.3)]">
+      <Card className="p-4 sm:p-6 border-border/50 backdrop-blur-sm bg-card/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-medium)]">
         <div className="flex gap-3 sm:gap-4">
           <div className="flex-shrink-0">
             <div className="terminal-icon">
