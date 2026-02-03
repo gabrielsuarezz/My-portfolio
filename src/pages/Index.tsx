@@ -9,7 +9,6 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 // Lazy load below-the-fold components
 const Projects = lazy(() => import("@/components/Projects").then(m => ({ default: m.Projects })));
-const About = lazy(() => import("@/components/About").then(m => ({ default: m.About })));
 const Skills = lazy(() => import("@/components/Skills").then(m => ({ default: m.Skills })));
 const SkillConstellation = lazy(() => import("@/components/SkillConstellation").then(m => ({ default: m.SkillConstellation })));
 const Experience = lazy(() => import("@/components/Experience").then(m => ({ default: m.Experience })));
@@ -51,10 +50,6 @@ const Index = memo(() => {
       {/* Below-fold sections are lazy loaded */}
       <LazySection>
         <Projects />
-      </LazySection>
-
-      <LazySection>
-        <About />
       </LazySection>
 
       <LazySection>
