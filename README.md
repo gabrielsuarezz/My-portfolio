@@ -1,73 +1,60 @@
-# Welcome to your Lovable project
+# Gabriel Suarez — Portfolio
 
-## Project info
+**AI/ML Engineer & Full-Stack Developer**
 
-**URL**: https://lovable.dev/projects/9e5e0bbb-598c-4d97-9e04-bc86963e6bab
+🌐 **Live Site:** [gabrielsuarez.dev](https://gabrielsuarez.dev)
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## About
 
-**Use Lovable**
+Personal portfolio showcasing my projects, skills, and experience as a Computer Science student at Florida International University. Built with a developer-focused aesthetic featuring interactive terminal elements and smooth animations.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/9e5e0bbb-598c-4d97-9e04-bc86963e6bab) and start prompting.
+## Tech Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Framework:** React 18 + TypeScript
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS + shadcn/ui
+- **Backend:** Supabase (Edge Functions)
+- **Deployment:** Vercel
 
-**Use your preferred IDE**
+## Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- 🖥️ **Interactive Terminal** — Command-line interface with working commands
+- 🌌 **Matrix Rain Effect** — Animated background with customizable themes
+- ⭐ **Skill Constellation** — Visual representation of technical skills
+- 📊 **Live GitHub Stats** — Real-time contribution data
+- 🎮 **Easter Eggs** — Hidden features and games (try the Konami code)
+- ⌨️ **Command Palette** — Quick navigation with keyboard shortcuts
+- 📱 **Fully Responsive** — Optimized for all devices
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Projects Featured
 
-Follow these steps:
+- **Voxtant** — PlutoHacks 2025 Best Overall Winner
+- **HeliosAI** — Knight Hacks VIII MLH Best Use of Arm
+- **Shadow Vision** — Computer vision application
+- **ViewGuard** — Security-focused project
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Local Development
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```bash
+# Clone the repository
+git clone https://github.com/gabrielsuarezz/My-portfolio.git
+cd My-portfolio
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Contact
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **Email:** gabrielsc0513@gmail.com
+- **LinkedIn:** [linkedin.com/in/gabriel-suarez-cs](https://linkedin.com/in/gabriel-suarez-cs)
+- **GitHub:** [github.com/gabrielsuarezz](https://github.com/gabrielsuarezz)
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/9e5e0bbb-598c-4d97-9e04-bc86963e6bab) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+© 2026 Gabriel Suarez
