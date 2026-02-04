@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://ai.gateway.lovable.dev;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https: blob:;
+      connect-src 'self' https://*.supabase.co https://api.github.com https://ai.gateway.lovable.dev wss://*.supabase.co;
+      frame-ancestors 'none';
+      base-uri 'self';
+      form-action 'self';
+    " />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+    
+    <!-- Favicon - SVG for crisp rendering at all sizes -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Fallback PNG favicons for older browsers -->
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicon.png" />
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <meta name="theme-color" content="#1e293b" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Gabriel Suarez" />
+    
+    <!-- Performance optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://github.com" />
+    <link rel="dns-prefetch" href="https://linkedin.com" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Gabriel Suarez | AI/ML Engineer & Full Stack Developer</title>
+    <meta name="description" content="Gabriel Suarez - CS student at FIU, 3x hackathon winner specializing in AI/ML, computer vision, and full-stack development. View my award-winning projects in AI agents, real-time systems, and innovative tech solutions." />
+    <meta name="author" content="Gabriel Suarez" />
+    <meta name="keywords" content="Gabriel Suarez, AI Engineer, ML Engineer, Full Stack Developer, FIU, Computer Science, Hackathon Winner, React, Python, Machine Learning" />
+    <link rel="canonical" href="https://gabrielsuarez.dev" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gabrielsuarez.dev" />
+    <meta property="og:title" content="Gabriel Suarez | AI/ML Engineer & Full Stack Developer" />
+    <meta property="og:description" content="CS @ FIU • 3x Hackathon Winner • Building innovative AI solutions. Explore my award-winning projects in computer vision, AI agents, and full-stack development." />
+    <meta property="og:image" content="https://gabrielsuarez.dev/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Gabriel Suarez Portfolio" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://gabrielsuarez.dev" />
+    <meta name="twitter:title" content="Gabriel Suarez | AI/ML Engineer & Full Stack Developer" />
+    <meta name="twitter:description" content="CS @ FIU • 3x Hackathon Winner • Building innovative AI solutions." />
+    <meta name="twitter:image" content="https://gabrielsuarez.dev/og-image.png" />
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Gabriel Suarez",
+      "url": "https://gabrielsuarez.dev",
+      "image": "https://gabrielsuarez.dev/headshot.jpg",
+      "jobTitle": "AI/ML Engineer & Full Stack Developer",
+      "worksFor": {
+        "@type": "EducationalOrganization",
+        "name": "Florida International University"
+      },
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Florida International University"
+      },
+      "knowsAbout": ["Artificial Intelligence", "Machine Learning", "Computer Vision", "Full Stack Development", "React", "Python", "TypeScript"],
+      "sameAs": [
+        "https://github.com/gabrielsuarezz",
+        "https://linkedin.com/in/gabrielsuarezz"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Miami",
+        "addressRegion": "FL",
+        "addressCountry": "US"
+      }
+    }
+    </script>
+    
+    <!-- Critical CSS for initial render -->
+    <style>
+      /* Prevent layout shift during load */
+      #root { min-height: 100vh; }
+      /* Smooth scrolling respecting user preferences */
+      @media (prefers-reduced-motion: no-preference) {
+        html { scroll-behavior: smooth; }
+      }
+      /* Print styles */
+      @media print {
+        body { background: white !important; color: black !important; }
+        .no-print { display: none !important; }
+        a { text-decoration: underline; }
+        a[href]:after { content: " (" attr(href) ")"; font-size: 0.8em; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

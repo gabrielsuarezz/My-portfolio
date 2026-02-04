@@ -1,0 +1,394 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 13%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 189 94% 43%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 223 47% 15%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 189 94% 43%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 189 94% 43%;
+
+    --radius: 0.75rem;
+
+    /* Custom design tokens - Professional tech theme */
+    --gradient-primary: linear-gradient(135deg, hsl(189 94% 43%), hsl(217 91% 60%));
+    --gradient-hero: linear-gradient(180deg, hsl(222 47% 11%) 0%, hsl(217 33% 17%) 100%);
+    --gradient-mesh: radial-gradient(at 40% 20%, hsl(189 94% 43% / 0.15) 0px, transparent 50%),
+                     radial-gradient(at 80% 0%, hsl(217 91% 60% / 0.15) 0px, transparent 50%),
+                     radial-gradient(at 0% 50%, hsl(189 94% 43% / 0.1) 0px, transparent 50%);
+
+    /* Standardized shadow system - use these three consistently */
+    --shadow-subtle: 0 0 20px hsl(var(--primary) / 0.15);
+    --shadow-medium: 0 0 30px hsl(var(--primary) / 0.25);
+    --shadow-strong: 0 20px 60px -15px hsl(var(--primary) / 0.4);
+
+    /* Legacy shadows - keeping for compatibility, migrate to above */
+    --shadow-elegant: 0 20px 60px -15px hsl(189 94% 43% / 0.4);
+    --shadow-glow: 0 0 80px hsl(189 94% 43% / 0.3);
+
+    --transition-smooth: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 189 94% 43%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 189 94% 43%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 13%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 189 94% 43%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 223 47% 15%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 189 94% 43%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 189 94% 43%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(189 94% 43%), hsl(217 91% 60%));
+    --gradient-hero: linear-gradient(180deg, hsl(222 47% 11%) 0%, hsl(217 33% 17%) 100%);
+    --gradient-mesh: radial-gradient(at 40% 20%, hsl(189 94% 43% / 0.15) 0px, transparent 50%),
+                     radial-gradient(at 80% 0%, hsl(217 91% 60% / 0.15) 0px, transparent 50%),
+                     radial-gradient(at 0% 50%, hsl(189 94% 43% / 0.1) 0px, transparent 50%);
+    --shadow-elegant: 0 20px 60px -15px hsl(189 94% 43% / 0.4);
+    --shadow-glow: 0 0 80px hsl(189 94% 43% / 0.3);
+
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 189 94% 43%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 189 94% 43%;
+  }
+
+  /* Matrix Theme - Green terminal vibes with proper contrast */
+  body[data-theme="matrix"] {
+    --background: 0 0% 5%;
+    --foreground: 120 100% 75%;
+    --card: 0 0% 8%;
+    --card-foreground: 120 100% 75%;
+    --primary: 120 100% 50%;
+    --primary-foreground: 0 0% 5%;
+    --secondary: 120 30% 15%;
+    --secondary-foreground: 120 100% 75%;
+    --accent: 120 100% 50%;
+    --accent-foreground: 0 0% 5%;
+    --muted: 120 20% 12%;
+    --muted-foreground: 120 30% 45%;
+    --border: 120 30% 20%;
+    --input: 120 30% 20%;
+    --ring: 120 100% 50%;
+    --gradient-primary: linear-gradient(135deg, hsl(120 100% 40%), hsl(140 100% 50%));
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 5%) 0%, hsl(120 30% 10%) 100%);
+    --shadow-glow: 0 0 80px hsl(120 100% 50% / 0.4);
+    --shadow-elegant: 0 20px 60px -15px hsl(120 100% 50% / 0.3);
+  }
+
+  /* Retro Theme - Amber/Orange terminal with proper contrast */
+  body[data-theme="retro"] {
+    --background: 30 20% 8%;
+    --foreground: 35 100% 80%;
+    --card: 30 20% 12%;
+    --card-foreground: 35 100% 80%;
+    --primary: 35 100% 55%;
+    --primary-foreground: 30 20% 8%;
+    --secondary: 30 30% 18%;
+    --secondary-foreground: 35 100% 80%;
+    --accent: 35 100% 55%;
+    --accent-foreground: 30 20% 8%;
+    --muted: 30 25% 15%;
+    --muted-foreground: 35 40% 50%;
+    --border: 30 30% 25%;
+    --input: 30 30% 25%;
+    --ring: 35 100% 55%;
+    --gradient-primary: linear-gradient(135deg, hsl(25 100% 50%), hsl(35 100% 55%));
+    --gradient-hero: linear-gradient(180deg, hsl(30 20% 8%) 0%, hsl(30 30% 15%) 100%);
+    --shadow-glow: 0 0 80px hsl(35 100% 55% / 0.4);
+    --shadow-elegant: 0 20px 60px -15px hsl(35 100% 55% / 0.3);
+  }
+
+  /* Minimal Theme - Clean grayscale with proper contrast */
+  body[data-theme="minimal"] {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --primary: 0 0% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 90%;
+    --secondary-foreground: 0 0% 10%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 40%;
+    --border: 0 0% 85%;
+    --input: 0 0% 85%;
+    --ring: 0 0% 20%;
+    --gradient-primary: linear-gradient(135deg, hsl(0 0% 10%), hsl(0 0% 30%));
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 98%) 0%, hsl(0 0% 95%) 100%);
+    --shadow-glow: 0 0 40px hsl(0 0% 0% / 0.1);
+    --shadow-elegant: 0 20px 60px -15px hsl(0 0% 0% / 0.2);
+  }
+
+  /* Cyberpunk Theme - Neon pink/purple with electric vibes */
+  body[data-theme="cyberpunk"] {
+    --background: 270 50% 5%;
+    --foreground: 300 100% 90%;
+    --card: 270 50% 8%;
+    --card-foreground: 300 100% 90%;
+    --primary: 320 100% 60%;
+    --primary-foreground: 270 50% 5%;
+    --secondary: 280 40% 15%;
+    --secondary-foreground: 300 100% 90%;
+    --accent: 180 100% 50%;
+    --accent-foreground: 270 50% 5%;
+    --muted: 270 30% 12%;
+    --muted-foreground: 280 30% 50%;
+    --border: 280 40% 20%;
+    --input: 280 40% 20%;
+    --ring: 320 100% 60%;
+    --gradient-primary: linear-gradient(135deg, hsl(320 100% 60%), hsl(180 100% 50%));
+    --gradient-hero: linear-gradient(180deg, hsl(270 50% 5%) 0%, hsl(280 40% 10%) 100%);
+    --shadow-glow: 0 0 80px hsl(320 100% 60% / 0.5);
+    --shadow-elegant: 0 20px 60px -15px hsl(320 100% 60% / 0.4);
+  }
+}
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+  
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
+    transform: translateZ(0);
+  }
+
+  /* Terminal-style glow effect */
+  .terminal-glow {
+    filter: drop-shadow(0 0 8px hsl(var(--primary) / 0.6));
+  }
+
+  .terminal-glow-hover {
+    transition: filter 0.3s ease;
+  }
+  
+  .terminal-glow-hover:hover {
+    filter: drop-shadow(0 0 12px hsl(var(--primary) / 0.8));
+  }
+
+  /* Terminal bracket styling */
+  .terminal-bracket::before {
+    content: '[';
+    @apply text-muted-foreground opacity-60 mr-1;
+  }
+  
+  .terminal-bracket::after {
+    content: ']';
+    @apply text-muted-foreground opacity-60 ml-1;
+  }
+
+  /* Terminal cursor */
+  .terminal-cursor {
+    @apply inline-block w-2 h-4 bg-primary/80 ml-1;
+    animation: blink 1s step-end infinite;
+  }
+
+  /* Icon container with terminal styling */
+  .terminal-icon {
+    @apply p-2 rounded-sm bg-primary/10 border border-primary/30 text-primary;
+    transition: filter 0.3s ease;
+  }
+  
+  .terminal-icon:hover {
+    filter: drop-shadow(0 0 12px hsl(var(--primary) / 0.8));
+  }
+
+  /* GPU-accelerated animations for smooth scrolling */
+  @keyframes fadeSlideUp {
+    from { 
+      opacity: 0; 
+      transform: translateY(20px) translateZ(0); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0) translateZ(0); 
+    }
+  }
+
+  @keyframes fadeSlideLeft {
+    from { 
+      opacity: 0; 
+      transform: translateX(-20px) translateZ(0); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0) translateZ(0); 
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  @keyframes gentlePulse {
+    0%, 100% { opacity: 0.15; transform: scale(1) translateZ(0); }
+    50% { opacity: 0.2; transform: scale(1.02) translateZ(0); }
+  }
+
+  @keyframes floatCode {
+    0%, 100% { opacity: 0.1; transform: translateY(0) translateZ(0); }
+    50% { opacity: 0.2; transform: translateY(-15px) translateZ(0); }
+  }
+
+  /* Skip to content for accessibility */
+  .skip-to-content {
+    @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-sm font-mono;
+  }
+
+  /* Performance optimizations */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+}
+
+/* Print styles for resume */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+
+  .no-print,
+  nav,
+  footer,
+  #turing-game,
+  .back-to-top {
+    display: none !important;
+  }
+
+  section {
+    page-break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+
+  h1, h2, h3 {
+    color: black !important;
+    page-break-after: avoid;
+  }
+
+  a {
+    color: black !important;
+    text-decoration: underline;
+  }
+
+  .text-gradient {
+    background: none !important;
+    -webkit-text-fill-color: black !important;
+    color: black !important;
+  }
+
+  /* Show URLs after links */
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    font-weight: normal;
+  }
+
+  /* Clean card styling for print */
+  .card,
+  [class*="card"] {
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    background: white !important;
+  }
+
+  /* Ensure proper margins */
+  @page {
+    margin: 1in;
+  }
+}
