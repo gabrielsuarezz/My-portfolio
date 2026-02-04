@@ -52,7 +52,7 @@ npm run dev
 ## Contact
 
 - **Email:** gabrielsc0513@gmail.com
-- **LinkedIn:** [linkedin.com/in/gabriel-suarez-cs](https://linkedin.com/in/gabriel-suarez-cs)
+- **LinkedIn:** [linkedin.com/in/gabriel-suarez-cs](https://linkedin.com/in/gabrielsuarezz)
 - **GitHub:** [github.com/gabrielsuarezz](https://github.com/gabrielsuarezz)
 
 ---
