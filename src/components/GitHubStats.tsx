@@ -36,8 +36,8 @@ const FALLBACK_STATS: GitHubStats = {
     { name: 'C++', percentage: 6, color: '#f34b7d' },
   ],
   streak: {
-    current: 42,
-    longest: 73,
+    current: 12,
+    longest: 22,
   },
   fallback: true,
 };
