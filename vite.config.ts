@@ -30,7 +30,6 @@ export default defineConfig(({ mode }) => ({
           query: ['@tanstack/react-query'],
           animations: ['framer-motion'],
           icons: ['lucide-react'],
-          charts: ['recharts'],
           supabase: ['@supabase/supabase-js'],
           dropdownMenu: ['@radix-ui/react-dropdown-menu'],
         },

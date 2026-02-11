@@ -28,10 +28,10 @@ const experiences: Experience[] = [
   },
   {
     icon: Shield,
-    title: "2nd Place - FlagOps CTF",
+    title: "1st Place - FlagOps CTF",
     company: "INIT FIU Cybersecurity",
-    period: "2024",
-    description: "Placed 2nd in competitive cybersecurity CTF, improving from previous 3rd place. Earned Microsoft Azure Security Engineer course access and hands-on training with Microsoft engineers."
+    period: "2025",
+    description: "Placed 1st in competitive cybersecurity CTF. Earned Microsoft Azure Security Engineer course access and hands-on training with Microsoft engineers."
   },
   {
     icon: GraduationCap,

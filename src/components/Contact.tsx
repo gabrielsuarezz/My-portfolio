@@ -5,7 +5,7 @@ import { Mail, Linkedin, Github, MapPin, Send, Terminal } from "lucide-react";
 import { toast } from "sonner";
 
 const contactLinks = [
-  { icon: Mail, label: "Email", href: "mailto:gsuarez@fiu.edu", external: false },
+  { icon: Mail, label: "Email", href: "mailto:gabrielsc0513@gmail.com", external: false },
   { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/gabrielsuarezz", external: true },
   { icon: Github, label: "GitHub", href: "https://github.com/gabrielsuarezz", external: true },
   { icon: MapPin, label: "Miami, FL", href: null, external: false },
@@ -51,7 +51,7 @@ export const Contact = memo(() => {
       const body = encodeURIComponent(
         `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
       );
-      const mailtoLink = `mailto:gsuarez@fiu.edu?subject=${subject}&body=${body}`;
+      const mailtoLink = `mailto:gabrielsc0513@gmail.com?subject=${subject}&body=${body}`;
 
       // Open mailto link
       window.location.href = mailtoLink;
